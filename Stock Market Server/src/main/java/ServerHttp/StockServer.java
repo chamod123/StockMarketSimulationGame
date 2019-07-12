@@ -1,8 +1,11 @@
 package ServerHttp;
 
 import Actors.PlayerActor;
+import Actors.StockActor;
 import Messages.PlayerMessages;
+import Messages.StockMessages;
 import Model.Player;
+import Model.Stock;
 import akka.NotUsed;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -32,6 +35,7 @@ public class StockServer extends AllDirectives {
     private Duration timeout = Duration.ofSeconds(180);
     private ActorRef server;
     private static ActorRef playerActor;
+    private static ActorRef stockActor;
 
     public StockServer(ActorSystem system) {
         server = system.actorOf(ServerActor.props());
@@ -46,6 +50,7 @@ public class StockServer extends AllDirectives {
         http.bindAndHandle(routeFlow, ConnectHttp.toHost("localhost", 8080), materializer);
         System.out.println("Server online at http://localhost:8080/");
         playerActor = system.actorOf(Props.create(PlayerActor.class), "playerActor");
+        stockActor = system.actorOf(Props.create(StockActor.class), "stockActor");
     }
 
     protected Route createRoute() {
@@ -56,8 +61,23 @@ public class StockServer extends AllDirectives {
                 , pathEndOrSingleSlash(() -> {
                     return complete("Hi");
                 })
+                ,path("stock", this::postStock)
         );
     }
+
+    private Route postStock(){
+        return route(post(() -> entity(Jackson.unmarshaller(Stock.class), stock -> {
+            CompletionStage<StockMessages.ActionPerformed> stockCreated = Patterns.ask(stockActor, new StockMessages.CreateStockMessage(stock), timeout)
+                    .thenApply(obj -> (StockMessages.ActionPerformed) obj);
+
+            return onSuccess(() -> stockCreated, performed -> {
+                return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
+            });
+        })));
+    }
+
+
+
 
     //#POST - Create new Player
     private Route postPlayer() {
