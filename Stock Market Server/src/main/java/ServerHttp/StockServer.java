@@ -1,17 +1,22 @@
 package ServerHttp;
 
+import Actors.BrockerActor;
 import Actors.PlayerActor;
+import Messages.BrokerMessages;
 import Messages.PlayerMessages;
+import Model.Broker;
 import Model.Player;
 import akka.NotUsed;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import akka.dispatch.sysmsg.Create;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.marshallers.jackson.Jackson;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
+import akka.http.javadsl.model.StatusCode;
 import akka.http.javadsl.model.StatusCodes;
 import akka.http.javadsl.server.AllDirectives;
 import akka.http.javadsl.server.HttpApp;
@@ -32,6 +37,8 @@ public class StockServer extends AllDirectives {
     private Duration timeout = Duration.ofSeconds(180);
     private ActorRef server;
     private static ActorRef playerActor;
+    private static ActorRef brokerActor;
+
 
     public StockServer(ActorSystem system) {
         server = system.actorOf(ServerActor.props());
@@ -46,6 +53,7 @@ public class StockServer extends AllDirectives {
         http.bindAndHandle(routeFlow, ConnectHttp.toHost("localhost", 8080), materializer);
         System.out.println("Server online at http://localhost:8080/");
         playerActor = system.actorOf(Props.create(PlayerActor.class), "playerActor");
+        brokerActor = system.actorOf(Props.create(BrockerActor.class), "brokerActor");
     }
 
     protected Route createRoute() {
@@ -56,8 +64,28 @@ public class StockServer extends AllDirectives {
                 , pathEndOrSingleSlash(() -> {
                     return complete("Hi");
                 })
+                ,path("broker",this::postBroker) //#POST - Create Broker
+
+
+
+
         );
     }
+
+
+    //#POST - Create new Broker
+    private Route postBroker() {
+        return route(post(() -> entity(Jackson.unmarshaller(Broker.class), broker -> {
+            CompletionStage<BrokerMessages.ActionPerformed> brokerCreated = Patterns.ask(brokerActor, new BrokerMessages.CreateBrokerMessage(broker), timeout)
+                    .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
+
+            return onSuccess(() -> brokerCreated, performed -> {
+                return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
+            });
+        })));
+    }
+
+
 
     //#POST - Create new Player
     private Route postPlayer() {
