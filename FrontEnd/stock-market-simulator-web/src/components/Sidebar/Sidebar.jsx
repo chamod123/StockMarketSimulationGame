@@ -82,7 +82,7 @@ const Sidebar = ({ ...props }) => {
                 />
               )}
               <ListItemText
-                primary={props.rtlActive ? prop.rtlName : prop.name}
+                primary={prop.name}
                 className={classNames(classes.itemText, whiteFontClasses, {
                   [classes.itemTextRTL]: props.rtlActive
                 })}
