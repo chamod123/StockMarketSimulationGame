@@ -34,5 +34,18 @@ public interface StockMessages {
         }
     }
 
-   
+    class GetStockMessage implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private final Long StockId;
+
+        public GetStockMessage(Long StockId) {
+            this.StockId = StockId;
+        }
+
+        public Long getStockId() {
+            return StockId;
+        }
+    }
+
+
 }
