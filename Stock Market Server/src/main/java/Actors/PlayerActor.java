@@ -22,6 +22,7 @@ public class PlayerActor  extends AbstractActor {
         return receiveBuilder()
                 .match(PlayerMessages.CreatePlayerMessage.class, handleCreateUser())
                 .match(PlayerMessages.GetPlayerMessage.class, handleGetUser())
+
                 .build();
     }
 

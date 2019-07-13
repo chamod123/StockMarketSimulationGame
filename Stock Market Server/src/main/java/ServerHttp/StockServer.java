@@ -41,7 +41,6 @@ public class StockServer extends AllDirectives {
     private ActorRef server;
     private static ActorRef playerActor;
     private static ActorRef brokerActor;
-
     private static ActorRef stockActor;
 
     public StockServer(ActorSystem system) {
@@ -69,15 +68,11 @@ public class StockServer extends AllDirectives {
                 , pathEndOrSingleSlash(() -> {
                     return complete("Hi");
                 })
-                , path("stock", this::postStock)
-                , path("broker", this::postBroker) //#POST - Create Broker
                 ,
-                path(segment("stock").slash(longSegment()), id ->
-                        route(getStock(id)))
-                ,path("stock", this::postStock)
-                ,path(segment("brokers").slash(longSegment()),id -> route(getBroker(id))) //#GET - get a broker data
-                ,path("brokers",this::postBroker) //#POST - Create Broker
-
+                path(segment("stock").slash(longSegment()), id -> route(getStock(id)))
+                , path("stock", this::postStock)
+                , path(segment("brokers").slash(longSegment()), id -> route(getBroker(id))) //#GET - get a broker data
+                , path("brokers", this::postBroker) //#POST - Create Broker
 
         );
     }
@@ -119,6 +114,7 @@ public class StockServer extends AllDirectives {
             });
         })));
     }
+
     //#GET - Get a broker Data
     private Route getBroker(Long id) {
         return get(() -> {
