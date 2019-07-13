@@ -1,6 +1,8 @@
 package Actors;
 
+import Messages.BankMessages;
 import Messages.PlayerMessages;
+import Model.Account;
 import Service.PlayerService;
 import akka.actor.AbstractActor;
 import akka.actor.Props;
@@ -22,7 +24,6 @@ public class PlayerActor  extends AbstractActor {
         return receiveBuilder()
                 .match(PlayerMessages.CreatePlayerMessage.class, handleCreateUser())
                 .match(PlayerMessages.GetPlayerMessage.class, handleGetUser())
-
                 .build();
     }
 
@@ -31,6 +32,9 @@ public class PlayerActor  extends AbstractActor {
             playerService.createPlayer(createUserPlayerMessageMessage.getPlayer());
             sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", createUserPlayerMessageMessage.getPlayer()
                     .getName())), getSelf());
+
+            createUserPlayerMessageMessage.getBankActor().tell( new BankMessages.CreateAccountMessage( new Account(createUserPlayerMessageMessage.getPlayer().getName())),getSelf());
+
 
         };
     }
