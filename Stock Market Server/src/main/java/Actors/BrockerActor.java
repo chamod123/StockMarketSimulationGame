@@ -17,7 +17,7 @@ public class BrockerActor  extends AbstractActor {
 
         return receiveBuilder()
                 .match(BrokerMessages.CreateBrokerMessage.class, handleCreateUser())
-
+                .match(BrokerMessages.GetBrokerMessage.class, handleGetUser())
                 .build();
     }
 
@@ -27,6 +27,11 @@ public class BrockerActor  extends AbstractActor {
             brokerService.createBroker(createUserBrokerMessageMessage.getBroker());
             sender().tell(new BrokerMessages.ActionPerformed(String.format("Broker %s created.", createUserBrokerMessageMessage.getBroker()
                     .getName())), getSelf());
+        };
+    }
+    private FI.UnitApply<BrokerMessages.GetBrokerMessage> handleGetUser() {
+        return getBrokerMessageMessage -> {
+            sender().tell(brokerService.getBroker(getBrokerMessageMessage.getBrokerId()), getSelf());
         };
     }
 

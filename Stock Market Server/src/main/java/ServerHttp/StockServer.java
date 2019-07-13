@@ -70,9 +70,8 @@ public class StockServer extends AllDirectives {
                     return complete("Hi");
                 })
                 ,path("stock", this::postStock)
-                ,path("broker",this::postBroker) //#POST - Create Broker
-
-
+                ,path(segment("brokers").slash(longSegment()),id -> route(getBroker(id))) //#GET - get a broker data
+                ,path("brokers",this::postBroker) //#POST - Create Broker
 
 
         );
@@ -103,6 +102,20 @@ public class StockServer extends AllDirectives {
                 return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
             });
         })));
+    }
+    //#GET - Get a broker Data
+    private Route getBroker(Long id) {
+        return get(() -> {
+            CompletionStage<Optional<Broker>> broker = Patterns.ask(brokerActor, new BrokerMessages.GetBrokerMessage(id), timeout)
+                    .thenApply(obj -> (Optional<Broker>) obj);
+            return onSuccess(() -> broker,
+                    performed -> {
+                        if (performed.isPresent())
+                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
     }
 
 
@@ -135,3 +148,5 @@ public class StockServer extends AllDirectives {
     }
 
 }
+
+
