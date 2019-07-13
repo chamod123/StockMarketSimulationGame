@@ -10,6 +10,7 @@ public class StockActor   extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(StockMessages.CreateStockMessage.class, handleCreateUser())
+                .match(StockMessages.GetStockMessage.class, handleGetUser())
                 .build();
     }
 
@@ -18,6 +19,12 @@ public class StockActor   extends AbstractActor {
             StockService.createStock(createStockMessageMessage.getStock());
             sender().tell(new StockMessages.ActionPerformed(String.format("Stock %s added.", createStockMessageMessage.getStock()
                     .getCompanyName())), getSelf());
+        };
+    }
+
+    private FI.UnitApply<StockMessages.GetStockMessage> handleGetUser() {
+        return getPlayerMessageMessage -> {
+            sender().tell(StockService.getStock(getPlayerMessageMessage.getStockId()), getSelf());
         };
     }
 

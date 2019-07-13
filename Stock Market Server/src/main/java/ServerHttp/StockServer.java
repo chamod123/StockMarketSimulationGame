@@ -69,6 +69,11 @@ public class StockServer extends AllDirectives {
                 , pathEndOrSingleSlash(() -> {
                     return complete("Hi");
                 })
+                , path("stock", this::postStock)
+                , path("broker", this::postBroker) //#POST - Create Broker
+                ,
+                path(segment("stock").slash(longSegment()), id ->
+                        route(getStock(id)))
                 ,path("stock", this::postStock)
                 ,path(segment("brokers").slash(longSegment()),id -> route(getBroker(id))) //#GET - get a broker data
                 ,path("brokers",this::postBroker) //#POST - Create Broker
@@ -77,7 +82,7 @@ public class StockServer extends AllDirectives {
         );
     }
 
-    private Route postStock(){
+    private Route postStock() {
         return route(post(() -> entity(Jackson.unmarshaller(Stock.class), stock -> {
             CompletionStage<StockMessages.ActionPerformed> stockCreated = Patterns.ask(stockActor, new StockMessages.CreateStockMessage(stock), timeout)
                     .thenApply(obj -> (StockMessages.ActionPerformed) obj);
@@ -88,8 +93,19 @@ public class StockServer extends AllDirectives {
         })));
     }
 
-
-
+    private Route getStock(Long id) {
+        return get(() -> {
+            CompletionStage<Optional<Stock>> stock = Patterns.ask(stockActor, new StockMessages.GetStockMessage(id), timeout)
+                    .thenApply(obj -> (Optional<Stock>) obj);
+            return onSuccess(() -> stock,
+                    performed -> {
+                        if (performed.isPresent())
+                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
+    }
 
 
     //#POST - Create new Broker
@@ -117,7 +133,6 @@ public class StockServer extends AllDirectives {
                     });
         });
     }
-
 
 
     //#POST - Create new Player
