@@ -4,6 +4,7 @@ import Actors.BrockerActor;
 import Actors.PlayerActor;
 import Messages.BrokerMessages;
 import Actors.StockActor;
+import Actors.BankActor;
 import Messages.PlayerMessages;
 import Model.Broker;
 import Messages.StockMessages;
@@ -42,6 +43,7 @@ public class StockServer extends AllDirectives {
     private static ActorRef playerActor;
     private static ActorRef brokerActor;
     private static ActorRef stockActor;
+    private static ActorRef bankActor;
 
     public StockServer(ActorSystem system) {
         server = system.actorOf(ServerActor.props());
@@ -58,6 +60,7 @@ public class StockServer extends AllDirectives {
         playerActor = system.actorOf(Props.create(PlayerActor.class), "playerActor");
         brokerActor = system.actorOf(Props.create(BrockerActor.class), "brokerActor");
         stockActor = system.actorOf(Props.create(StockActor.class), "stockActor");
+        bankActor = system.actorOf(Props.create(BankActor.class), "bankActor");
     }
 
     protected Route createRoute() {
@@ -134,7 +137,7 @@ public class StockServer extends AllDirectives {
     //#POST - Create new Player
     private Route postPlayer() {
         return route(post(() -> entity(Jackson.unmarshaller(Player.class), player -> {
-            CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(playerActor, new PlayerMessages.CreatePlayerMessage(player), timeout)
+            CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(playerActor, new PlayerMessages.CreatePlayerMessage(player,bankActor), timeout)
                     .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
 
             return onSuccess(() -> playerCreated, performed -> {

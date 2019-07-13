@@ -31,6 +31,7 @@ public class PlayerActor  extends AbstractActor {
             playerService.createPlayer(createUserPlayerMessageMessage.getPlayer());
             sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", createUserPlayerMessageMessage.getPlayer()
                     .getName())), getSelf());
+
         };
     }
 

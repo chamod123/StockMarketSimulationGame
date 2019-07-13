@@ -3,6 +3,7 @@ package Messages;
 
 
 import Model.Player;
+import akka.actor.ActorRef;
 
 import java.io.Serializable;
 
@@ -25,13 +26,19 @@ public interface PlayerMessages {
 
         private static final long serialVersionUID = 1L;
         private final Player player;
+        private static ActorRef bankActor;
 
-        public CreatePlayerMessage(Player player) {
+        public CreatePlayerMessage(Player player, ActorRef bankActor) {
             this.player = player;
+            this.bankActor = bankActor;
         }
 
         public Player getPlayer() {
             return player;
+        }
+
+        public ActorRef getBankActor() {
+            return bankActor;
         }
     }
 

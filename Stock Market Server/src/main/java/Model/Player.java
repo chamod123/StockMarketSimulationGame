@@ -5,6 +5,8 @@ public class Player {
     private String name;
 
     public Player() {
+
+
         this.name = "";
         this.id = null;
     }
