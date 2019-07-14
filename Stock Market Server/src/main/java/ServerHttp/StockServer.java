@@ -65,21 +65,20 @@ public class StockServer extends AllDirectives {
 
     protected Route createRoute() {
         return route(
-                path("players", this::postPlayer) //#POST - Create new Player
-                , (path(segment("players").slash(longSegment()), id ->
-                        route(getPlayer(id))))//#GET - get a Player Data
-                , pathEndOrSingleSlash(() -> {
+                pathEndOrSingleSlash(() -> {
                     return complete("Hi");
                 })
-                ,
-                path(segment("stock").slash(longSegment()), id -> route(getStock(id)))
-                , path("stock", this::postStock)
+                , path("players", this::postPlayer) //#POST - Create new Player
+                , path(segment("players").slash(longSegment()), id -> route(getPlayer(id)))//#GET - get a Player Data
+                , path(segment("stock").slash(longSegment()), id -> route(getStock(id)))// #GET - get a stock Data
+                , path("stock", this::postStock)// #POST - Create new stock
                 , path(segment("brokers").slash(longSegment()), id -> route(getBroker(id))) //#GET - get a broker data
                 , path("brokers", this::postBroker) //#POST - Create Broker
 
         );
     }
 
+    // #POST - Create new stock
     private Route postStock() {
         return route(post(() -> entity(Jackson.unmarshaller(Stock.class), stock -> {
             CompletionStage<StockMessages.ActionPerformed> stockCreated = Patterns.ask(stockActor, new StockMessages.CreateStockMessage(stock), timeout)
@@ -91,6 +90,7 @@ public class StockServer extends AllDirectives {
         })));
     }
 
+    // #GET - get a stock Data
     private Route getStock(Long id) {
         return get(() -> {
             CompletionStage<Optional<Stock>> stock = Patterns.ask(stockActor, new StockMessages.GetStockMessage(id), timeout)
@@ -137,7 +137,7 @@ public class StockServer extends AllDirectives {
     //#POST - Create new Player
     private Route postPlayer() {
         return route(post(() -> entity(Jackson.unmarshaller(Player.class), player -> {
-            CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(playerActor, new PlayerMessages.CreatePlayerMessage(player,bankActor), timeout)
+            CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(playerActor, new PlayerMessages.CreatePlayerMessage(player, bankActor), timeout)
                     .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
 
             return onSuccess(() -> playerCreated, performed -> {

@@ -8,16 +8,8 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.japi.pf.FI;
 
-public class PlayerActor  extends AbstractActor {
+public class PlayerActor extends AbstractActor {
     private PlayerService playerService = new PlayerService();
-//    static Props props() {
-//        return Props.create(PlayerActor.class);
-//    }
-
-//    @Override
-//    public Receive createReceive() {
-//        return null;
-//    }
 
     @Override
     public Receive createReceive() {
@@ -32,10 +24,8 @@ public class PlayerActor  extends AbstractActor {
             playerService.createPlayer(createUserPlayerMessageMessage.getPlayer());
             sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", createUserPlayerMessageMessage.getPlayer()
                     .getName())), getSelf());
-
-            createUserPlayerMessageMessage.getBankActor().tell( new BankMessages.CreateAccountMessage( new Account(createUserPlayerMessageMessage.getPlayer().getName())),getSelf());
-
-
+            //Create Bank Account for Player
+            createUserPlayerMessageMessage.getBankActor().tell(new BankMessages.CreateAccountMessage(new Account(createUserPlayerMessageMessage.getPlayer().getName())), getSelf());
         };
     }
 
