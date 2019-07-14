@@ -20,14 +20,14 @@ import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import BubbleChart from "@material-ui/icons/BubbleChart";
-import Notifications from "@material-ui/icons/Notifications";
+import Assessment from "@material-ui/icons/Assessment";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.jsx";
 import UserProfile from "views/UserProfile/UserProfile.jsx";
 import TableList from "views/TableList/TableList.jsx";
 import Typography from "views/Typography/Typography.jsx";
 import Icons from "views/Icons/Icons.jsx";
-import NotificationsPage from "views/Notifications/Notifications.jsx";
+import StocksPage from "views/Stocks/Stocks.jsx";
 
 const dashboardRoutes = [
   {
@@ -68,8 +68,8 @@ const dashboardRoutes = [
   {
     path: "/stocks",
     name: "Stocks",
-    icon: Notifications,
-    component: NotificationsPage,
+    icon: Assessment,
+    component: StocksPage,
     layout: "/admin"
   },
 ];
