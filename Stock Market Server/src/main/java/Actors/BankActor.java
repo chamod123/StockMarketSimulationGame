@@ -6,12 +6,11 @@ import Service.BankService;
 import akka.actor.AbstractActor;
 import akka.japi.pf.FI;
 
-public class BankActor  extends AbstractActor {
+public class BankActor extends AbstractActor {
     private BankService playerService = new BankService();
 
     @Override
     public Receive createReceive() {
-
         return receiveBuilder()
                 .match(BankMessages.CreateAccountMessage.class, CreateAccount())
                 .build();
@@ -21,7 +20,7 @@ public class BankActor  extends AbstractActor {
         return createAccountMessage -> {
             playerService.CreateAccount(createAccountMessage.getAccount());
             sender().tell(new BankMessages.ActionPerformed(String.format("Player %s Account created.", createAccountMessage.getAccount().getName()
-                    )), getSelf());
+            )), getSelf());
         };
     }
 
