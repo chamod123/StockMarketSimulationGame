@@ -14,24 +14,24 @@ public class PlayerActor extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(PlayerMessages.CreatePlayerMessage.class, handleCreateUser())
-                .match(PlayerMessages.GetPlayerMessage.class, handleGetUser())
+                .match(PlayerMessages.CreatePlayerMessage.class, handleCreatePlayer())
+                .match(PlayerMessages.GetPlayerMessage.class, handleGetPlayer())
                 .build();
     }
 
-    private FI.UnitApply<PlayerMessages.CreatePlayerMessage> handleCreateUser() {
-        return createUserPlayerMessageMessage -> {
-            playerService.createPlayer(createUserPlayerMessageMessage.getPlayer());
-            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", createUserPlayerMessageMessage.getPlayer()
+    private FI.UnitApply<PlayerMessages.CreatePlayerMessage> handleCreatePlayer() {
+        return createPlayerMessage -> {
+            playerService.createPlayer(createPlayerMessage.getPlayer());
+            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", createPlayerMessage.getPlayer()
                     .getName())), getSelf());
             //Create Bank Account for Player
-            createUserPlayerMessageMessage.getBankActor().tell(new BankMessages.CreateAccountMessage(new Account(createUserPlayerMessageMessage.getPlayer().getName())), getSelf());
+            createPlayerMessage.getBankActor().tell(new BankMessages.CreateAccountMessage(new Account(createPlayerMessage.getPlayer().getName())), getSelf());
         };
     }
 
-    private FI.UnitApply<PlayerMessages.GetPlayerMessage> handleGetUser() {
-        return getPlayerMessageMessage -> {
-            sender().tell(playerService.getPlayer(getPlayerMessageMessage.getPlayerId()), getSelf());
+    private FI.UnitApply<PlayerMessages.GetPlayerMessage> handleGetPlayer() {
+        return getPlayerMessage -> {
+            sender().tell(playerService.getPlayer(getPlayerMessage.getPlayerId()), getSelf());
         };
     }
 }

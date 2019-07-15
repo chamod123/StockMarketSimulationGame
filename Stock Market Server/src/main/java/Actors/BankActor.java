@@ -18,9 +18,9 @@ public class BankActor  extends AbstractActor {
     }
 
     private FI.UnitApply<BankMessages.CreateAccountMessage> CreateAccount() {
-        return createUserPlayerMessageMessage -> {
-            playerService.CreateAccount(createUserPlayerMessageMessage.getAccount());
-            sender().tell(new BankMessages.ActionPerformed(String.format("Player %s Account created.", createUserPlayerMessageMessage.getAccount().getName()
+        return createAccountMessage -> {
+            playerService.CreateAccount(createAccountMessage.getAccount());
+            sender().tell(new BankMessages.ActionPerformed(String.format("Player %s Account created.", createAccountMessage.getAccount().getName()
                     )), getSelf());
         };
     }
