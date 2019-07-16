@@ -80,9 +80,9 @@ class Dashboard extends React.Component {
                 <CardIcon color="warning">
                   <Icon>content_copy</Icon>
                 </CardIcon>
-                <p className={classes.cardCategory}>Used Space</p>
+                <p className={classes.cardCategory}>Finance</p>
                 <h3 className={classes.cardTitle}>
-                  49/50 <small>GB</small>
+                This Week Sold Stock : <small> 20</small>
                 </h3>
               </CardHeader>
               <CardFooter stats>
@@ -91,7 +91,7 @@ class Dashboard extends React.Component {
                     <Warning />
                   </Danger>
                   <a href="#pablo" onClick={e => e.preventDefault()}>
-                    Get more space
+                    Get More Details...
                   </a>
                 </div>
               </CardFooter>
@@ -103,13 +103,15 @@ class Dashboard extends React.Component {
                 <CardIcon color="success">
                   <Store />
                 </CardIcon>
-                <p className={classes.cardCategory}>Revenue</p>
-                <h3 className={classes.cardTitle}>$34,245</h3>
+                <p className={classes.cardCategory}>Technology</p>
+                <h3 className={classes.cardTitle}>
+                This Week Sold Stock : <small> 20</small>
+                </h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
                   <DateRange />
-                  Last 24 Hours
+                  Get More Details...
                 </div>
               </CardFooter>
             </Card>
@@ -120,13 +122,15 @@ class Dashboard extends React.Component {
                 <CardIcon color="danger">
                   <Icon>info_outline</Icon>
                 </CardIcon>
-                <p className={classes.cardCategory}>Fixed Issues</p>
-                <h3 className={classes.cardTitle}>75</h3>
+                <p className={classes.cardCategory}>Consumer Service</p>
+                <h3 className={classes.cardTitle}>
+                This Week Sold Stock : <small> 20</small>
+                </h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
                   <LocalOffer />
-                  Tracked from Github
+                  Get More Details...
                 </div>
               </CardFooter>
             </Card>
@@ -137,13 +141,15 @@ class Dashboard extends React.Component {
                 <CardIcon color="info">
                   <Accessibility />
                 </CardIcon>
-                <p className={classes.cardCategory}>Followers</p>
-                <h3 className={classes.cardTitle}>+245</h3>
+                <p className={classes.cardCategory}>Manufacturing</p>
+                <h3 className={classes.cardTitle}>
+                This Week Sold Stock : <small> 20</small>
+                </h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
                   <Update />
-                  Just Updated
+                  Get More Details...
                 </div>
               </CardFooter>
             </Card>
@@ -151,6 +157,15 @@ class Dashboard extends React.Component {
         </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12} md={4}>
+          <CardBody>
+                <h4 className={classes.cardTitle}>What is Stock Market Fantacy League?</h4>
+                <p className={classes.cardCategory}>
+                  <span className={classes.successText}>
+                    {/* <ArrowUpward className={classes.upArrowCardCategory} /> 55% */}
+                  </span>{" "}
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
+                </p>
+              </CardBody>
             <Card chart>
               <CardHeader color="success">
                 <ChartistGraph
@@ -161,23 +176,29 @@ class Dashboard extends React.Component {
                   listener={dailySalesChart.animation}
                 />
               </CardHeader>
-              <CardBody>
+              {/* <CardBody>
                 <h4 className={classes.cardTitle}>Daily Sales</h4>
                 <p className={classes.cardCategory}>
                   <span className={classes.successText}>
                     <ArrowUpward className={classes.upArrowCardCategory} /> 55%
                   </span>{" "}
-                  increase in today sales.
+                  How to Play..
                 </p>
-              </CardBody>
+              </CardBody> */}
               <CardFooter chart>
                 <div className={classes.stats}>
-                  <AccessTime /> updated 4 minutes ago
+                  {/* <AccessTime /> updated 4 minutes ago */}
                 </div>
               </CardFooter>
             </Card>
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
+          <CardBody>
+                <h4 className={classes.cardTitle}>How To Play?</h4>
+                <p className={classes.cardCategory}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                </p>
+              </CardBody>
             <Card chart>
               <CardHeader color="warning">
                 <ChartistGraph
@@ -189,20 +210,26 @@ class Dashboard extends React.Component {
                   listener={emailsSubscriptionChart.animation}
                 />
               </CardHeader>
-              <CardBody>
+              {/* <CardBody>
                 <h4 className={classes.cardTitle}>Email Subscriptions</h4>
                 <p className={classes.cardCategory}>
                   Last Campaign Performance
                 </p>
-              </CardBody>
+              </CardBody> */}
               <CardFooter chart>
                 <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
+                  {/* <AccessTime /> campaign sent 2 days ago */}
                 </div>
               </CardFooter>
             </Card>
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
+          <CardBody>
+                <h4 className={classes.cardTitle}>Looking Forward to Play? Then Let's Start</h4>
+                <p className={classes.cardCategory}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
+                </p>
+              </CardBody>
             <Card chart>
               <CardHeader color="danger">
                 <ChartistGraph
@@ -213,23 +240,33 @@ class Dashboard extends React.Component {
                   listener={completedTasksChart.animation}
                 />
               </CardHeader>
-              <CardBody>
+              {/* <CardBody>
                 <h4 className={classes.cardTitle}>Completed Tasks</h4>
                 <p className={classes.cardCategory}>
                   Last Campaign Performance
                 </p>
-              </CardBody>
+              </CardBody> */}
               <CardFooter chart>
                 <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
+                  {/* <AccessTime /> campaign sent 2 days ago */}
                 </div>
               </CardFooter>
             </Card>
           </GridItem>
+          
+          <GridItem xs={12} sm={12} md={4}>
+            <CardHeader> </CardHeader>
+          <CardBody>
+                <h4 className={classes.cardTitle}>Testimonial</h4>
+                <p className={classes.cardCategory}>
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining"
+                </p>
+              </CardBody>
+          </GridItem>
         </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12} md={6}>
-            <CustomTabs
+            {/* <CustomTabs
               title="Tasks:"
               headerColor="primary"
               tabs={[
@@ -267,25 +304,26 @@ class Dashboard extends React.Component {
                   )
                 }
               ]}
-            />
+            /> */}
           </GridItem>
           <GridItem xs={12} sm={12} md={6}>
             <Card>
               <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
+                <h4 className={classes.cardTitleWhite}>Leader Board</h4>
                 <p className={classes.cardCategoryWhite}>
-                  New employees on 15th September, 2016
+                  Top 4 Players Achievements
                 </p>
               </CardHeader>
               <CardBody>
                 <Table
                   tableHeaderColor="warning"
-                  tableHead={["ID", "Name", "Salary", "Country"]}
+                  // tableHead={["ID", "Name", "Won Prize", "Country"]}
+                  tableHead={["ID", "Name", "Won Prize"]}
                   tableData={[
-                    ["1", "Dakota Rice", "$36,738", "Niger"],
-                    ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                    ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                    ["4", "Philip Chaney", "$38,735", "Korea, South"]
+                    ["1", "Mick Peterson", "$36,738"],
+                    ["2", "Damon Silvester", "$23,789"],
+                    ["3", "Rick Panday", "$56,142"],
+                    ["4", "Philip Chaney", "$38,735"]
                   ]}
                 />
               </CardBody>
