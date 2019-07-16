@@ -13,11 +13,11 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
  */
-.ct-grid {
+/* .ct-grid {
   stroke: rgba(255, 255, 255, 0.2);
   stroke-width: 1px;
   stroke-dasharray: 2px;
-}
+} */
 
 .ct-series-a .ct-point,
 .ct-series-a .ct-line,
@@ -89,7 +89,7 @@ h2 {
 }
 
 h3 {
-  font-size: 1.825em;
+  font-size: 1.000em;
   line-height: 1.4em;
   margin: 20px 0 10px;
 }
