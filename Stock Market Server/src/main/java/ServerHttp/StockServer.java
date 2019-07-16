@@ -75,6 +75,7 @@ public class StockServer extends AllDirectives {
                 , path(segment("stockBySector").slash(longSegment()), sectorId -> route(getStockBySector(sectorId)))// #GET - get stocks Data by sector
                 , path(segment("brokers").slash(longSegment()), id -> route(getBroker(id))) //#GET - get a broker data
                 , path("brokers", this::postBroker) //#POST - Create Broker
+                , path(segment("brokers").slash(longSegment()), id -> route(getBroker(id))) //#GET - get a broker data
 
         );
     }

@@ -3,18 +3,20 @@ package Model;
 import java.math.BigDecimal;
 
 public class Account {
+
+    private Long accountId = 0l;
     private BigDecimal balance;
-    private String name;
+    private Long playerId;
 
     //initialize account
-    public Account(String playerName) {
-        this.name=playerName;
+    public Account(Long playerId) {
+        this.playerId=playerId;
+        this.accountId += 1;
         this.balance=BigDecimal.valueOf(1000);
-
     }
 
-    public String getName(){
-        return this.name;
+    public Long getPlayerId(){
+        return this.playerId;
     }
 
     public BigDecimal getBalance() {
@@ -25,4 +27,15 @@ public class Account {
         this.balance=value;
     }
 
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
 }
