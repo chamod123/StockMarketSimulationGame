@@ -75,6 +75,7 @@ public class StockServer extends AllDirectives {
                 , path(segment("players").slash(longSegment()), id -> route(getPlayer(id)))//#GET - get a Player Data
                 , path(segment("stock").slash(longSegment()), id -> route(getStock(id)))// #GET - get a stock Data
                 , path("stock", this::postStock)// #POST - Create new stock
+                , path(segment("stockBySector").slash(longSegment()), sectorId -> route(getStockBySector(sectorId)))// #GET - get stocks Data by sector
                 , path(segment("brokers").slash(longSegment()), id -> route(getBroker(id))) //#GET - get a broker data
                 , path("brokers", this::postBroker) //#POST - Create Broker
 
@@ -97,6 +98,21 @@ public class StockServer extends AllDirectives {
     private Route getStock(Long id) {
         return get(() -> {
             CompletionStage<Optional<Stock>> stock = Patterns.ask(stockActor, new StockMessages.GetStockMessage(id), timeout)
+                    .thenApply(obj -> (Optional<Stock>) obj);
+            return onSuccess(() -> stock,
+                    performed -> {
+                        if (performed.isPresent())
+                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
+    }
+
+    // #GET - get stocks Data by sector
+    private Route getStockBySector(Long sector) {
+        return get(() -> {
+            CompletionStage<Optional<Stock>> stock = Patterns.ask(stockActor, new StockMessages.GetStockSectorMessage(sector), timeout)
                     .thenApply(obj -> (Optional<Stock>) obj);
             return onSuccess(() -> stock,
                     performed -> {

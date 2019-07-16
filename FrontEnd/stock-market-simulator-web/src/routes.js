@@ -24,7 +24,7 @@ import Assessment from "@material-ui/icons/Assessment";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.jsx";
 import UserProfile from "views/UserProfile/UserProfile.jsx";
-import TableList from "views/TableList/TableList.jsx";
+import GameBoard from "views/GameBoard/GameBoard.jsx";
 import Typography from "views/Typography/Typography.jsx";
 import Icons from "views/Icons/Icons.jsx";
 import StocksPage from "views/Stocks/Stocks.jsx";
@@ -48,7 +48,7 @@ const dashboardRoutes = [
     path: "/game",
     name: "Game Board",
     icon: "content_paste",
-    component: TableList,
+    component: GameBoard,
     layout: "/admin"
   },
   {

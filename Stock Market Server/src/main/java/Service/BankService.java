@@ -2,6 +2,7 @@ package Service;
 
 import Model.Account;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,14 +11,33 @@ public class BankService {
 
     public void CreateAccount(Account Account1)  {
             accountList.add(Account1);
-
-//        for (Account account : accountList) {
-//            if (Account1.getName().equals(account.getName())) {
-//                System.out.println("Account Already Have");
-//            } else {
-//                accountList.add(Account1);
-//                System.out.println("Account Added");
-//            }
-//        }
     }
+
+    //deposit to an account
+    public Boolean Deposit(int turn,String name,String sender,BigDecimal amount) throws Exception {
+        for (Account account : accountList) {
+            if (name.equals(account.getName())) {
+                account.setBalance(account.getBalance().add(amount));
+                return true;
+            }
+        }
+        throw new Exception("account with "+name+" does not  exists");
+    }
+
+    //withdraw from account
+    public Boolean Withdraw(int turn,String name,String receiver,BigDecimal amount) throws Exception {
+        for (Account account : accountList) {
+            if (name.equals(account.getName())) {
+                if (amount.compareTo(account.getBalance())<=0) {
+                    account.setBalance(account.getBalance().subtract(amount));
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        throw new Exception("account with "+name+" does not  exists");
+    }
+
 }

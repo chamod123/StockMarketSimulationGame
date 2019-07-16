@@ -45,6 +45,21 @@ public interface StockMessages {
         public Long getStockId() {
             return StockId;
         }
+
+    }
+
+    class GetStockSectorMessage implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private final Long sector;
+
+        public GetStockSectorMessage(Long sector) {
+            this.sector = sector;
+        }
+
+        public Long getSector() {
+            return sector;
+        }
+
     }
 
 
