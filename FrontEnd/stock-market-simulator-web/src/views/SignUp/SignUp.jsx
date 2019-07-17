@@ -13,12 +13,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-function MadeWithLove() {
+function Create() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Built with love by the '}
+      {'Built by the Stock Fantasy League'}
       <Link color="inherit" href="https://material-ui.com/">
-        Material-UI
       </Link>
       {' team.'}
     </Typography>
@@ -137,7 +136,7 @@ export default function SignUp() {
         </form>
       </div>
       <Box mt={5}>
-        <MadeWithLove />
+        <Create />
       </Box>
     </Container>
   );
