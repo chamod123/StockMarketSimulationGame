@@ -2,6 +2,7 @@ package Model;
 
 public class Event {
     Stock stock=null;
+    Sector sector=null;
     int value;
     String type;
     int duration;

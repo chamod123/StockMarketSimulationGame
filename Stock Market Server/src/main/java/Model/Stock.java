@@ -6,6 +6,7 @@ public class Stock {
     private double stockPrice;
     private String companyName;
     private Long sector;
+    private Sector sector1;
 //    private static int stockIdCounter = 0;
 
     public Stock(){
