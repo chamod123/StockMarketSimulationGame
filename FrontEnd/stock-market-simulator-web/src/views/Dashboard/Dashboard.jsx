@@ -82,10 +82,10 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Finance</p>
                 <h3 className={classes.cardTitle}>
-                This Week Sold Stock : <small> 20</small>
+                  This Week Sold Stock : <small> 20</small>
                 </h3>
               </CardHeader>
-              <CardFooter stats>
+              {/* <CardFooter stats>
                 <div className={classes.stats}>
                   <Danger>
                     <Warning />
@@ -94,7 +94,7 @@ class Dashboard extends React.Component {
                     Get More Details...
                   </a>
                 </div>
-              </CardFooter>
+              </CardFooter> */}
             </Card>
           </GridItem>
           <GridItem xs={12} sm={6} md={3}>
@@ -105,15 +105,15 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Technology</p>
                 <h3 className={classes.cardTitle}>
-                This Week Sold Stock : <small> 20</small>
+                  This Week Sold Stock : <small> 20</small>
                 </h3>
               </CardHeader>
-              <CardFooter stats>
+              {/* <CardFooter stats>
                 <div className={classes.stats}>
                   <DateRange />
                   Get More Details...
                 </div>
-              </CardFooter>
+              </CardFooter> */}
             </Card>
           </GridItem>
           <GridItem xs={12} sm={6} md={3}>
@@ -124,15 +124,15 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Consumer Service</p>
                 <h3 className={classes.cardTitle}>
-                This Week Sold Stock : <small> 20</small>
+                  This Week Sold Stock : <small> 20</small>
                 </h3>
               </CardHeader>
-              <CardFooter stats>
+              {/* <CardFooter stats>
                 <div className={classes.stats}>
                   <LocalOffer />
                   Get More Details...
                 </div>
-              </CardFooter>
+              </CardFooter> */}
             </Card>
           </GridItem>
           <GridItem xs={12} sm={6} md={3}>
@@ -143,21 +143,22 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Manufacturing</p>
                 <h3 className={classes.cardTitle}>
-                This Week Sold Stock : <small> 20</small>
+                  This Week Sold Stock : <small> 20</small>
                 </h3>
               </CardHeader>
-              <CardFooter stats>
+              {/* <CardFooter stats>
                 <div className={classes.stats}>
                   <Update />
                   Get More Details...
                 </div>
-              </CardFooter>
+              </CardFooter> */}
             </Card>
           </GridItem>
         </GridContainer>
         <GridContainer>
-          <GridItem xs={12} sm={12} md={4}>
-          <CardBody>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardBody>
                 <h4 className={classes.cardTitle}>What is Stock Market Fantacy League?</h4>
                 <p className={classes.cardCategory}>
                   <span className={classes.successText}>
@@ -166,25 +167,6 @@ class Dashboard extends React.Component {
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
                 </p>
               </CardBody>
-            <Card chart>
-              <CardHeader color="success">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={dailySalesChart.data}
-                  type="Line"
-                  options={dailySalesChart.options}
-                  listener={dailySalesChart.animation}
-                />
-              </CardHeader>
-              {/* <CardBody>
-                <h4 className={classes.cardTitle}>Daily Sales</h4>
-                <p className={classes.cardCategory}>
-                  <span className={classes.successText}>
-                    <ArrowUpward className={classes.upArrowCardCategory} /> 55%
-                  </span>{" "}
-                  How to Play..
-                </p>
-              </CardBody> */}
               <CardFooter chart>
                 <div className={classes.stats}>
                   {/* <AccessTime /> updated 4 minutes ago */}
@@ -192,24 +174,15 @@ class Dashboard extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-          <CardBody>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardBody>
                 <h4 className={classes.cardTitle}>How To Play?</h4>
                 <p className={classes.cardCategory}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                 </p>
               </CardBody>
-            <Card chart>
-              <CardHeader color="warning">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={emailsSubscriptionChart.data}
-                  type="Bar"
-                  options={emailsSubscriptionChart.options}
-                  responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                  listener={emailsSubscriptionChart.animation}
-                />
-              </CardHeader>
+
               {/* <CardBody>
                 <h4 className={classes.cardTitle}>Email Subscriptions</h4>
                 <p className={classes.cardCategory}>
@@ -223,23 +196,15 @@ class Dashboard extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-          <CardBody>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardBody>
                 <h4 className={classes.cardTitle}>Looking Forward to Play? Then Let's Start</h4>
                 <p className={classes.cardCategory}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
                 </p>
               </CardBody>
-            <Card chart>
-              <CardHeader color="danger">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={completedTasksChart.data}
-                  type="Line"
-                  options={completedTasksChart.options}
-                  listener={completedTasksChart.animation}
-                />
-              </CardHeader>
+
               {/* <CardBody>
                 <h4 className={classes.cardTitle}>Completed Tasks</h4>
                 <p className={classes.cardCategory}>
@@ -253,19 +218,20 @@ class Dashboard extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-          
-          <GridItem xs={12} sm={12} md={4}>
-            <CardHeader> </CardHeader>
-          <CardBody>
-                <h4 className={classes.cardTitle}>Testimonial</h4>
-                <p className={classes.cardCategory}>
+
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Testimonial</h4>
+              <p className={classes.cardCategory}>
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining"
                 </p>
-              </CardBody>
+            </CardBody>
+            </Card>
           </GridItem>
         </GridContainer>
         <GridContainer>
-          <GridItem xs={12} sm={12} md={6}>
+          {/* <GridItem xs={12} sm={12} md={12}> */}
             {/* <CustomTabs
               title="Tasks:"
               headerColor="primary"
@@ -305,8 +271,8 @@ class Dashboard extends React.Component {
                 }
               ]}
             /> */}
-          </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
+          {/* </GridItem> */}
+          <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Leader Board</h4>
