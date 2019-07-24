@@ -3,7 +3,15 @@ package Model;
 import java.math.BigDecimal;
 
 public class Account {
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private String name;
     private Long accountId = 0l;
     private BigDecimal balance;
     private Long playerId;

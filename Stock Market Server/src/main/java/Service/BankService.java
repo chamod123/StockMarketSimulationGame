@@ -41,4 +41,14 @@ public class BankService {
         throw new Exception("account with "+playerId+" does not  exists");
     }
 
+    //return balance
+    public BigDecimal Balance(String name) throws Exception {
+        for (Account account : accountList) {
+            if (name.equals(account.getName())) {
+                return account.getBalance();
+            }
+        }
+        throw new Exception("account with "+name+" does not  exists");
+    }
+
 }
