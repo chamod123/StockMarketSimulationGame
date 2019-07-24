@@ -26,7 +26,7 @@ public class BankService {
     }
 
     //withdraw from account
-    public Boolean Withdraw(int turn,Long playerId,String receiver,BigDecimal amount) throws Exception {
+    public Boolean Withdraw(int turn,String playerId,String receiver,BigDecimal amount) throws Exception {
         for (Account account : accountList) {
             if (playerId.equals(account.getPlayerId())) {
                 if (amount.compareTo(account.getBalance())<=0) {

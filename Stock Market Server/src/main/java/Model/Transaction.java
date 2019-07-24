@@ -12,6 +12,18 @@ public class Transaction {
     int quantity;
     BigDecimal total;
 
+    public Transaction(String name, int turn, String type, String stock, int quantity, BigDecimal total) {
+        super();
+        this.id=number;
+        number++;
+        this.name = name;
+        this.turn = turn;
+        this.type = type;
+        this.stock = stock;
+        this.quantity = quantity;
+        this.total = total;
+    }
+
 
     public static int getNumber() {
         return number;
