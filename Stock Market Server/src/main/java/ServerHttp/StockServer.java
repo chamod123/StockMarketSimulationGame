@@ -1,7 +1,7 @@
 package ServerHttp;
 
 import Actors.BankActor;
-import Actors.BrockerActor;
+import Actors.BrokerActor;
 import Actors.PlayerActor;
 import Actors.StockActor;
 import Messages.BrokerMessages;
@@ -14,19 +14,15 @@ import akka.NotUsed;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.dispatch.sysmsg.Create;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.marshallers.jackson.Jackson;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
-import akka.http.javadsl.model.StatusCode;
 import akka.http.javadsl.model.StatusCodes;
 import akka.http.javadsl.server.AllDirectives;
-import akka.http.javadsl.server.HttpApp;
 import akka.http.javadsl.server.Route;
 import akka.pattern.Patterns;
-import akka.pattern.PatternsCS;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 
@@ -59,7 +55,7 @@ public class StockServer extends AllDirectives {
         System.out.println("Server online at http://localhost:8080/");
 
         playerActor = system.actorOf(Props.create(PlayerActor.class), "playerActor");
-        brokerActor = system.actorOf(Props.create(BrockerActor.class), "brokerActor");
+        brokerActor = system.actorOf(Props.create(BrokerActor.class), "brokerActor");
         stockActor = system.actorOf(Props.create(StockActor.class), "stockActor");
         bankActor = system.actorOf(Props.create(BankActor.class), "bankActor");
     }
@@ -83,11 +79,11 @@ public class StockServer extends AllDirectives {
 
     // #POST - buyStock
     private Route buyStock() {
-        return route(post(() -> entity(Jackson.unmarshaller(Stock.class), stock -> {
-            CompletionStage<StockMessages.ActionPerformed> stockCreated = Patterns.ask(stockActor, new StockMessages.CreateStockMessage(stock), timeout)
-                    .thenApply(obj -> (StockMessages.ActionPerformed) obj);
+        return route(post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
+            CompletionStage<PlayerMessages.ActionPerformed> stockBuy = Patterns.ask(brokerActor, new BrokerMessages.BuyStockMessage(market, bankActor), timeout)
+                    .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
 
-            return onSuccess(() -> stockCreated, performed -> {
+            return onSuccess(() -> stockBuy, performed -> {
                 return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
             });
         })));
@@ -167,8 +163,8 @@ public class StockServer extends AllDirectives {
     //#POST - Create new Player
     private Route postPlayer() {
         System.out.println("awaaa");
-        return route(post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
-            CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(brokerActor, new BrokerMessages.BuyStockMessage(market, bankActor), timeout)
+        return route(post(() -> entity(Jackson.unmarshaller(Player.class), player -> {
+            CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(playerActor, new PlayerMessages.CreatePlayerMessage(player, bankActor), timeout)
                     .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
 
             return onSuccess(() -> playerCreated, performed -> {

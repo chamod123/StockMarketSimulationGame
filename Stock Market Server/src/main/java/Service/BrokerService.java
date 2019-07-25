@@ -41,14 +41,14 @@ public class BrokerService {
 
 
     //buy stock
-    public Boolean buyStock(String name, String stock, int quantity) throws Exception {
-        BigDecimal totalvalue=marketService.getStock(stock).getStockPrice().multiply(BigDecimal.valueOf(quantity));
+    public Boolean buyStock(String name, String stock, int quantity, BigDecimal totalvalue) throws Exception {
+        //user value need to grater than total value. then can buy stock
         if (bankService.Balance(name).compareTo(totalvalue)>=0) {
             Integer count = GetPlayer(name).getStocks().get(stock);;
-            if (count == null) {
+            if (count == null) {// item has not buy from that item
                 GetPlayer(name).getStocks().put(stock, quantity);
             }
-            else {
+            else {// item has buy from that item
                 GetPlayer(name).getStocks().put(stock, count + quantity);
             }
             bankService.Withdraw(marketService.GetCurrentTurn(), name, stock, totalvalue);

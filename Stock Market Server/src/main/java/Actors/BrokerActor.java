@@ -3,12 +3,15 @@ package Actors;
 import Messages.BrokerMessages;
 import Messages.PlayerMessages;
 import Service.BrokerService;
+import Service.MarketService;
 import Service.PlayerService;
 import akka.actor.AbstractActor;
 import akka.japi.pf.FI;
 
-public class BrockerActor  extends AbstractActor {
+import java.math.BigDecimal;
 
+public class BrokerActor extends AbstractActor {
+    MarketService marketService;
     private BrokerService brokerService = new BrokerService();
 
     @Override
@@ -16,9 +19,9 @@ public class BrockerActor  extends AbstractActor {
 
 
         return receiveBuilder()
-                .match(BrokerMessages.CreateBrokerMessage.class, handleCreateBrocker())
-                .match(BrokerMessages.GetBrokerMessage.class, handleGetBroker())
-                .match(BrokerMessages.BuyStockMessage.class, handleBuyStock())
+                .match(BrokerMessages.CreateBrokerMessage.class, handleCreateBrocker())//create broker
+                .match(BrokerMessages.GetBrokerMessage.class, handleGetBroker())//get broker
+                .match(BrokerMessages.BuyStockMessage.class, handleBuyStock())//buy Stock
                 .build();
     }
 
@@ -37,8 +40,12 @@ public class BrockerActor  extends AbstractActor {
     }
     private FI.UnitApply<BrokerMessages.BuyStockMessage> handleBuyStock() {
         return getBrokerMessage -> {
+            //get stock Price*Quantity from stock item in market
+            BigDecimal totalvalue=marketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
             //passe username,stock, quantity to buy the stock for that user
-            sender().tell(brokerService.buyStock(getBrokerMessage.getMarket().getUsername(),getBrokerMessage.getMarket().getStock(),getBrokerMessage.getMarket().getQuantity()), getSelf());
+            boolean done = brokerService.buyStock(getBrokerMessage.getMarket().getUsername(),getBrokerMessage.getMarket().getStock(),getBrokerMessage.getMarket().getQuantity(),totalvalue);
+
+            sender().tell(true, getSelf());
         };
     }
 
