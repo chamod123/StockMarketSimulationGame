@@ -1,7 +1,9 @@
 package Actors;
 
+import Messages.BankMessages;
 import Messages.BrokerMessages;
 import Messages.PlayerMessages;
+import Model.Transaction;
 import Service.BrokerService;
 import Service.MarketService;
 import Service.PlayerService;
@@ -11,7 +13,7 @@ import akka.japi.pf.FI;
 import java.math.BigDecimal;
 
 public class BrokerActor extends AbstractActor {
-    MarketService marketService;
+    MarketService marketService = new MarketService();
     private BrokerService brokerService = new BrokerService();
 
     @Override
@@ -33,19 +35,30 @@ public class BrokerActor extends AbstractActor {
                     .getName())), getSelf());
         };
     }
+
     private FI.UnitApply<BrokerMessages.GetBrokerMessage> handleGetBroker() {
         return getBrokerMessage -> {
             sender().tell(brokerService.getBroker(getBrokerMessage.getBrokerId()), getSelf());
         };
     }
+
     private FI.UnitApply<BrokerMessages.BuyStockMessage> handleBuyStock() {
+        System.out.println("awa 2");
         return getBrokerMessage -> {
             //get stock Price*Quantity from stock item in market
-            BigDecimal totalvalue=marketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
-            //passe username,stock, quantity to buy the stock for that user
-            boolean done = brokerService.buyStock(getBrokerMessage.getMarket().getUsername(),getBrokerMessage.getMarket().getStock(),getBrokerMessage.getMarket().getQuantity(),totalvalue);
+            BigDecimal totalvalue = marketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
+//          BigDecimal totalvalue=BigDecimal.valueOf(10).multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
+            System.out.println("totalvalue" + totalvalue);
 
-            sender().tell(true, getSelf());
+
+            //passe username,stock, quantity to buy the stock for that user
+            boolean done = brokerService.buyStock(getBrokerMessage.getMarket().getUsername(), getBrokerMessage.getMarket().getStock(), getBrokerMessage.getMarket().getQuantity(), totalvalue);
+
+//            bankService.Withdraw(name, totalvalue);
+            if (done) {
+                System.out.println("awa 6");
+                getBrokerMessage.getBankActor().tell(new BankMessages.WithdrawMessage(new Transaction(getBrokerMessage.getMarket().getUsername(), totalvalue)), getSelf());
+            }
         };
     }
 

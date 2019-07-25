@@ -73,17 +73,28 @@ public class StockServer extends AllDirectives {
                 , path(segment("brokers").slash(longSegment()), id -> route(getBroker(id))) //#GET - get a broker data
                 , path("brokers", this::postBroker) //#POST - Create Broker
                 , path("buyStock", this::buyStock) //#POST - buyStock
-
         );
     }
 
     // #POST - buyStock
     private Route buyStock() {
         return route(post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
-            CompletionStage<PlayerMessages.ActionPerformed> stockBuy = Patterns.ask(brokerActor, new BrokerMessages.BuyStockMessage(market, bankActor), timeout)
-                    .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
+            CompletionStage<BrokerMessages.ActionPerformed> stockBuy = Patterns.ask(brokerActor, new BrokerMessages.BuyStockMessage(market, bankActor), timeout)
+                    .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
 
             return onSuccess(() -> stockBuy, performed -> {
+                return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
+            });
+        })));
+    }
+
+    //#POST - Create new Player
+    private Route postPlayer() {
+        return route(post(() -> entity(Jackson.unmarshaller(Player.class), player -> {
+            CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(playerActor, new PlayerMessages.CreatePlayerMessage(player, bankActor), timeout)
+                    .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
+
+            return onSuccess(() -> playerCreated, performed -> {
                 return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
             });
         })));
@@ -160,18 +171,7 @@ public class StockServer extends AllDirectives {
     }
 
 
-    //#POST - Create new Player
-    private Route postPlayer() {
-        System.out.println("awaaa");
-        return route(post(() -> entity(Jackson.unmarshaller(Player.class), player -> {
-            CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(playerActor, new PlayerMessages.CreatePlayerMessage(player, bankActor), timeout)
-                    .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
 
-            return onSuccess(() -> playerCreated, performed -> {
-                return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
-            });
-        })));
-    }
 
     //#GET - get a Player Data
     private Route getPlayer(Long id) {

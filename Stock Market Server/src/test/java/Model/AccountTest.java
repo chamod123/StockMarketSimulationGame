@@ -31,7 +31,7 @@ public class AccountTest {
 	public void createAccount() {
 		try {
 			log.debug("Start of Create Account");
-			Account account = new Account((long) 20);
+			Account account = new Account("Test Account");
 			account.setBalance(BigDecimal.valueOf(1000));
 			assertEquals(account.getBalance().toString(), "1000");
 			log.debug("Account Created Successfully with a Balance: "+account.getBalance().toString());

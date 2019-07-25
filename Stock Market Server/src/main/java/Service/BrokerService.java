@@ -10,9 +10,9 @@ import java.util.Optional;
 public class BrokerService {
     private final static List<Broker> brokers = new ArrayList<>();
 
-    MarketService marketService;
-    BankService bankService;
-    public ArrayList<Player> stockAccounts;
+    MarketService marketService = new MarketService();
+    BankService bankService = new BankService();
+    public ArrayList<Player> stockAccounts = new ArrayList<>();
     public ArrayList<Transaction> Transactions;
 
     static {
@@ -42,6 +42,8 @@ public class BrokerService {
 
     //buy stock
     public Boolean buyStock(String name, String stock, int quantity, BigDecimal totalvalue) throws Exception {
+        System.out.println("awa 4  " + totalvalue +name);
+        System.out.println("Balancehhhh  "+bankService.Balance(name));
         //user value need to grater than total value. then can buy stock
         if (bankService.Balance(name).compareTo(totalvalue)>=0) {
             Integer count = GetPlayer(name).getStocks().get(stock);;
@@ -51,21 +53,24 @@ public class BrokerService {
             else {// item has buy from that item
                 GetPlayer(name).getStocks().put(stock, count + quantity);
             }
-            bankService.Withdraw(marketService.GetCurrentTurn(), name, stock, totalvalue);
+            System.out.println("awa 5-1");
             Transactions.add(new Transaction(name,marketService.GetCurrentTurn(),"BUY",stock,quantity,totalvalue));
             return true;
-        }
-        else {
+        }else {
+            System.out.println("awa 5-2");
             return false;
         }
+
     }
 
 
     //need get from the player actor
     //get player buy name
     public Player GetPlayer(String name) throws Exception {
+        System.out.println("yyyy");
 
         for (Player c : stockAccounts) {
+            System.out.println("c.getName" + c.getName());
             if (name.equals(c.getName())) {
                 return c;
             }

@@ -25,7 +25,7 @@ public class PlayerActor extends AbstractActor {
             sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", createPlayerMessage.getPlayer()
                     .getName())), getSelf());
             //Create Bank Account for Player
-            createPlayerMessage.getBankActor().tell(new BankMessages.CreateAccountMessage(new Account(createPlayerMessage.getPlayer().getId())), getSelf());
+            createPlayerMessage.getBankActor().tell(new BankMessages.CreateAccountMessage(new Account(createPlayerMessage.getPlayer().getName())), getSelf());
         };
     }
 
