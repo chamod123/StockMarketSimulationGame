@@ -24,6 +24,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Timer from "./Timer.jsx"
 
 
 // react plugin for creating charts
@@ -225,7 +226,7 @@ class GameBoard extends React.Component {
                   <Icon>access_time</Icon>
                 </CardIcon>
                 <p className={classes.cardCategory}>Time slot</p>
-                <h3 className={classes.cardTitle}>4 min</h3>
+                <Timer className={classes.cardTitle} startCount={5}></Timer>
               </CardHeader>
             </Card>
           </GridItem>
@@ -243,9 +244,6 @@ class GameBoard extends React.Component {
         </GridContainer>
         <GridContainer>
           <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>GameBoard</h4>
-            </CardHeader>
             <CardBody>
               {stockArray.length == 3 ? <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
