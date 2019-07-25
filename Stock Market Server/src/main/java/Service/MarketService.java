@@ -12,6 +12,7 @@ public class MarketService {
     public HashMap<Sector, ArrayList<Integer>> sectorTrends;
     public ArrayList<Integer> marketTrends;
     public ArrayList<Event> eventList;
+    private int currentTurn=0;
 
     //get stock buy name
     public Stock getStock(String name) throws Exception {
@@ -22,6 +23,11 @@ public class MarketService {
             }
         }
         throw new Exception("Stock with the name "+name+" does not exsist");
+    }
+
+    //get current turn
+    public int GetCurrentTurn() {
+        return this.currentTurn;
     }
 
 
