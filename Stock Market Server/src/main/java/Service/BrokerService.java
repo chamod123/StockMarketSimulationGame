@@ -41,7 +41,7 @@ public class BrokerService {
 
 
     //buy stock
-    public Boolean Buy(String name, String stock, int quantity) throws Exception {
+    public Boolean buyStock(String name, String stock, int quantity) throws Exception {
         BigDecimal totalvalue=marketService.getStock(stock).getStockPrice().multiply(BigDecimal.valueOf(quantity));
         if (bankService.Balance(name).compareTo(totalvalue)>=0) {
             Integer count = GetPlayer(name).getStocks().get(stock);;

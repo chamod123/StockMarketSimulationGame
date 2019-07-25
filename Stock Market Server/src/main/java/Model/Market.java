@@ -12,6 +12,9 @@ public class Market {
     public ArrayList<Integer> marketTrends;
     public ArrayList<Event> eventList;
     public int turns=20;
+    String username;
+    String stock;
+    int quantity;
 
     private int currentTurn=0;
 
@@ -33,5 +36,31 @@ public class Market {
         stocks.add(new Stock(15l, new BigDecimal(420.00), "BMW", 4l));
         stocks.add(new Stock(16l, new BigDecimal(430.00), "Apple", 4l));
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getStock() {
+        return stock;
+    }
+
+    public void setStock(String stock) {
+        this.stock = stock;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+
 
 }

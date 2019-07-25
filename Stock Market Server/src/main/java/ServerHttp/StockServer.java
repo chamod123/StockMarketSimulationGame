@@ -6,12 +6,9 @@ import Actors.PlayerActor;
 import Actors.StockActor;
 import Messages.BrokerMessages;
 import Messages.PlayerMessages;
-import Model.Account;
-import Model.Broker;
+import Model.*;
 import Messages.StockMessages;
-import Model.Player;
 import Model.Broker;
-import Model.Stock;
 import Model.Stock;
 import akka.NotUsed;
 import akka.actor.ActorRef;
@@ -170,8 +167,8 @@ public class StockServer extends AllDirectives {
     //#POST - Create new Player
     private Route postPlayer() {
         System.out.println("awaaa");
-        return route(post(() -> entity(Jackson.unmarshaller(Player.class), player -> {
-            CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(playerActor, new PlayerMessages.CreatePlayerMessage(player, bankActor), timeout)
+        return route(post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
+            CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(brokerActor, new BrokerMessages.BuyStockMessage(market, bankActor), timeout)
                     .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
 
             return onSuccess(() -> playerCreated, performed -> {

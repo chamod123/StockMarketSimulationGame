@@ -29,8 +29,6 @@ public interface PlayerMessages {
         private static ActorRef bankActor;
 
         public CreatePlayerMessage(Player player, ActorRef bankActor) {
-            System.out.println("awa 2");
-            System.out.println("awa 3" + player.getId() + player.getName());
             this.player = player;
             this.bankActor = bankActor;
         }
