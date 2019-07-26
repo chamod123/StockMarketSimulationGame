@@ -30,6 +30,7 @@ import static akka.http.javadsl.server.PathMatchers.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
@@ -77,8 +78,25 @@ public class StockServer extends AllDirectives {
                 , path("sellStock", this::sellStock) //#POST - sellStock
                 , path(segment("allStock"),this::getAllStock)// #GET - get a stock Data
                 , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id)))// #GET - get total stock value for player
-        );
+                , path(segment("portofolio").slash(longSegment()), id -> route(getPortofolio(id)))// #GET - get getPortofolio
+                 );
     }
+
+    // #GET - get getPortofolio
+    private Route getPortofolio(Long id) {
+        return get(() -> {
+            CompletionStage<HashMap<String, Integer>> player = Patterns.ask(brokerActor, new BrokerMessages.GetPortofolioMessage(id), timeout)
+                    .thenApply(obj -> (HashMap<String, Integer>) obj);
+            return onSuccess(() -> player,
+                    performed -> {
+                        if (player!=null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
+    }
+
 
     // #GET - get total stock value for player
     private Route stockValue(Long id) {
