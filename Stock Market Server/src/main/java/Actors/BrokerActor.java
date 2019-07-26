@@ -25,6 +25,7 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.GetBrokerMessage.class, handleGetBroker())//get broker
                 .match(BrokerMessages.BuyStockMessage.class, handleBuyStock())//buy Stock
                 .match(BrokerMessages.SellStockMessage.class, handleSellStock())//sell Stock
+                .match(BrokerMessages.GetTotalStockValueMessage.class, handleGetStockTotalVal())//total value of Stock in a player
                 .build();
     }
 
@@ -76,6 +77,15 @@ public class BrokerActor extends AbstractActor {
                 // pass the name, amount
                 sellStockMessage.getBankActor().tell(new BankMessages.DepositMessage(new Transaction(sellStockMessage.getMarket().getUsername(), totalvalue)), getSelf());
             }
+        };
+    }
+
+    //sell Stock
+    private FI.UnitApply<BrokerMessages.GetTotalStockValueMessage> handleGetStockTotalVal() {
+        return getTotalStockValueMessage -> {
+            //passe username,stock, quantity to buy the stock for that user
+            brokerService.GetTotalStockValue(getTotalStockValueMessage.getName().toString());
+
         };
     }
 

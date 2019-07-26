@@ -49,7 +49,6 @@ public interface StockMessages {
     }
 
     class GetStockSectorMessage implements Serializable {
-        private static final long serialVersionUID = 1L;
         private final Long sector;
 
         public GetStockSectorMessage(Long sector) {
@@ -69,6 +68,7 @@ public interface StockMessages {
         }
 
     }
+
 
 
 }

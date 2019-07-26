@@ -3,9 +3,7 @@ package Service;
 import Model.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class BrokerService {
     private final static List<Broker> brokers = new ArrayList<>();
@@ -87,4 +85,18 @@ public class BrokerService {
         throw new Exception("Player with the name "+name+" does not exsist");
 
     }
+
+    //get stock value
+    public BigDecimal GetTotalStockValue(String name) throws Exception {
+        HashMap<String,Integer> stocks=GetPlayer(name).GetPortofolio();
+        BigDecimal total=BigDecimal.valueOf(0);
+        for (Map.Entry<String, Integer> entry : stocks.entrySet()) {
+            total=total.add(marketService.getStock(entry.getKey()).getStockPrice().multiply(BigDecimal.valueOf(entry.getValue())));
+        }
+        return total;
+    }
+
+
+
+
 }
