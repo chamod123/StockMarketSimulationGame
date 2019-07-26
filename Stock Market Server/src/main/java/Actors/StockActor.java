@@ -1,12 +1,14 @@
 package Actors;
 
 import Messages.StockMessages;
+import Service.MarketService;
 import Service.StockService;
 import akka.actor.AbstractActor;
 import akka.japi.pf.FI;
 
 public class StockActor extends AbstractActor {
     private StockService stockService = new StockService();
+    private MarketService marketService = new MarketService();
 
     @Override
     public Receive createReceive() {
@@ -14,6 +16,7 @@ public class StockActor extends AbstractActor {
                 .match(StockMessages.CreateStockMessage.class, handleCreateStock())
                 .match(StockMessages.GetStockMessage.class, handleGetStock())
                 .match(StockMessages.GetStockSectorMessage.class, handleGetStockBySector())
+                .match(StockMessages.GetAllStockMessage.class, handleGetAllStock())//get all stock
                 .build();
     }
 
@@ -34,6 +37,12 @@ public class StockActor extends AbstractActor {
     private FI.UnitApply<StockMessages.GetStockSectorMessage> handleGetStockBySector() {
         return getStockSectorMessage -> {
             sender().tell(stockService.getStockBySector(getStockSectorMessage.getSector()), getSelf());
+        };
+    }
+
+    private FI.UnitApply<StockMessages.GetAllStockMessage> handleGetAllStock() {
+        return getAllStockMessage -> {
+            sender().tell(marketService.getStocks(), getSelf());
         };
     }
 

@@ -1,6 +1,7 @@
 package Messages;
 
 import Model.Account;
+import Model.Transaction;
 
 import java.io.Serializable;
 
@@ -20,7 +21,6 @@ public interface BankMessages {
     }
 
     class CreateAccountMessage implements Serializable {
-
         private static final long serialVersionUID = 1L;
         private final Account account;
 
@@ -31,6 +31,35 @@ public interface BankMessages {
         public Account getAccount() {
             return account;
         }
+    }
+
+    class WithdrawMessage implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private final Transaction transaction;
+
+        public WithdrawMessage(Transaction transaction) {
+            this.transaction = transaction;
+        }
+
+        public Transaction getTransaction() {
+            return transaction;
+        }
 
     }
+
+    class DepositMessage implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private final Transaction transaction;
+
+        public DepositMessage(Transaction transaction) {
+            this.transaction = transaction;
+        }
+
+        public Transaction getTransaction() {
+            return transaction;
+        }
+
+    }
+
+
 }

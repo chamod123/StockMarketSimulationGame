@@ -1,9 +1,11 @@
 package Model;
 
 
+import java.math.BigDecimal;
+
 public class Stock {
     private Long stockId;
-    private double stockPrice;
+    private BigDecimal stockPrice;
     private String companyName;
     private Long sector;
     private Sector sector1;
@@ -11,12 +13,12 @@ public class Stock {
 
     public Stock(){
         this.stockId= null;
-        this.stockPrice=0.00;
+        this.stockPrice=null;
         this.companyName="";
         this.sector=null;
     }
 
-    public Stock(Long stockId, double stockPrice, String companyName, Long sector){
+    public Stock(Long stockId, BigDecimal stockPrice, String companyName, Long sector){
         this.stockId=stockId;
         this.stockPrice=stockPrice;
         this.companyName=companyName;
@@ -31,11 +33,11 @@ public class Stock {
         this.stockId = stockId;
     }
 
-    public double getStockPrice() {
+    public BigDecimal getStockPrice() {
         return stockPrice;
     }
 
-    public void setStockPrice(double stockPrice) {
+    public void setStockPrice(BigDecimal stockPrice) {
         this.stockPrice = stockPrice;
     }
 
