@@ -129,12 +129,15 @@ public interface BrokerMessages {
     class GetAllTransactionsMessage implements Serializable {
         public GetAllTransactionsMessage() {
         }
-
     }
 
     class GetWinnerMessage implements Serializable {
-
         public GetWinnerMessage() {
+        }
+    }
+
+    class GetAllPlayerMessage implements Serializable {
+        public GetAllPlayerMessage() {
         }
     }
 

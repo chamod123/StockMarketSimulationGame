@@ -114,4 +114,17 @@ public class BrokerService {
 
     }
 
+    //get all Players
+    public HashMap<String, ArrayList<BigDecimal>> GetAllPlayers() throws Exception {
+        HashMap<String, ArrayList<BigDecimal>> hashmap = new HashMap();
+        for (Player c : stockAccounts) {
+            ArrayList<BigDecimal> al = new ArrayList<>();
+            al.add(GetTotalStockValue(c.getName()));
+            al.add(bankService.Balance(c.getName()));
+            hashmap.put(c.getName(), al);
+        }
+        return hashmap;
+
+    }
+
 }
