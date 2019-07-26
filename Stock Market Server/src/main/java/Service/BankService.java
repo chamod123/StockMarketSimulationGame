@@ -47,6 +47,17 @@ public class BankService {
         throw new Exception("account with " + playerName + " does not  exists");
     }
 
+    //deposit to an account
+    public Boolean Deposit(String name, BigDecimal amount) throws Exception {
+        for (Account account : accountList) {
+            if (name.equals(account.getName())) {
+                account.setBalance(account.getBalance().add(amount));
+                return true;
+            }
+        }
+        throw new Exception("account with " + name + " does not  exists");
+    }
+
     //return balance for the user
     public BigDecimal Balance(String name) throws Exception {
         for (Account account : accountList) {
