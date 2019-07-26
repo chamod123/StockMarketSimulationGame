@@ -23,6 +23,7 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField';
+import LinearProgressBar from 'components/ProgressIndicators/LinearProgressBar'
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Timer from "./Timer.jsx"
 import Chart from './Chart.jsx'
@@ -250,7 +251,7 @@ class GameBoard extends React.Component {
                   </Card>
                   <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks?"Buy New shares":"View your shares"}</Button>
                 </GridItem>
-              </GridContainer> : null}
+              </GridContainer> : <LinearProgressBar></LinearProgressBar>}
               <br />
               <br />
 
