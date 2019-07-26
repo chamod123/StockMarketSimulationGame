@@ -57,6 +57,7 @@ import {
 } from "variables/charts.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import { Button } from "@material-ui/core";
 
 class Dashboard extends React.Component {
   state = {
@@ -167,10 +168,8 @@ class Dashboard extends React.Component {
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
                 </p>
               </CardBody>
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  {/* <AccessTime /> updated 4 minutes ago */}
-                </div>
+              <CardFooter>
+                
               </CardFooter>
             </Card>
           </GridItem>
@@ -189,10 +188,8 @@ class Dashboard extends React.Component {
                   Last Campaign Performance
                 </p>
               </CardBody> */}
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  {/* <AccessTime /> campaign sent 2 days ago */}
-                </div>
+              <CardFooter>
+                
               </CardFooter>
             </Card>
           </GridItem>
@@ -211,21 +208,24 @@ class Dashboard extends React.Component {
                   Last Campaign Performance
                 </p>
               </CardBody> */}
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  {/* <AccessTime /> campaign sent 2 days ago */}
-                </div>
+              <CardFooter>
+               
+
+                <Button color="primary">Let's Start</Button>
+                
               </CardFooter>
             </Card>
           </GridItem>
 
           <GridItem xs={12} sm={12} md={12}>
-            <Card>
+         
+        <Card>
             <CardBody>
               <h4 className={classes.cardTitle}>Testimonial</h4>
               <p className={classes.cardCategory}>
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining"
                 </p>
+                
             </CardBody>
             </Card>
           </GridItem>
