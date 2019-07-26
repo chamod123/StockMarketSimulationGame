@@ -27,75 +27,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Timer from "./Timer.jsx"
 import Chart from './Chart.jsx'
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
-
-
-const response = [{
-  "sector": "Finance",
-  "stocks": [{
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  },
-  {
-    "companyName": "facebook",
-    "stockPrice": 123,
-    "rate": 1.7
-  },
-  {
-    "companyName": "amazon",
-    "stockPrice": 123,
-    "rate": 1.7
-  }
-  ]
-
-},
-{
-  "sector": "Human Resources",
-  "stocks": [{
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }]
-}
-  ,
-{
-  "sector": "Sector 3",
-  "stocks": [{
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }]
-}
-]
+import { Typography } from "@material-ui/core";
+import { getStocks } from "server/server.js";
+import { getMyStocks } from "server/server.js";
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -104,41 +38,44 @@ class GameBoard extends React.Component {
       stockArray: [],
       selectedSectorIndex: 0,
       selectedStock: 0,
+      isOnMyStocks: false,
     };
   }
 
   componentDidMount() {
-    this.setState(
-      {
-        stockArray: response
-      })
-
+    getStocks().then(response => {
+      this.setState({ stockArray: response })
+    })
   }
 
-  // to stop the warning of calling setState of unmounted component
-  componentWillUnmount() {
-    var id = window.setTimeout(null, 0);
-    while (id--) {
-      window.clearTimeout(id);
+  loadStockDataFromAPI = () => {
+    const {isOnMyStocks} = this.state
+    if(!isOnMyStocks){
+      getMyStocks().then(response => {
+        this.setState({ 
+          stockArray: response,
+          isOnMyStocks: true
+         })
+      })
+    }else{
+      getStocks().then(response => {
+        this.setState({ 
+          stockArray: response,
+          isOnMyStocks: false
+         })
+      })
     }
   }
-  // showNotification(place) {
-  //   var x = [];
-  //   x[place] = true;
-  //   this.setState(x);
-  //   this.alertTimeout = setTimeout(
-  //     function() {
-  //       x[place] = false;
-  //       this.setState(x);
-  //     }.bind(this),
-  //     6000
-  //   );
-  // }
+
   handleStockSelect = (selectedstockIndex, selectedSectorIndex) => {
     this.setState({
       selectedStock: selectedstockIndex,
       selectedSectorIndex: selectedSectorIndex
     })
+  }
+
+  handleToggleOnMyStock = ()=>{
+    this.loadStockDataFromAPI()
   }
 
   getTableData = (array) => {
@@ -159,7 +96,7 @@ class GameBoard extends React.Component {
       return "success"
     }
     if (selectedSectorIndex === 2) {
-      return "info"
+      return "warning"
     }
   }
 
@@ -172,7 +109,7 @@ class GameBoard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { stockArray, chartData } = this.state;
+    const { stockArray, chartData, isOnMyStocks } = this.state;
     return (
       <div>
         <GridContainer>
@@ -228,6 +165,7 @@ class GameBoard extends React.Component {
             <CardBody>
               {stockArray.length === 3 ? <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
+                  <Typography>{isOnMyStocks?"Your shares":"Share market"}</Typography>
                   <CustomTabs
                     headerColor="primary"
                     tabs={
@@ -242,6 +180,7 @@ class GameBoard extends React.Component {
                               tableData={this.getTableData(stockArray[0].stocks)}
                               handleRowSelect={this.handleStockSelect}
                               selectedSectorIndex={0}
+                              isMyStock={isOnMyStocks}
                             />
                           )
                         },
@@ -255,6 +194,7 @@ class GameBoard extends React.Component {
                               tableData={this.getTableData(stockArray[1].stocks)}
                               handleRowSelect={this.handleStockSelect}
                               selectedSectorIndex={1}
+                              isMyStock={isOnMyStocks}
                             />
                           )
                         },
@@ -268,6 +208,7 @@ class GameBoard extends React.Component {
                               tableData={this.getTableData(stockArray[2].stocks)}
                               handleRowSelect={this.handleStockSelect}
                               selectedSectorIndex={2}
+                              isMyStock={isOnMyStocks}
                             />
                           )
                         }
@@ -300,11 +241,14 @@ class GameBoard extends React.Component {
                           />
                         </GridItem>
                         <GridItem><Button color="primary">Buy</Button></GridItem>
+                        {isOnMyStocks?
+                        <GridItem><Button color="primary">sell</Button></GridItem>:null}
                       </GridContainer>
                     </CardBody>
                     <CardFooter chart>
                     </CardFooter>
                   </Card>
+                  <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks?"Buy New shares":"View your shares"}</Button>
                 </GridItem>
               </GridContainer> : null}
               <br />

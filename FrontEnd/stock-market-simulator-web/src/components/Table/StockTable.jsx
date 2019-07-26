@@ -9,9 +9,10 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 // core components
 import tableStyle from "assets/jss/material-dashboard-react/components/tableStyle.jsx";
+import { Button } from "@material-ui/core";
 
 function StockTable({ ...props }) {
-  const { classes, tableHead, tableData, tableHeaderColor, handleRowSelect, selectedSectorIndex } = props;
+  const { classes, tableHead, tableData, tableHeaderColor, handleRowSelect, selectedSectorIndex, isMyStock } = props;
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -42,6 +43,9 @@ function StockTable({ ...props }) {
                     </TableCell>
                   );
                 })}
+                <TableCell>                
+                  {isMyStock?<Button>Sell</Button>:<Button>Buy</Button>}
+                </TableCell>
               </TableRow>
             );
           })}
