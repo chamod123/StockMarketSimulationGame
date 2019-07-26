@@ -4,6 +4,7 @@ import Actors.BankActor;
 import Actors.BrokerActor;
 import Actors.PlayerActor;
 import Actors.StockActor;
+import Messages.BankMessages;
 import Messages.BrokerMessages;
 import Messages.PlayerMessages;
 import Model.*;
@@ -79,7 +80,23 @@ public class StockServer extends AllDirectives {
                 , path(segment("allStock"),this::getAllStock)// #GET - get a stock Data
                 , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id)))// #GET - get total stock value for player
                 , path(segment("portofolio").slash(longSegment()), id -> route(getPortofolio(id)))// #GET - get getPortofolio
-                 );
+                , path(segment("bankBalance").slash(longSegment()), id -> route(getBankBalance(id)))// #GET - get Bank Balance for a player
+        );
+    }
+
+    // #GET - get Bank Balance for a player
+    private Route getBankBalance(Long id) {
+        return get(() -> {
+            CompletionStage<Optional<Bank>> bank = Patterns.ask(bankActor, new BankMessages.GetBankBalanceMessage(id), timeout)
+                    .thenApply(obj -> (Optional<Bank>) obj);
+            return onSuccess(() -> bank,
+                    performed -> {
+                        if (performed.isPresent())
+                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
     }
 
     // #GET - get getPortofolio
