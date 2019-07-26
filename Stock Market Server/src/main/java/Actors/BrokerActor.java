@@ -43,6 +43,7 @@ public class BrokerActor extends AbstractActor {
         };
     }
 
+    //buy Stock
     private FI.UnitApply<BrokerMessages.BuyStockMessage> handleBuyStock() {
         System.out.println("awa 2");
         return getBrokerMessage -> {
@@ -55,11 +56,13 @@ public class BrokerActor extends AbstractActor {
 
             if (done) {
                 //Withdraw
+                // pass the name, amount
                 getBrokerMessage.getBankActor().tell(new BankMessages.WithdrawMessage(new Transaction(getBrokerMessage.getMarket().getUsername(), totalvalue)), getSelf());
             }
         };
     }
 
+    //sell Stock
     private FI.UnitApply<BrokerMessages.SellStockMessage> handleSellStock() {
         return sellStockMessage -> {
             BigDecimal totalvalue = marketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
@@ -69,15 +72,9 @@ public class BrokerActor extends AbstractActor {
             boolean done = brokerService.selltock(sellStockMessage.getMarket().getUsername(), sellStockMessage.getMarket().getStock(), sellStockMessage.getMarket().getQuantity(), totalvalue);
 
             if (done) {
-                //            bank.Deposit(market.GetCurrentTurn(), name, stock, totalvalue);
                 //deposit
                 // pass the name, amount
                 sellStockMessage.getBankActor().tell(new BankMessages.DepositMessage(new Transaction(sellStockMessage.getMarket().getUsername(), totalvalue)), getSelf());
-
-
-                //Withdraw
-                // pass the name, amount
-                sellStockMessage.getBankActor().tell(new BankMessages.WithdrawMessage(new Transaction(sellStockMessage.getMarket().getUsername(), totalvalue)), getSelf());
             }
         };
     }

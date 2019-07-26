@@ -15,6 +15,7 @@ public class BankActor extends AbstractActor {
         return receiveBuilder()
                 .match(BankMessages.CreateAccountMessage.class, CreateAccount())
                 .match(BankMessages.WithdrawMessage.class, Withdraw())//Withdraw from player
+                .match(BankMessages.DepositMessage.class, Deposit())//Deposit from player
                 .build();
     }
 
@@ -26,12 +27,24 @@ public class BankActor extends AbstractActor {
         };
     }
 
+    //Withdraw from player
     private FI.UnitApply<BankMessages.WithdrawMessage> Withdraw() {
         System.out.println("awa 7");
-        return createAccountMessage -> {
+        return withdrawMessage -> {
             //Withdraw from player
-            bankService.Withdraw(createAccountMessage.getTransaction().getName(),createAccountMessage.getTransaction().getAmount());
-            sender().tell(new BankMessages.ActionPerformed(String.format("Withdraw for %s .", createAccountMessage.getTransaction().getName()
+            bankService.Withdraw(withdrawMessage.getTransaction().getName(),withdrawMessage.getTransaction().getAmount());
+            sender().tell(new BankMessages.ActionPerformed(String.format("Withdraw for %s .", withdrawMessage.getTransaction().getName()
+            )), getSelf());
+        };
+    }
+
+    //Deposit from player
+    private FI.UnitApply<BankMessages.DepositMessage> Deposit() {
+        System.out.println("awa 7");
+        return depositMessage -> {
+            //Withdraw from player
+            bankService.Deposit(depositMessage.getTransaction().getName(),depositMessage.getTransaction().getAmount());
+            sender().tell(new BankMessages.ActionPerformed(String.format("Withdraw for %s .", depositMessage.getTransaction().getName()
             )), getSelf());
         };
     }
