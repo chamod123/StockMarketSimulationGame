@@ -28,6 +28,7 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.GetTotalStockValueMessage.class, handleGetStockTotalVal())//total value of Stock in a player
                 .match(BrokerMessages.GetPortofolioMessage.class, handleGetPortofolio())//get Portofolio
                 .match(BrokerMessages.GetAllTransactionsMessage.class, getAllTransactions())//get all transaction Data
+                .match(BrokerMessages.GetWinnerMessage.class, getWinner())//get all transaction Data
                 .build();
     }
 
@@ -102,6 +103,13 @@ public class BrokerActor extends AbstractActor {
     //get all transaction Data
     private FI.UnitApply<BrokerMessages.GetAllTransactionsMessage> getAllTransactions() {
         return getAllTransactionsMessage -> {
+            sender().tell(brokerService.getTransactions(),getSelf());
+        };
+    }
+
+    //get all transaction Data
+    private FI.UnitApply<BrokerMessages.GetWinnerMessage> getWinner() {
+        return getWinnerMessage -> {
             sender().tell(brokerService.getTransactions(),getSelf());
         };
     }

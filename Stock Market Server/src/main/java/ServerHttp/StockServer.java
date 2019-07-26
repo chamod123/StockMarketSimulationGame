@@ -77,13 +77,30 @@ public class StockServer extends AllDirectives {
                 , path("brokers", this::postBroker) //#POST - Create Broker
                 , path("buyStock", this::buyStock) //#POST - buyStock
                 , path("sellStock", this::sellStock) //#POST - sellStock
-                , path(segment("allStock"),this::getAllStock)// #GET - get a stock Data
+                , path(segment("allStock"), this::getAllStock)// #GET - get a stock Data
                 , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id)))// #GET - get total stock value for player
                 , path(segment("portofolio").slash(longSegment()), id -> route(getPortofolio(id)))// #GET - get getPortofolio
                 , path(segment("bankBalance").slash(longSegment()), id -> route(getBankBalance(id)))// #GET - get Bank Balance for a player
-                , path(segment("transactions"),this::getAllTransactions)// #GET - get all transaction Data
+                , path(segment("transactions"), this::getAllTransactions)// #GET - get all transaction Data
+                , path(segment("winner"), this::getWinner)// #GET - get winner
+
 
         );
+    }
+
+    // #GET - get winner
+    private Route getWinner() {
+        return get(() -> {
+            CompletionStage<Optional<Player>> transaction = Patterns.ask(brokerActor, new BrokerMessages.GetWinnerMessage(), timeout)
+                    .thenApply(obj -> (Optional<Player>) obj);
+            return onSuccess(() -> transaction,
+                    performed -> {
+                        if (transaction != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
     }
 
     // #GET - get all transaction Data
@@ -93,8 +110,8 @@ public class StockServer extends AllDirectives {
                     .thenApply(obj -> (ArrayList<Transaction>) obj);
             return onSuccess(() -> transaction,
                     performed -> {
-                        if (transaction!=null)
-                            return complete(StatusCodes.OK,performed,Jackson.marshaller());
+                        if (transaction != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
                         else
                             return complete(StatusCodes.NOT_FOUND);
                     });
@@ -123,7 +140,7 @@ public class StockServer extends AllDirectives {
                     .thenApply(obj -> (HashMap<String, Integer>) obj);
             return onSuccess(() -> player,
                     performed -> {
-                        if (player!=null)
+                        if (player != null)
                             return complete(StatusCodes.OK, performed, Jackson.marshaller());
                         else
                             return complete(StatusCodes.NOT_FOUND);
@@ -154,8 +171,8 @@ public class StockServer extends AllDirectives {
                     .thenApply(obj -> (ArrayList<Stock>) obj);
             return onSuccess(() -> stock,
                     performed -> {
-                        if (stock!=null)
-                            return complete(StatusCodes.OK,performed,Jackson.marshaller());
+                        if (stock != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
 //                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
                         else
                             return complete(StatusCodes.NOT_FOUND);
@@ -268,8 +285,6 @@ public class StockServer extends AllDirectives {
                     });
         });
     }
-
-
 
 
     //#GET - get a Player Data

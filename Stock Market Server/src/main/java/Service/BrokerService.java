@@ -100,5 +100,18 @@ public class BrokerService {
         return Transactions;
     }
 
+    //get current winner name
+    public Player GetWinner() throws Exception {
+        Player winner = stockAccounts.get(0);
+        for (Player c : stockAccounts) {
+            BigDecimal value = GetTotalStockValue(c.getName()).add(bankService.Balance(c.getName()));
+            BigDecimal Winnervalue = GetTotalStockValue(winner.getName()).add(bankService.Balance(winner.getName()));
+            if (value.compareTo(Winnervalue) > 0) {
+                winner = c;
+            }
+        }
+        return winner;
+
+    }
 
 }
