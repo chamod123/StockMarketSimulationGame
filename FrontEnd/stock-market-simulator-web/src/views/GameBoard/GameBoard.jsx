@@ -25,16 +25,9 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Timer from "./Timer.jsx"
-
-
-// react plugin for creating charts
-import ChartistGraph from "react-chartist";
-
+import Chart from './Chart.jsx'
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
-import {
-  dailySalesChart,
-} from "variables/charts.jsx";
 
 
 const response = [{
@@ -103,10 +96,6 @@ const response = [{
   }]
 }
 ]
-const chartData = {
-  "labels": ["M", "T", "W", "T", "F", "S", "S"],
-  "series": [[12, 17, 7, 17, 23, 18, 38]]
-}
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -115,7 +104,6 @@ class GameBoard extends React.Component {
       stockArray: [],
       selectedSectorIndex: 0,
       selectedStock: 0,
-      chartData: chartData
     };
   }
 
@@ -161,23 +149,16 @@ class GameBoard extends React.Component {
     return rowArray;
   }
 
-  getChartData = () => {
-    const { chartData, selectedStock, selectedSectorIndex } = this.state;
-    //API Call to recieve the data lable and series from backend 
-    //params sector, companyName of stock
-
-  }
-
   getHeaderColor = () => {
     const { selectedSectorIndex } = this.state;
 
-    if (selectedSectorIndex == 0) {
+    if (selectedSectorIndex === 0) {
       return "info"
     }
-    if (selectedSectorIndex == 1) {
+    if (selectedSectorIndex === 1) {
       return "success"
     }
-    if (selectedSectorIndex == 2) {
+    if (selectedSectorIndex === 2) {
       return "info"
     }
   }
@@ -245,7 +226,7 @@ class GameBoard extends React.Component {
         <GridContainer>
           <Card>
             <CardBody>
-              {stockArray.length == 3 ? <GridContainer>
+              {stockArray.length === 3 ? <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomTabs
                     headerColor="primary"
@@ -293,16 +274,12 @@ class GameBoard extends React.Component {
                       ]}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={7}>
+                <GridItem xs={12} sm={12} md={8}>
                   <Card chart>
                     <CardHeader color={this.getHeaderColor()}>
-                      <ChartistGraph
-                        className="ct-chart"
-                        data={chartData}
-                        type="Line"
-                        options={dailySalesChart.options}
-                        listener={dailySalesChart.animation}
-                      />
+                      <Chart startChartData={chartData}
+                        //send data of selected stock n sector to call getChartData from API 
+                      ></Chart>
                     </CardHeader>
                     <CardBody>
                       <h4 className={classes.cardTitle}>{this.getChartTitle()}</h4>
