@@ -28,74 +28,8 @@ import Timer from "./Timer.jsx"
 import Chart from './Chart.jsx'
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Typography } from "@material-ui/core";
-
-
-const response = [{
-  "sector": "Finance",
-  "stocks": [{
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  },
-  {
-    "companyName": "facebook",
-    "stockPrice": 123,
-    "rate": 1.7
-  },
-  {
-    "companyName": "amazon",
-    "stockPrice": 123,
-    "rate": 1.7
-  }
-  ]
-
-},
-{
-  "sector": "Human Resources",
-  "stocks": [{
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }]
-}
-  ,
-{
-  "sector": "Sector 3",
-  "stocks": [{
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }]
-}
-]
+import { getStocks } from "server/server.js";
+import { getMyStocks } from "server/server.js";
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -109,32 +43,30 @@ class GameBoard extends React.Component {
   }
 
   componentDidMount() {
-    this.setState(
-      {
-        stockArray: response
-      })
-
+    getStocks().then(response => {
+      this.setState({ stockArray: response })
+    })
   }
 
-  // to stop the warning of calling setState of unmounted component
-  componentWillUnmount() {
-    var id = window.setTimeout(null, 0);
-    while (id--) {
-      window.clearTimeout(id);
+  loadStockDataFromAPI = () => {
+    const {isOnMyStocks} = this.state
+    if(!isOnMyStocks){
+      getMyStocks().then(response => {
+        this.setState({ 
+          stockArray: response,
+          isOnMyStocks: true
+         })
+      })
+    }else{
+      getStocks().then(response => {
+        this.setState({ 
+          stockArray: response,
+          isOnMyStocks: false
+         })
+      })
     }
   }
-  // showNotification(place) {
-  //   var x = [];
-  //   x[place] = true;
-  //   this.setState(x);
-  //   this.alertTimeout = setTimeout(
-  //     function() {
-  //       x[place] = false;
-  //       this.setState(x);
-  //     }.bind(this),
-  //     6000
-  //   );
-  // }
+
   handleStockSelect = (selectedstockIndex, selectedSectorIndex) => {
     this.setState({
       selectedStock: selectedstockIndex,
@@ -142,9 +74,8 @@ class GameBoard extends React.Component {
     })
   }
 
-  toggleOnMyStocks = ()=>{
-    this.setState({isOnMyStocks:!this.state.isOnMyStocks})
-    //call API to get my stocks or stocks in market to load the tables
+  handleToggleOnMyStock = ()=>{
+    this.loadStockDataFromAPI()
   }
 
   getTableData = (array) => {
@@ -165,7 +96,7 @@ class GameBoard extends React.Component {
       return "success"
     }
     if (selectedSectorIndex === 2) {
-      return "info"
+      return "warning"
     }
   }
 
@@ -234,10 +165,7 @@ class GameBoard extends React.Component {
             <CardBody>
               {stockArray.length === 3 ? <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
-                  {/* <GridContainer> */}
                   <Typography>{isOnMyStocks?"Your shares":"Share market"}</Typography>
-                  {/* <Button color="info" onClick={this.toggleOnMyStocks}>{isOnMyStocks?"Buy New shares":"View your shares"}</Button> */}
-                  {/* </GridContainer> */}
                   <CustomTabs
                     headerColor="primary"
                     tabs={
@@ -320,9 +248,7 @@ class GameBoard extends React.Component {
                     <CardFooter chart>
                     </CardFooter>
                   </Card>
-
-                  <Button color="info" onClick={this.toggleOnMyStocks}>{isOnMyStocks?"Buy New shares":"View your shares"}</Button>
-
+                  <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks?"Buy New shares":"View your shares"}</Button>
                 </GridItem>
               </GridContainer> : null}
               <br />
