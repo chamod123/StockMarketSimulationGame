@@ -31,7 +31,12 @@ import Danger from "components/Typography/Danger.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-
+import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Table from "components/Table/Table.jsx";
+import { Button } from "@material-ui/core";
 const style = {
   typo: {
     paddingLeft: "25%",
@@ -73,109 +78,69 @@ function TypographyPage(props) {
   return (
     <Card>
       <CardHeader color="primary">
-        <h4 className={classes.cardTitleWhite}>Material Dashboard Heading</h4>
-        <p className={classes.cardCategoryWhite}>
-          Created using Roboto Font Family
-        </p>
+        <h4 className={classes.cardTitleWhite}>You Can Upload and Download Your Portfolio File</h4>
       </CardHeader>
       <CardBody>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 1</div>
-          <h1>The Life of Material Dashboard</h1>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 2</div>
-          <h2>The Life of Material Dashboard</h2>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 3</div>
-          <h3>The Life of Material Dashboard</h3>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 4</div>
-          <h4>The Life of Material Dashboard</h4>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 5</div>
-          <h5>The Life of Material Dashboard</h5>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 6</div>
-          <h6>The Life of Material Dashboard</h6>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Paragraph</div>
-          <p>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers. I understand culture. I am
-            the nucleus. I think that’s a responsibility that I have, to push
-            possibilities, to show people, this is the level that things could
-            be at.
-          </p>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Quote</div>
-          <Quote
-            text="I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at."
-            author=" Kanye West, Musician"
-          />
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Muted Text</div>
-          <Muted>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Muted>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Primary Text</div>
-          <Primary>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Primary>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Info Text</div>
-          <Info>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Info>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Success Text</div>
-          <Success>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Success>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Warning Text</div>
-          <Warning>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Warning>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Danger Text</div>
-          <Danger>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Danger>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Small Tag</div>
-          <h2>
-            Header with small subtitle
-            <br />
-            <small>
-              Use {'"'}Small{'"'} tag for the headers
-            </small>
-          </h2>
-        </div>
+        <h4 className={classes.cardTitle}>Upload your portfolio here...</h4>
+        <GridContainer>
+                        <GridItem>
+                          <TextField
+                            id="outlined-adornment-amount"
+                            variant="outlined"
+                            // label="Amount"
+                            type="file"
+                            inputProps={{ min: "0", max: "100", step: "1" }}
+                            // value={values.amount}
+                            // onChange={handleChange('amount')}
+                            InputProps={{
+                              startAdornment: <InputAdornment position="start"></InputAdornment>,
+                            }}
+                          />
+                          <Button color="primary">Browser</Button>
+                          <h4 className={classes.cardTitle}>Available Files</h4>
+                   <Table
+           tableHeaderColor="warning"
+           tableHead={["File Name", "Size","Uploaded Date"]}
+           tableData={[
+             ["Test file", "36kb","2019-07-01"],
+             ["Test file", "36kb","2019-07-01"],
+             ["Test file", "36kb","2019-07-01"],
+             ["Test file", "36kb","2019-07-01"]
+           ]}
+         />
+                        </GridItem>
+                       </GridContainer>
+                       
+
       </CardBody>
     </Card>
+    //    <Card>
+    //            <CardHeader color="warning">
+    //      <h4 className={classes.cardTitleWhite}>Leader Board</h4>
+    //      <p className={classes.cardCategoryWhite}>
+    //        Top 4 Players Achievements
+    //      </p>
+    //    </CardHeader>
+    //    <CardBody>
+    //      <Table
+    //        tableHeaderColor="warning"
+    //        // tableHead={["ID", "Name", "Won Prize", "Country"]}
+    //        tableHead={["ID", "Name", "Won Prize"]}
+    //        tableData={[
+    //          ["1", "Mick Peterson", "$36,738"],
+    //          ["2", "Damon Silvester", "$23,789"],
+    //          ["3", "Rick Panday", "$56,142"],
+    //          ["4", "Philip Chaney", "$38,735"]
+    //        ]}
+    //      />
+    //      </CardBody>
+    //  </Card>
+   
   );
 }
+
+
+         
 
 TypographyPage.propTypes = {
   classes: PropTypes.object
