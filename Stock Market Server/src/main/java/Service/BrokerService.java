@@ -43,7 +43,6 @@ public class BrokerService {
     //buy stock
     public Boolean buyStock(String name, String stock, int quantity, BigDecimal totalvalue) throws Exception {
         System.out.println("awa 4  " + totalvalue +name);
-        System.out.println("Balancehhhh  "+bankService.Balance(name));
         //user value need to grater than total value. then can buy stock
         if (bankService.Balance(name).compareTo(totalvalue)>=0) {
             Integer count = GetPlayer(name).getStocks().get(stock);;
@@ -63,12 +62,24 @@ public class BrokerService {
 
     }
 
+    //sell stock
+    public Boolean selltock(String name, String stock, int quantity, BigDecimal totalvalue) throws Exception {
+        Integer stockCount=GetPlayer(name).getStocks().get(stock);
+        if (stockCount!=null && stockCount>=quantity) {
+            GetPlayer(name).getStocks().put(stock, stockCount-quantity);
+//            BigDecimal totalvalue=market.getStock(stock).getStockPrice().multiply(BigDecimal.valueOf(quantity));
+//            bank.Deposit(market.GetCurrentTurn(), name, stock, totalvalue);
+            Transactions.add(new Transaction(name,marketService.GetCurrentTurn(),"SELL",stock,quantity,totalvalue));
+            return true;
+        }
+        else
+            return false;
+    }
+
 
     //need get from the player actor
     //get player buy name
     public Player GetPlayer(String name) throws Exception {
-        System.out.println("yyyy");
-
         for (Player c : stockAccounts) {
             System.out.println("c.getName" + c.getName());
             if (name.equals(c.getName())) {

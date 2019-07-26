@@ -76,4 +76,30 @@ public interface BrokerMessages {
             BuyStockMessage.bankActor = bankActor;
         }
     }
+
+    class SellStockMessage implements Serializable {
+        private Market market;
+        private static ActorRef bankActor;
+
+        public SellStockMessage(Market market, ActorRef bankActor) {
+            this.market=market;
+            this.bankActor=bankActor;
+        }
+
+        public Market getMarket() {
+            return market;
+        }
+
+        public void setMarket(Market market) {
+            this.market = market;
+        }
+
+        public static ActorRef getBankActor() {
+            return bankActor;
+        }
+
+        public static void setBankActor(ActorRef bankActor) {
+            BuyStockMessage.bankActor = bankActor;
+        }
+    }
 }

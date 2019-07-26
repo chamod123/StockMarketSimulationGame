@@ -24,6 +24,7 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.CreateBrokerMessage.class, handleCreateBrocker())//create broker
                 .match(BrokerMessages.GetBrokerMessage.class, handleGetBroker())//get broker
                 .match(BrokerMessages.BuyStockMessage.class, handleBuyStock())//buy Stock
+                .match(BrokerMessages.SellStockMessage.class, handleSellStock())//sell Stock
                 .build();
     }
 
@@ -47,20 +48,31 @@ public class BrokerActor extends AbstractActor {
         return getBrokerMessage -> {
             //get stock Price*Quantity from stock item in market
             BigDecimal totalvalue = marketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
-//          BigDecimal totalvalue=BigDecimal.valueOf(10).multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
             System.out.println("totalvalue" + totalvalue);
-
 
             //passe username,stock, quantity to buy the stock for that user
             boolean done = brokerService.buyStock(getBrokerMessage.getMarket().getUsername(), getBrokerMessage.getMarket().getStock(), getBrokerMessage.getMarket().getQuantity(), totalvalue);
 
-//            bankService.Withdraw(name, totalvalue);
             if (done) {
-                System.out.println("awa 6");
+                //Withdraw
                 getBrokerMessage.getBankActor().tell(new BankMessages.WithdrawMessage(new Transaction(getBrokerMessage.getMarket().getUsername(), totalvalue)), getSelf());
             }
         };
     }
+
+    private FI.UnitApply<BrokerMessages.SellStockMessage> handleSellStock() {
+        return getBrokerMessage -> {
+            BigDecimal totalvalue = marketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
+            System.out.println("totalvalue" + totalvalue);
+
+            //passe username,stock, quantity to buy the stock for that user
+            boolean done = brokerService.buyStock(getBrokerMessage.getMarket().getUsername(), getBrokerMessage.getMarket().getStock(), getBrokerMessage.getMarket().getQuantity(), totalvalue);
+
+
+        };
+    }
+
+
 
 
 }

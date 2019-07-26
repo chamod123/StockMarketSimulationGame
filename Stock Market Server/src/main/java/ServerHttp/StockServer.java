@@ -73,7 +73,20 @@ public class StockServer extends AllDirectives {
                 , path(segment("brokers").slash(longSegment()), id -> route(getBroker(id))) //#GET - get a broker data
                 , path("brokers", this::postBroker) //#POST - Create Broker
                 , path("buyStock", this::buyStock) //#POST - buyStock
+                , path("sellStock", this::sellStock) //#POST - sellStock
         );
+    }
+
+    // #POST - sellStock
+    private Route sellStock() {
+        return route(post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
+            CompletionStage<BrokerMessages.ActionPerformed> stockSell = Patterns.ask(brokerActor, new BrokerMessages.BuyStockMessage(market, bankActor), timeout)
+                    .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
+
+            return onSuccess(() -> stockSell, performed -> {
+                return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
+            });
+        })));
     }
 
     // #POST - buyStock
