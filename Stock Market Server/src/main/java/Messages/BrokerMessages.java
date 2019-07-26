@@ -102,4 +102,17 @@ public interface BrokerMessages {
             BuyStockMessage.bankActor = bankActor;
         }
     }
+
+    class GetTotalStockValueMessage implements Serializable {
+        private final Long name;
+
+        public GetTotalStockValueMessage(Long name) {
+            this.name=name;
+        }
+
+        public Long getName() {
+            return name;
+        }
+    }
+
 }

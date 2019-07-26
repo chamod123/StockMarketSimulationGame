@@ -29,6 +29,7 @@ import akka.stream.javadsl.Flow;
 import static akka.http.javadsl.server.PathMatchers.*;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
@@ -74,7 +75,40 @@ public class StockServer extends AllDirectives {
                 , path("brokers", this::postBroker) //#POST - Create Broker
                 , path("buyStock", this::buyStock) //#POST - buyStock
                 , path("sellStock", this::sellStock) //#POST - sellStock
+                , path(segment("allStock"),this::getAllStock)// #GET - get a stock Data
+                , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id)))// #GET - get total stock value for player
         );
+    }
+
+    // #GET - get total stock value for player
+    private Route stockValue(Long id) {
+        return get(() -> {
+            CompletionStage<Optional<Player>> player = Patterns.ask(brokerActor, new BrokerMessages.GetTotalStockValueMessage(id), timeout)
+                    .thenApply(obj -> (Optional<Player>) obj);
+            return onSuccess(() -> player,
+                    performed -> {
+                        if (performed.isPresent())
+                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
+    }
+
+    // #GET - get all stock Data
+    private Route getAllStock() {
+        return get(() -> {
+            CompletionStage<ArrayList<Stock>> stock = Patterns.ask(stockActor, new StockMessages.GetAllStockMessage(), timeout)
+                    .thenApply(obj -> (ArrayList<Stock>) obj);
+            return onSuccess(() -> stock,
+                    performed -> {
+                        if (stock!=null)
+                            return complete(StatusCodes.OK,performed,Jackson.marshaller());
+//                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
     }
 
     // #POST - sellStock

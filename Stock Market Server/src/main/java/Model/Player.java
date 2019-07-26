@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Player {
     private Long id;
     private String name;
-    HashMap<String,Integer> stocks;//stock payer had buy
+    HashMap<String,Integer> stocks;
 
 
 
@@ -17,6 +17,10 @@ public class Player {
     public Player(Long id, String name) {
         this.name = name;
         this.id = id;
+    }
+
+    public HashMap GetPortofolio() {
+        return stocks;
     }
 
     public String getName() {
