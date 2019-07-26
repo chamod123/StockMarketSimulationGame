@@ -8,6 +8,7 @@ import javax.management.AttributeList;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class MarketService {
     public static ArrayList<Stock> stocks;
@@ -39,6 +40,12 @@ public class MarketService {
             }
         }
         throw new Exception("Stock with the name "+name+" does not exsist");
+    }
+
+    //get all stocks
+    public ArrayList<Stock> getStocks() throws Exception {
+        return this.stocks;
+
     }
 
     //get current turn
