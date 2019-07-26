@@ -40,19 +40,19 @@ public class BrokerService {
 
     //buy stock
     public Boolean buyStock(String name, String stock, int quantity, BigDecimal totalvalue) throws Exception {
-        System.out.println("awa 4  " + totalvalue +name);
+        System.out.println("awa 4  " + totalvalue + name);
         //user value need to grater than total value. then can buy stock
-        if (bankService.Balance(name).compareTo(totalvalue)>=0) {
-            Integer count = GetPlayer(name).getStocks().get(stock);;
+        if (bankService.Balance(name).compareTo(totalvalue) >= 0) {
+            Integer count = GetPlayer(name).getStocks().get(stock);
+            ;
             if (count == null) {// item has not buy from that item
                 GetPlayer(name).getStocks().put(stock, quantity);
-            }
-            else {// item has buy from that item
+            } else {// item has buy from that item
                 GetPlayer(name).getStocks().put(stock, count + quantity);
             }
-            Transactions.add(new Transaction(name,marketService.GetCurrentTurn(),"BUY",stock,quantity,totalvalue));
+            Transactions.add(new Transaction(name, marketService.GetCurrentTurn(), "BUY", stock, quantity, totalvalue));
             return true;
-        }else {
+        } else {
             return false;
         }
 
@@ -60,15 +60,14 @@ public class BrokerService {
 
     //sell stock
     public Boolean selltock(String name, String stock, int quantity, BigDecimal totalvalue) throws Exception {
-        Integer stockCount=GetPlayer(name).getStocks().get(stock);
-        if (stockCount!=null && stockCount>=quantity) {
-            GetPlayer(name).getStocks().put(stock, stockCount-quantity);
+        Integer stockCount = GetPlayer(name).getStocks().get(stock);
+        if (stockCount != null && stockCount >= quantity) {
+            GetPlayer(name).getStocks().put(stock, stockCount - quantity);
 //            BigDecimal totalvalue=market.getStock(stock).getStockPrice().multiply(BigDecimal.valueOf(quantity));
 
-            Transactions.add(new Transaction(name,marketService.GetCurrentTurn(),"SELL",stock,quantity,totalvalue));
+            Transactions.add(new Transaction(name, marketService.GetCurrentTurn(), "SELL", stock, quantity, totalvalue));
             return true;
-        }
-        else
+        } else
             return false;
     }
 
@@ -82,21 +81,24 @@ public class BrokerService {
                 return c;
             }
         }
-        throw new Exception("Player with the name "+name+" does not exsist");
+        throw new Exception("Player with the name " + name + " does not exsist");
 
     }
 
     //get stock value
     public BigDecimal GetTotalStockValue(String name) throws Exception {
-        HashMap<String,Integer> stocks=GetPlayer(name).GetPortofolio();
-        BigDecimal total=BigDecimal.valueOf(0);
+        HashMap<String, Integer> stocks = GetPlayer(name).GetPortofolio();
+        BigDecimal total = BigDecimal.valueOf(0);
         for (Map.Entry<String, Integer> entry : stocks.entrySet()) {
-            total=total.add(marketService.getStock(entry.getKey()).getStockPrice().multiply(BigDecimal.valueOf(entry.getValue())));
+            total = total.add(marketService.getStock(entry.getKey()).getStockPrice().multiply(BigDecimal.valueOf(entry.getValue())));
         }
         return total;
     }
 
-
+    //get all transaction
+    public ArrayList<Transaction> getTransactions() {
+        return Transactions;
+    }
 
 
 }

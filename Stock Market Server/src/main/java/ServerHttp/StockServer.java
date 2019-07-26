@@ -81,7 +81,24 @@ public class StockServer extends AllDirectives {
                 , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id)))// #GET - get total stock value for player
                 , path(segment("portofolio").slash(longSegment()), id -> route(getPortofolio(id)))// #GET - get getPortofolio
                 , path(segment("bankBalance").slash(longSegment()), id -> route(getBankBalance(id)))// #GET - get Bank Balance for a player
+                , path(segment("transactions"),this::getAllTransactions)// #GET - get all transaction Data
+
         );
+    }
+
+    // #GET - get all transaction Data
+    private Route getAllTransactions() {
+        return get(() -> {
+            CompletionStage<ArrayList<Transaction>> transaction = Patterns.ask(brokerActor, new BrokerMessages.GetAllTransactionsMessage(), timeout)
+                    .thenApply(obj -> (ArrayList<Transaction>) obj);
+            return onSuccess(() -> transaction,
+                    performed -> {
+                        if (transaction!=null)
+                            return complete(StatusCodes.OK,performed,Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
     }
 
     // #GET - get Bank Balance for a player
