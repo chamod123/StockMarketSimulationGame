@@ -47,5 +47,19 @@ public interface BankMessages {
 
     }
 
+    class DepositMessage implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private final Transaction transaction;
+
+        public DepositMessage(Transaction transaction) {
+            this.transaction = transaction;
+        }
+
+        public Transaction getTransaction() {
+            return transaction;
+        }
+
+    }
+
 
 }

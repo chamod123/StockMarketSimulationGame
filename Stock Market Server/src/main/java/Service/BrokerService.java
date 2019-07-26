@@ -52,11 +52,9 @@ public class BrokerService {
             else {// item has buy from that item
                 GetPlayer(name).getStocks().put(stock, count + quantity);
             }
-            System.out.println("awa 5-1");
             Transactions.add(new Transaction(name,marketService.GetCurrentTurn(),"BUY",stock,quantity,totalvalue));
             return true;
         }else {
-            System.out.println("awa 5-2");
             return false;
         }
 
@@ -68,7 +66,7 @@ public class BrokerService {
         if (stockCount!=null && stockCount>=quantity) {
             GetPlayer(name).getStocks().put(stock, stockCount-quantity);
 //            BigDecimal totalvalue=market.getStock(stock).getStockPrice().multiply(BigDecimal.valueOf(quantity));
-//            bank.Deposit(market.GetCurrentTurn(), name, stock, totalvalue);
+
             Transactions.add(new Transaction(name,marketService.GetCurrentTurn(),"SELL",stock,quantity,totalvalue));
             return true;
         }
