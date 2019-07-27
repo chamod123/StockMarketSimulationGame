@@ -25,6 +25,7 @@ import Assessment from "@material-ui/icons/Assessment";
 import DashboardPage from "views/Dashboard/Dashboard.jsx";
 import UserProfile from "views/UserProfile/UserProfile.jsx";
 import GameBoard from "views/GameBoard/GameBoard.jsx";
+import TransactionHistory from "views/TransactionHistory/TransactionHistory.jsx";
 import Typography from "views/Typography/Typography.jsx";
 import Icons from "views/Icons/Icons.jsx";
 import StocksPage from "views/Stocks/Stocks.jsx";
@@ -56,6 +57,13 @@ const dashboardRoutes = [
     name: "Portfolio",
     icon: LibraryBooks,
     component: Typography,
+    layout: "/admin"
+  },
+  {
+    path: "/TransactionHistory",
+    name: "Transaction History",
+    icon: LibraryBooks,
+    component: TransactionHistory,
     layout: "/admin"
   },
   {
