@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Random;
 
 public class MarketService {
     public static ArrayList<Stock> stocks;
@@ -60,5 +61,40 @@ public class MarketService {
         return this.currentTurn;
     }
 
+    //return future array list
+    public ArrayList<Stock> GetPredictedStocks() {
+        ArrayList<Stock> temp=new ArrayList<Stock>(stocks);
+        Random ran = new Random();
+        int number = ran.nextInt(3)+currentTurn;
+        for (int i = 0; i < stocks.size(); i++) {
+            //get market trend value for current turn
+            int marketValue=marketTrends.get(number);
+            //get sector trend value value for current turn
+            int sectorValue=sectorTrends.get(temp.get(i).getSector()).get(number);
+            int eventValue=ChangeEventStockValue(temp.get(i),number);
+            String sName=temp.get(i).getCompanyName();
+            BigDecimal stockprice=temp.get(i).getStockPrice();
+//            Sector sec=temp.get(i).getSector();
+//            temp.add(new Stock(sName+"Temp",sec,stockprice.add(BigDecimal.valueOf(eventValue+sectorValue+marketValue))));
 
+        }
+        return temp;
+    }
+
+
+    //change stock value based on events
+    public int ChangeEventStockValue(Stock stock,int turn){
+        int eventValue=0;
+        //loop all events
+        for(int i=0;i<eventList.size();i++) {
+            if ((eventList.get(i).getSector() == stock.getSectorObj())||(eventList.get(i).getStock()==stock)) {
+                if (turn >= eventList.get(i).getStartTurn() && turn <= eventList.get(i).getEndTurn()) {
+                    eventValue=eventValue+eventList.get(i).getValue();
+                }
+
+            }
+        }
+
+        return eventValue;
+    }
 }

@@ -133,6 +133,36 @@ public class BrokerService {
             hashmap.put(c.getName(), al);
         }
         return hashmap;
+    }
+
+
+    //return min and max stock in future or current turn
+    public ArrayList<String> Prediction() {
+        ArrayList<Stock> futureStocks = marketService.GetPredictedStocks();
+        String max = futureStocks.get(12).getCompanyName();
+        BigDecimal valMax = futureStocks.get(12).getStockPrice();
+        String min = futureStocks.get(12).getCompanyName();
+        BigDecimal valMin = futureStocks.get(12).getStockPrice();
+        for (int i = 12; i < futureStocks.size(); i++) {
+            if (futureStocks.get(i).getStockPrice().compareTo(valMax) > 0) {
+                max = futureStocks.get(i - 12).getCompanyName();
+                valMax = futureStocks.get(i).getStockPrice();
+
+            }
+
+        }
+        for (int i = 12; i < futureStocks.size(); i++) {
+            if (futureStocks.get(i).getStockPrice().compareTo(valMin) < 0) {
+                min = futureStocks.get(i - 12).getCompanyName();
+                valMin = futureStocks.get(i).getStockPrice();
+
+            }
+
+        }
+        ArrayList<String> prediction = new ArrayList<>();
+        prediction.add(max);
+        prediction.add(min);
+        return prediction;
 
     }
 

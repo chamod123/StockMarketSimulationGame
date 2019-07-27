@@ -213,7 +213,7 @@ public class StockServer extends AllDirectives {
     // #POST - sellStock
     private Route sellStock() {
         return route(post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
-            CompletionStage<BrokerMessages.ActionPerformed> stockSell = Patterns.ask(brokerActor, new BrokerMessages.BuyStockMessage(market, bankActor), timeout)
+            CompletionStage<BrokerMessages.ActionPerformed> stockSell = Patterns.ask(brokerActor, new BrokerMessages.SellStockMessage(market, bankActor), timeout)
                     .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
 
             return onSuccess(() -> stockSell, performed -> {
