@@ -141,5 +141,10 @@ public interface BrokerMessages {
         }
     }
 
+    class StartGameMessage implements Serializable {
+        public StartGameMessage() {
+        }
+    }
+
 
 }
