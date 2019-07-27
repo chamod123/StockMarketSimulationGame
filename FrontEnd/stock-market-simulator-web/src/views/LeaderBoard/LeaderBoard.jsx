@@ -43,9 +43,6 @@ class LeaderBoard extends React.Component {
             <Card>
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Leader Board</h4>
-                {/* <p className={classes.cardCategoryWhite}>
-                  Top 4 Players Achievements
-                </p> */}
               </CardHeader>
               <CardBody>
               <Table
