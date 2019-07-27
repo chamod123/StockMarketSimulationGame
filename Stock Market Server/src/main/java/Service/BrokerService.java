@@ -135,6 +135,33 @@ public class BrokerService {
         return hashmap;
     }
 
+    //computer play
+    public void ComputerPlay() throws Exception {
+        ArrayList<String> predictions = this.Prediction();
+        Random ran = new Random();
+        int number = ran.nextInt(7 - 1 + 1) + 1;
+        if (bankService.Balance("Computer").compareTo(marketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(number))) > 0) {
+            BigDecimal totalvalue = marketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf(number));
+            this.buyStock("Computer", predictions.get(0), number,totalvalue);
+        }
+        Player p = GetPlayer("Computer");
+
+        if (p.getStocks().get(predictions.get(1)) != null) {
+            BigDecimal totalvalue = marketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf( p.getStocks().get(predictions.get(1))));
+            selltock("Computer", predictions.get(1), p.getStocks().get(predictions.get(1)),totalvalue);
+        } else if (bankService.Balance("Computer").compareTo(BigDecimal.valueOf(500)) < 0) {
+
+            for (Map.Entry<String, Integer> entry : p.getStocks().entrySet()) {
+                String key = entry.getKey();
+                int value = entry.getValue();
+                if (value > 0) {
+                    BigDecimal totalvalue1 = marketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf(value));
+                    selltock("Computer", key, value,totalvalue1);
+                    break;
+                }
+            }
+        }
+    }
 
     //return min and max stock in future or current turn
     public ArrayList<String> Prediction() {

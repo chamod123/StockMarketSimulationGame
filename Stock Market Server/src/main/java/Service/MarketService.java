@@ -74,9 +74,9 @@ public class MarketService {
             int eventValue=ChangeEventStockValue(temp.get(i),number);
             String sName=temp.get(i).getCompanyName();
             BigDecimal stockprice=temp.get(i).getStockPrice();
-//            Sector sec=temp.get(i).getSector();
+            Sector sec=temp.get(i).getSectorObj();
+//            need to complet
 //            temp.add(new Stock(sName+"Temp",sec,stockprice.add(BigDecimal.valueOf(eventValue+sectorValue+marketValue))));
-
         }
         return temp;
     }
