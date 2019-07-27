@@ -54,7 +54,7 @@ const dashboardRoutes = [
   },
   {
     path: "/portfolio",
-    name: "Portfolio",
+    name: "Leader Board",
     icon: LibraryBooks,
     component: Typography,
     layout: "/admin"
