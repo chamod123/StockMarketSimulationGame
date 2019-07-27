@@ -1,0 +1,14 @@
+2019-07-27 11:43:28 TestStep:- Stock Market Server - Testing
+2019-07-27 11:43:28 TestStep:- Start of Player Test
+2019-07-27 11:43:28 TestStep:- Creating New Player
+2019-07-27 11:43:28 TestStep:- Player Created Successfully with the Name: Test User and ID: 25
+2019-07-27 11:43:28 TestStep:- Updating Player ID: "25" to "20"
+2019-07-27 11:43:28 TestStep:- Player ID Successfully Updated
+2019-07-27 11:43:28 TestStep:- Updating Player Name: "Test User" to "Test User Revised"
+2019-07-27 11:43:28 TestStep:- Player Name Successfully Updated
+2019-07-27 11:43:28 TestStep:- Verifying PLayer Name
+2019-07-27 11:43:28 TestStep:- Player Name Successfully Verified
+2019-07-27 11:43:28 TestStep:- Verifying PLayer Name
+2019-07-27 11:43:28 TestStep:- Player Name Successfully Verified
+2019-07-27 11:43:28 TestStep:- Player: "Test User Revised" Created & Verified Successfully with an ID: 20
+2019-07-27 11:43:28 TestStep:- End of Player Test
