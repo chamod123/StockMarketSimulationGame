@@ -26,6 +26,10 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.BuyStockMessage.class, handleBuyStock())//buy Stock
                 .match(BrokerMessages.SellStockMessage.class, handleSellStock())//sell Stock
                 .match(BrokerMessages.GetTotalStockValueMessage.class, handleGetStockTotalVal())//total value of Stock in a player
+                .match(BrokerMessages.GetPortofolioMessage.class, handleGetPortofolio())//get Portofolio
+                .match(BrokerMessages.GetAllTransactionsMessage.class, getAllTransactions())//get all transaction Data
+                .match(BrokerMessages.GetWinnerMessage.class, getWinner())//get Winner
+                .match(BrokerMessages.GetAllPlayerMessage.class, getAllPlayers())//get all Players
                 .build();
     }
 
@@ -84,10 +88,38 @@ public class BrokerActor extends AbstractActor {
     private FI.UnitApply<BrokerMessages.GetTotalStockValueMessage> handleGetStockTotalVal() {
         return getTotalStockValueMessage -> {
             //passe username,stock, quantity to buy the stock for that user
-            brokerService.GetTotalStockValue(getTotalStockValueMessage.getName().toString());
+
+            sender().tell(brokerService.GetTotalStockValue(getTotalStockValueMessage.getName().toString()),getSelf());
 
         };
     }
 
+    //get Portofolio
+    private FI.UnitApply<BrokerMessages.GetPortofolioMessage> handleGetPortofolio() {
+        return getPortofolioMessage -> {
+            sender().tell(brokerService.GetPlayer(getPortofolioMessage.getName().toString()).GetPortofolio(),getSelf());
+        };
+    }
+
+    //get all transaction Data
+    private FI.UnitApply<BrokerMessages.GetAllTransactionsMessage> getAllTransactions() {
+        return getAllTransactionsMessage -> {
+            sender().tell(brokerService.getTransactions(),getSelf());
+        };
+    }
+
+    //get winner
+    private FI.UnitApply<BrokerMessages.GetWinnerMessage> getWinner() {
+        return getWinnerMessage -> {
+            sender().tell(brokerService.getTransactions(),getSelf());
+        };
+    }
+
+    //get All Players
+    private FI.UnitApply<BrokerMessages.GetAllPlayerMessage> getAllPlayers() {
+        return getAllPlayerMessage -> {
+            sender().tell(brokerService.getTransactions(),getSelf());
+        };
+    }
 
 }

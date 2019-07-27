@@ -58,7 +58,19 @@ public interface BankMessages {
         public Transaction getTransaction() {
             return transaction;
         }
+    }
 
+    //get Bank Balance for a player
+    class GetBankBalanceMessage implements Serializable {
+        private final Long name;
+
+        public GetBankBalanceMessage(Long name) {
+            this.name=name;
+        }
+
+        public Long getName() {
+            return name;
+        }
     }
 
 

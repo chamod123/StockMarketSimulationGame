@@ -1,7 +1,6 @@
 package Messages;
 
 
-
 import Model.Broker;
 import Model.Market;
 import Model.Player;
@@ -43,7 +42,7 @@ public interface BrokerMessages {
         private final Long brokerId;
 
         public GetBrokerMessage(Long brokerId) {
-            this.brokerId =brokerId ;
+            this.brokerId = brokerId;
         }
 
         public Long getBrokerId() {
@@ -56,8 +55,8 @@ public interface BrokerMessages {
         private static ActorRef bankActor;
 
         public BuyStockMessage(Market market, ActorRef bankActor) {
-            this.market=market;
-            this.bankActor=bankActor;
+            this.market = market;
+            this.bankActor = bankActor;
         }
 
         public Market getMarket() {
@@ -82,8 +81,8 @@ public interface BrokerMessages {
         private static ActorRef bankActor;
 
         public SellStockMessage(Market market, ActorRef bankActor) {
-            this.market=market;
-            this.bankActor=bankActor;
+            this.market = market;
+            this.bankActor = bankActor;
         }
 
         public Market getMarket() {
@@ -107,12 +106,40 @@ public interface BrokerMessages {
         private final Long name;
 
         public GetTotalStockValueMessage(Long name) {
-            this.name=name;
+            this.name = name;
         }
 
         public Long getName() {
             return name;
         }
     }
+
+    class GetPortofolioMessage implements Serializable {
+        private final Long name;
+
+        public GetPortofolioMessage(Long name) {
+            this.name = name;
+        }
+
+        public Long getName() {
+            return name;
+        }
+    }
+
+    class GetAllTransactionsMessage implements Serializable {
+        public GetAllTransactionsMessage() {
+        }
+    }
+
+    class GetWinnerMessage implements Serializable {
+        public GetWinnerMessage() {
+        }
+    }
+
+    class GetAllPlayerMessage implements Serializable {
+        public GetAllPlayerMessage() {
+        }
+    }
+
 
 }
