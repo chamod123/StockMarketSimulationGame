@@ -4,11 +4,9 @@ import Actors.BankActor;
 import Actors.BrokerActor;
 import Actors.PlayerActor;
 import Actors.StockActor;
-import Messages.BankMessages;
-import Messages.BrokerMessages;
-import Messages.PlayerMessages;
+import Actors.AnalystActor;
+import Messages.*;
 import Model.*;
-import Messages.StockMessages;
 import Model.Broker;
 import Model.Stock;
 import akka.NotUsed;
@@ -43,6 +41,7 @@ public class StockServer extends AllDirectives {
     private static ActorRef brokerActor;
     private static ActorRef stockActor;
     private static ActorRef bankActor;
+    private static ActorRef analystActor;
 
     public StockServer(ActorSystem system) {
         server = system.actorOf(ServerActor.props());
@@ -61,6 +60,7 @@ public class StockServer extends AllDirectives {
         brokerActor = system.actorOf(Props.create(BrokerActor.class), "brokerActor");
         stockActor = system.actorOf(Props.create(StockActor.class), "stockActor");
         bankActor = system.actorOf(Props.create(BankActor.class), "bankActor");
+        analystActor = system.actorOf(Props.create(AnalystActor.class), "analystActor");
     }
 
     protected Route createRoute() {
@@ -84,9 +84,23 @@ public class StockServer extends AllDirectives {
                 , path(segment("transactions"), this::getAllTransactions)// #GET - get all transaction Data
                 , path(segment("winner"), this::getWinner)// #GET - get winner
                 , path(segment("allPlayers"), this::getAllPlayers)// #GET - get all Players
+                , path("start", this::StartGame) // #POST - Start Game
 
 
         );
+    }
+
+    // #POST - Start Game
+    private Route StartGame() {
+        return route(
+                post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
+            CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(analystActor, new AnalystMessages.StartGameMessage(), timeout)
+                    .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+
+            return onSuccess(() -> startGame, performed -> {
+                return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
+            });
+        })));
     }
 
     // #GET - get all Players
@@ -199,7 +213,7 @@ public class StockServer extends AllDirectives {
     // #POST - sellStock
     private Route sellStock() {
         return route(post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
-            CompletionStage<BrokerMessages.ActionPerformed> stockSell = Patterns.ask(brokerActor, new BrokerMessages.BuyStockMessage(market, bankActor), timeout)
+            CompletionStage<BrokerMessages.ActionPerformed> stockSell = Patterns.ask(brokerActor, new BrokerMessages.SellStockMessage(market, bankActor), timeout)
                     .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
 
             return onSuccess(() -> stockSell, performed -> {

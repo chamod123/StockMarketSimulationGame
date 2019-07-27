@@ -8,20 +8,20 @@ public class Stock {
     private BigDecimal stockPrice;
     private String companyName;
     private Long sector;
-    private Sector sector1;
+    private Sector sectorObj;
 //    private static int stockIdCounter = 0;
 
-    public Stock(){
-        this.stockId= null;
-        this.stockPrice=null;
-        this.companyName="";
-        this.sector=null;
+    public Stock() {
+        this.stockId = null;
+        this.stockPrice = null;
+        this.companyName = "";
+        this.sector = null;
     }
 
-    public Stock(Long stockId, BigDecimal stockPrice, String companyName, Long sector){
-        this.stockId=stockId;
-        this.stockPrice=stockPrice;
-        this.companyName=companyName;
+    public Stock(Long stockId, BigDecimal stockPrice, String companyName, Long sector) {
+        this.stockId = stockId;
+        this.stockPrice = stockPrice;
+        this.companyName = companyName;
         this.sector = sector;
     }
 
@@ -55,5 +55,13 @@ public class Stock {
 
     public void setSector(Long sector) {
         this.sector = sector;
+    }
+
+    public Sector getSectorObj() {
+        return sectorObj;
+    }
+
+    public void setSectorObj(Sector sectorObj) {
+        this.sectorObj = sectorObj;
     }
 }

@@ -24,7 +24,6 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField';
 import LinearProgressBar from 'components/ProgressIndicators/LinearProgressBar'
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Timer from "./Timer.jsx"
 import Chart from './Chart.jsx'
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -40,6 +39,7 @@ class GameBoard extends React.Component {
       selectedSectorIndex: 0,
       selectedStock: 0,
       isOnMyStocks: false,
+      noOfSharesToBuy: 0
     };
   }
 
@@ -71,12 +71,19 @@ class GameBoard extends React.Component {
   handleStockSelect = (selectedstockIndex, selectedSectorIndex) => {
     this.setState({
       selectedStock: selectedstockIndex,
-      selectedSectorIndex: selectedSectorIndex
+      selectedSectorIndex: selectedSectorIndex,
+      noOfSharesToBuy:0
     })
   }
 
   handleToggleOnMyStock = ()=>{
     this.loadStockDataFromAPI()
+  }
+
+  handleChangeNoOfSharesToBuy = (event) => {
+    this.setState({
+      noOfSharesToBuy:event.target.value
+    })
   }
 
   getTableData = (array) => {
@@ -108,9 +115,15 @@ class GameBoard extends React.Component {
     return sector + " : " + stock
   }
 
+  getShareValueToBeBought = () => {
+    const { selectedSectorIndex, selectedStock, stockArray, noOfSharesToBuy } = this.state;
+    var stockPrice = stockArray[selectedSectorIndex].stocks[selectedStock].stockPrice
+    return stockPrice*noOfSharesToBuy
+  }
+
   render() {
     const { classes } = this.props;
-    const { stockArray, chartData, isOnMyStocks } = this.state;
+    const { stockArray, chartData, isOnMyStocks, noOfSharesToBuy } = this.state;
     return (
       <div>
         <GridContainer>
@@ -166,7 +179,7 @@ class GameBoard extends React.Component {
             <CardBody>
               {stockArray.length === 3 ? <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
-                  <Typography>{isOnMyStocks?"Your shares":"Share market"}</Typography>
+                  <Typography>{isOnMyStocks?"Portfolio":"Stocks"}</Typography>
                   <CustomTabs
                     headerColor="primary"
                     tabs={
@@ -231,25 +244,21 @@ class GameBoard extends React.Component {
                           <TextField
                             id="outlined-adornment-amount"
                             variant="outlined"
-                            label="Amount"
+                            label="shares"
                             type="number"
                             inputProps={{ min: "0", max: "100", step: "1" }}
-                            // value={values.amount}
-                            // onChange={handleChange('amount')}
-                            InputProps={{
-                              startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                            }}
+                            value={noOfSharesToBuy}
+                            onChange={this.handleChangeNoOfSharesToBuy}
                           />
                         </GridItem>
-                        <GridItem><Button color="primary">Buy</Button></GridItem>
-                        {isOnMyStocks?
-                        <GridItem><Button color="primary">sell</Button></GridItem>:null}
+                        {noOfSharesToBuy > 0 ? <GridItem style={{ "align-self": 'center' }}><Typography>$ {this.getShareValueToBeBought()}</Typography></GridItem> : null}
+                        <GridItem><Button disabled={noOfSharesToBuy === 0} color="primary"> {isOnMyStocks ? "Sell" : "Buy"}</Button></GridItem>
                       </GridContainer>
                     </CardBody>
                     <CardFooter chart>
                     </CardFooter>
                   </Card>
-                  <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks?"Buy New shares":"View your shares"}</Button>
+                  <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks?"Buy New shares":"View your portfolio"}</Button>
                 </GridItem>
               </GridContainer> : <LinearProgressBar></LinearProgressBar>}
               <br />
