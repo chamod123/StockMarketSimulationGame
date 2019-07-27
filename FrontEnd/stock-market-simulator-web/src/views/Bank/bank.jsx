@@ -16,7 +16,7 @@
 
 */
 /*eslint-disable*/
-import React from "react";
+import React, { Component } from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -32,6 +32,8 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 
 import iconsStyle from "assets/jss/material-dashboard-react/views/iconsStyle.jsx";
+import Danger from "components/Typography/Danger";
+
 
 const styles = {
   cardCategoryWhite: {
@@ -61,7 +63,7 @@ function Icons(props) {
         <GridItem xs={12} sm={12} md={6}>
               <Card>
               <CardBody>
-              <CardHeader color="primary">
+              <CardHeader color="success">
               <h5 className={classes.cardTitleWhite}>Edit Credit Card Info</h5>
             </CardHeader>
             <GridContainer>
@@ -69,6 +71,7 @@ function Icons(props) {
                   <CustomInput
                     labelText="Holder's Name"
                     id="holder_name"
+                    type=""
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -78,6 +81,7 @@ function Icons(props) {
                   <CustomInput
                     labelText="Card Number"
                     id="card_number"
+                    type="number"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -87,8 +91,9 @@ function Icons(props) {
                 <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
-                    labelText="Expire Date"
-                    id="expire_date"
+                    labelText="Expiry Date"
+                    id="expiry_date"
+               //     type="date/time"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -98,6 +103,7 @@ function Icons(props) {
                   <CustomInput
                     labelText="CVV"
                     id="cvv"
+                    type="number"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -106,23 +112,33 @@ function Icons(props) {
               </GridContainer>
               </CardBody>
               <CardFooter>
-              <Button color="primary">Update Credit Card Info</Button>
+              <Button color="success">Update Credit Card Info</Button>
              </CardFooter>
            </Card>      
         </GridItem>
       
-      <GridItem xs={12} sm={12} md={6}>
+      <GridItem xs={12} sm={12} md={5}>
       <Card>
               <CardBody>
+              <CardHeader color="danger">
+              <h5 className={classes.cardTitleWhite}>Current Account Balance</h5>
+            </CardHeader>
+            <GridContainer>
+            <h4 className={classes.cardCategory}><Danger>$200</Danger></h4>
+         </GridContainer>
+            </CardBody>
+        </Card>   
+        <Card>
+        <CardBody>
               <CardHeader color="primary">
               <h5 className={classes.cardTitleWhite}>Transfer Money</h5>
             </CardHeader>
-            <GridContainer>
-            <h4 className={classes.cardTitle}>Current Balance In Your Account :<small>$20</small></h4>
-                <GridItem xs={12} sm={12} md={6}>
+            <GridContainer> 
+                <GridItem xs={12} sm={12} md={5}>
                   <CustomInput
                     labelText="Amount"
                     id="amount"
+                    type="number"
                     formControlProps={{
                       fullWidth: true
                     }}
