@@ -141,6 +141,11 @@ public interface BrokerMessages {
         }
     }
 
+    class NextTurnMessage implements Serializable {
+        public NextTurnMessage() {
+        }
+    }
+
     class StartGameMessage implements Serializable {
         public StartGameMessage() {
         }

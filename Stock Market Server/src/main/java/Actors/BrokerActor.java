@@ -31,6 +31,7 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.GetWinnerMessage.class, getWinner())//get Winner
                 .match(BrokerMessages.GetAllPlayerMessage.class, getAllPlayers())//get all Players
                 .match(BrokerMessages.StartGameMessage.class, startGame())//Start game
+                .match(BrokerMessages.NextTurnMessage.class, nextTurn())//Start game
                 .build();
     }
 
@@ -127,6 +128,14 @@ public class BrokerActor extends AbstractActor {
     private FI.UnitApply<BrokerMessages.StartGameMessage> startGame() {
         return startGameMessage -> {
             sender().tell( brokerService.CreateAccount("Computer"),getSelf());
+        };
+    }
+
+    //next Turn
+    private FI.UnitApply<BrokerMessages.NextTurnMessage> nextTurn() {
+        return nextTurnMessage -> {
+            brokerService.ComputerPlay();
+            sender().tell(new BrokerMessages.ActionPerformed(String.format("Computer Player created")), getSelf());
         };
     }
 

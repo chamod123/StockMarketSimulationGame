@@ -35,7 +35,9 @@ public class AnalystActor extends AbstractActor {
     private FI.UnitApply<AnalystMessages.NextTurnMessage> nextTurn() {
         return nextTurnMessage -> {
             if(marketService.GetCurrentTurn()<marketService.turns) {
-                brokerService.ComputerPlay();
+                //call to brocker actor to start game
+                nextTurnMessage.getBrokerActor().tell(new BrokerMessages.NextTurnMessage(),getSelf());
+
                 marketService.NextTurn();
             }
             marketService.GetCurrentTurn();
