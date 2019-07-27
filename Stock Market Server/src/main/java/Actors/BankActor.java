@@ -13,13 +13,14 @@ public class BankActor extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(BankMessages.CreateAccountMessage.class, CreateAccount())
-                .match(BankMessages.WithdrawMessage.class, Withdraw())//Withdraw from player
-                .match(BankMessages.DepositMessage.class, Deposit())//Deposit from player
+                .match(BankMessages.CreateAccountMessage.class, createAccount())
+                .match(BankMessages.WithdrawMessage.class, withdraw())//Withdraw from player
+                .match(BankMessages.DepositMessage.class, deposit())//Deposit from player
+                .match(BankMessages.GetBankBalanceMessage.class, getBankBalance())//get Bank Balance for a player
                 .build();
     }
 
-    private FI.UnitApply<BankMessages.CreateAccountMessage> CreateAccount() {
+    private FI.UnitApply<BankMessages.CreateAccountMessage> createAccount() {
         return createAccountMessage -> {
             bankService.CreateAccount(createAccountMessage.getAccount());
             sender().tell(new BankMessages.ActionPerformed(String.format("Player %s Account created.", createAccountMessage.getAccount().getPlayerId()
@@ -28,7 +29,7 @@ public class BankActor extends AbstractActor {
     }
 
     //Withdraw from player
-    private FI.UnitApply<BankMessages.WithdrawMessage> Withdraw() {
+    private FI.UnitApply<BankMessages.WithdrawMessage> withdraw() {
         System.out.println("awa 7");
         return withdrawMessage -> {
             //Withdraw from player
@@ -39,13 +40,20 @@ public class BankActor extends AbstractActor {
     }
 
     //Deposit from player
-    private FI.UnitApply<BankMessages.DepositMessage> Deposit() {
+    private FI.UnitApply<BankMessages.DepositMessage> deposit() {
         System.out.println("awa 7");
         return depositMessage -> {
             //Withdraw from player
             bankService.Deposit(depositMessage.getTransaction().getName(),depositMessage.getTransaction().getAmount());
             sender().tell(new BankMessages.ActionPerformed(String.format("Withdraw for %s .", depositMessage.getTransaction().getName()
             )), getSelf());
+        };
+    }
+
+    //get Bank Balance for a player
+    private FI.UnitApply<BankMessages.GetBankBalanceMessage> getBankBalance() {
+        return getBankBalanceMessage -> {
+            sender().tell(bankService.Balance(getBankBalanceMessage.getName().toString()),getSelf());
         };
     }
 

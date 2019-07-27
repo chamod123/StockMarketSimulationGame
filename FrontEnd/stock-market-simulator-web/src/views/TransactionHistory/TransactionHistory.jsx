@@ -42,22 +42,28 @@ class TransactionHistory extends React.Component {
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Leader Board</h4>
+                <h4 className={classes.cardTitleWhite}>Transaction History</h4>
                 {/* <p className={classes.cardCategoryWhite}>
                   Top 4 Players Achievements
                 </p> */}
               </CardHeader>
               <CardBody>
-              <Table
+                <Table
                   tableHeaderColor="warning"
-                  tableHead={["ID", "Name", "Won Prize"]}
+                  tableHead={["Buyer/Seller", "Turn", "Type", "Stock Name","Quantity","Transaction"]}
                   tableData={[
-                    ["1", "Mick Peterson", "$36,738"],
-                    ["2", "Damon Silvester", "$23,789"],
-                    ["3", "Rick Panday", "$56,142"],
-                    ["4", "Philip Chaney", "$38,735"]
+                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
+                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
+                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
+                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
+                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
+                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
+                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
+                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
+                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
+                    ["Computer", "0", "Buy","Samsung","1","Transaction"]
+                   
                   ]}
-                
                 />
               </CardBody>
             </Card>

@@ -10,9 +10,13 @@ public class Market {
     String username;
     String stock;
     int quantity;
+
     private int currentTurn=0;
 
-    public Market() {
+    public Market(int turns) {
+        this.turns=turns;
+    }
+         public Market() {
         this.username = "";
         this.stock = "";
     }
@@ -47,6 +51,12 @@ public class Market {
         this.quantity = quantity;
     }
 
+    public int getTurns() {
+        return turns;
+    }
 
+    public void setTurns(int turns) {
+        this.turns = turns;
+    }
 
 }

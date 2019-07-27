@@ -4,10 +4,9 @@ import Actors.BankActor;
 import Actors.BrokerActor;
 import Actors.PlayerActor;
 import Actors.StockActor;
-import Messages.BrokerMessages;
-import Messages.PlayerMessages;
+import Actors.AnalystActor;
+import Messages.*;
 import Model.*;
-import Messages.StockMessages;
 import Model.Broker;
 import Model.Stock;
 import akka.NotUsed;
@@ -30,6 +29,7 @@ import static akka.http.javadsl.server.PathMatchers.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
@@ -41,6 +41,7 @@ public class StockServer extends AllDirectives {
     private static ActorRef brokerActor;
     private static ActorRef stockActor;
     private static ActorRef bankActor;
+    private static ActorRef analystActor;
 
     public StockServer(ActorSystem system) {
         server = system.actorOf(ServerActor.props());
@@ -59,6 +60,7 @@ public class StockServer extends AllDirectives {
         brokerActor = system.actorOf(Props.create(BrokerActor.class), "brokerActor");
         stockActor = system.actorOf(Props.create(StockActor.class), "stockActor");
         bankActor = system.actorOf(Props.create(BankActor.class), "bankActor");
+        analystActor = system.actorOf(Props.create(AnalystActor.class), "analystActor");
     }
 
     protected Route createRoute() {
@@ -75,10 +77,107 @@ public class StockServer extends AllDirectives {
                 , path("brokers", this::postBroker) //#POST - Create Broker
                 , path("buyStock", this::buyStock) //#POST - buyStock
                 , path("sellStock", this::sellStock) //#POST - sellStock
-                , path(segment("allStock"),this::getAllStock)// #GET - get a stock Data
+                , path(segment("allStock"), this::getAllStock)// #GET - get a stock Data
                 , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id)))// #GET - get total stock value for player
+                , path(segment("portofolio").slash(longSegment()), id -> route(getPortofolio(id)))// #GET - get getPortofolio
+                , path(segment("bankBalance").slash(longSegment()), id -> route(getBankBalance(id)))// #GET - get Bank Balance for a player
+                , path(segment("transactions"), this::getAllTransactions)// #GET - get all transaction Data
+                , path(segment("winner"), this::getWinner)// #GET - get winner
+                , path(segment("allPlayers"), this::getAllPlayers)// #GET - get all Players
+                , path("start", this::StartGame) // #POST - Start Game
+
+
         );
     }
+
+    // #POST - Start Game
+    private Route StartGame() {
+        return route(
+                post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
+            CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(analystActor, new AnalystMessages.StartGameMessage(), timeout)
+                    .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+
+            return onSuccess(() -> startGame, performed -> {
+                return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
+            });
+        })));
+    }
+
+    // #GET - get all Players
+    private Route getAllPlayers() {
+        return get(() -> {
+            CompletionStage<Optional<Player>> transaction = Patterns.ask(brokerActor, new BrokerMessages.GetAllPlayerMessage(), timeout)
+                    .thenApply(obj -> (Optional<Player>) obj);
+            return onSuccess(() -> transaction,
+                    performed -> {
+                        if (transaction != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
+    }
+
+    // #GET - get winner
+    private Route getWinner() {
+        return get(() -> {
+            CompletionStage<Optional<Player>> transaction = Patterns.ask(brokerActor, new BrokerMessages.GetWinnerMessage(), timeout)
+                    .thenApply(obj -> (Optional<Player>) obj);
+            return onSuccess(() -> transaction,
+                    performed -> {
+                        if (transaction != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
+    }
+
+    // #GET - get all transaction Data
+    private Route getAllTransactions() {
+        return get(() -> {
+            CompletionStage<ArrayList<Transaction>> transaction = Patterns.ask(brokerActor, new BrokerMessages.GetAllTransactionsMessage(), timeout)
+                    .thenApply(obj -> (ArrayList<Transaction>) obj);
+            return onSuccess(() -> transaction,
+                    performed -> {
+                        if (transaction != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
+    }
+
+    // #GET - get Bank Balance for a player
+    private Route getBankBalance(Long id) {
+        return get(() -> {
+            CompletionStage<Optional<Bank>> bank = Patterns.ask(bankActor, new BankMessages.GetBankBalanceMessage(id), timeout)
+                    .thenApply(obj -> (Optional<Bank>) obj);
+            return onSuccess(() -> bank,
+                    performed -> {
+                        if (performed.isPresent())
+                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
+    }
+
+    // #GET - get getPortofolio
+    private Route getPortofolio(Long id) {
+        return get(() -> {
+            CompletionStage<HashMap<String, Integer>> player = Patterns.ask(brokerActor, new BrokerMessages.GetPortofolioMessage(id), timeout)
+                    .thenApply(obj -> (HashMap<String, Integer>) obj);
+            return onSuccess(() -> player,
+                    performed -> {
+                        if (player != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
+    }
+
 
     // #GET - get total stock value for player
     private Route stockValue(Long id) {
@@ -102,8 +201,8 @@ public class StockServer extends AllDirectives {
                     .thenApply(obj -> (ArrayList<Stock>) obj);
             return onSuccess(() -> stock,
                     performed -> {
-                        if (stock!=null)
-                            return complete(StatusCodes.OK,performed,Jackson.marshaller());
+                        if (stock != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
 //                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
                         else
                             return complete(StatusCodes.NOT_FOUND);
@@ -216,8 +315,6 @@ public class StockServer extends AllDirectives {
                     });
         });
     }
-
-
 
 
     //#GET - get a Player Data

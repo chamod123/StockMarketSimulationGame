@@ -1,13 +1,21 @@
 package Model;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 public class Player {
-    private Long id;
+    private Long id = null;
     private String name;
     HashMap<String,Integer> stocks;
 
-
+    public Player(String name) {
+        this.name = name;
+       if(id==null){
+           id=1l;
+       }else{
+           id+=1;
+       }
+    }
 
     public Player() {
         this.name = "";
