@@ -103,4 +103,29 @@ public class MarketService {
 
         return eventValue;
     }
+
+
+    //go to next turn
+    public int NextTurn() {
+        this.currentTurn++;
+        ChangeStockValues();
+        return GetCurrentTurn();
+    }
+
+
+    //change stock value based on event market and sector trends
+    public void ChangeStockValues() {
+        for (int i = 0; i < stocks.size(); i++) {
+            //get market trend value for current turn
+            int marketValue=marketTrends.get(currentTurn);
+            //get sector trend value value for current turn
+            int sectorValue=sectorTrends.get(stocks.get(i).getSector()).get(currentTurn);
+            int eventValue=ChangeEventStockValue(stocks.get(i),currentTurn);
+            BigDecimal stockprice=stocks.get(i).getStockPrice();
+            stocks.get(i).setStockPrice(stockprice.add(BigDecimal.valueOf(eventValue+sectorValue+marketValue)));
+            if (stocks.get(i).getStockPrice().compareTo(BigDecimal.ZERO)<=0) {
+                stocks.get(i).setStockPrice(BigDecimal.valueOf(1));
+            }
+        }
+    }
 }
