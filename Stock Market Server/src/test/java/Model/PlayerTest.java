@@ -62,9 +62,9 @@ public class PlayerTest {
 
 	@Test
 	public void verifyUpdatedPlayerId() {
-		log.debug("Verifying PLayer Name");
+		log.debug("Verifying PLayer ID");
 		assertEquals(player.getId().toString(), "20");
-		log.debug("Player Name Successfully Verified");
+		log.debug("Player ID Successfully Verified");
 	}
 
 	@AfterClass
