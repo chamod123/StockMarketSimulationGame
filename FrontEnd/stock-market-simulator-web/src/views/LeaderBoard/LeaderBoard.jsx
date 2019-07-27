@@ -21,7 +21,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 
-class TransactionHistory extends React.Component {
+class LeaderBoard extends React.Component {
   state = {
     value: 0
   };
@@ -68,8 +68,8 @@ class TransactionHistory extends React.Component {
   }
 }
 
-TransactionHistory.propTypes = {
+LeaderBoard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(TransactionHistory);
+export default withStyles(dashboardStyle)(LeaderBoard);
