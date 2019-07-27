@@ -26,16 +26,21 @@ public class MarketService {
         marketTrends = new ArrayList<>();
         sectorTrends = new HashMap<>();
         //add stocks
-        stocks.add(new Stock(1l, new BigDecimal(10.00), "Google", 1l));
-        stocks.add(new Stock(5l, new BigDecimal(20.00), "Mail", 2l));
-        stocks.add(new Stock(9l, new BigDecimal(30.00), "Google", 3l));
-        stocks.add(new Stock(10l, new BigDecimal(31.00), "Mail", 3l));
-        stocks.add(new Stock(11l, new BigDecimal(32.00), "BMW", 3l));
-        stocks.add(new Stock(12l, new BigDecimal(33.00), "Apple", 3l));
-        stocks.add(new Stock(13l, new BigDecimal(40.00), "Google", 4l));
-        stocks.add(new Stock(14l, new BigDecimal(41.00), "Mail", 4l));
-        stocks.add(new Stock(15l, new BigDecimal(42.00), "BMW", 4l));
-        stocks.add(new Stock(16l, new BigDecimal(43.00), "Apple", 4l));
+        stocks.add(new Stock("Apple",Sector.Technology,new BigDecimal(50)));
+        stocks.add(new Stock("Microsoft",Sector.Technology,new BigDecimal(44.)));
+        stocks.add(new Stock("Google",Sector.Technology,new BigDecimal(52.)));
+
+        stocks.add(new Stock("Allianz",Sector.Finance,new BigDecimal(39.)));
+        stocks.add(new Stock("ICBC",Sector.Finance,new BigDecimal(45)));
+        stocks.add(new Stock("AXA",Sector.Finance,new BigDecimal(55)));
+
+        stocks.add(new Stock("SERV",Sector.ConsumerServices,new BigDecimal(33.5)));
+        stocks.add(new Stock("BID",Sector.ConsumerServices,new BigDecimal(36.5)));
+        stocks.add(new Stock("HRB",Sector.ConsumerServices,new BigDecimal(38)));
+
+        stocks.add(new Stock("Volkswagen",Sector.Manufacturing,new BigDecimal(55)));
+        stocks.add(new Stock("Samsung",Sector.Manufacturing,new BigDecimal(56)));
+        stocks.add(new Stock("Daimler",Sector.Manufacturing,new BigDecimal(34)));
 
     }
 
@@ -74,9 +79,10 @@ public class MarketService {
             int eventValue=ChangeEventStockValue(temp.get(i),number);
             String sName=temp.get(i).getCompanyName();
             BigDecimal stockprice=temp.get(i).getStockPrice();
-            Sector sec=temp.get(i).getSectorObj();
+            Sector sec=temp.get(i).getSector();
 //            need to complet
-//            temp.add(new Stock(sName+"Temp",sec,stockprice.add(BigDecimal.valueOf(eventValue+sectorValue+marketValue))));
+            temp.add(new Stock(sName+"Temp",sec,stockprice.add(BigDecimal.valueOf(eventValue+sectorValue+marketValue))));
+
         }
         return temp;
     }
@@ -87,7 +93,7 @@ public class MarketService {
         int eventValue=0;
         //loop all events
         for(int i=0;i<eventList.size();i++) {
-            if ((eventList.get(i).getSector() == stock.getSectorObj())||(eventList.get(i).getStock()==stock)) {
+            if ((eventList.get(i).getSector() == stock.getSector())||(eventList.get(i).getStock()==stock)) {
                 if (turn >= eventList.get(i).getStartTurn() && turn <= eventList.get(i).getEndTurn()) {
                     eventValue=eventValue+eventList.get(i).getValue();
                 }

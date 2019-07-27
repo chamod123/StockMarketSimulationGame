@@ -27,7 +27,7 @@ public class StockService {
 
     public static Optional<Stock> getStock(Long id) {
         return stocks.stream()
-                .filter(stock -> stock.getStockId()
+                .filter(stock -> Long.valueOf(stock.getStockId())
                         .equals(id))
                 .findFirst();
     }

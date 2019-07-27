@@ -4,33 +4,26 @@ package Model;
 import java.math.BigDecimal;
 
 public class Stock {
-    private Long stockId;
+    private int stockId;
     private BigDecimal stockPrice;
     private String companyName;
-    private Long sector;
-    private Sector sectorObj;
-//    private static int stockIdCounter = 0;
+    private Sector sector;
+    private static int stockIdCounter = 0;
 
     public Stock() {
-        this.stockId = null;
+        this.stockId = 0;
         this.stockPrice = null;
         this.companyName = "";
         this.sector = null;
     }
 
-    public Stock(Long stockId, BigDecimal stockPrice, String companyName, Long sector) {
+    public Stock(String companyName, Sector sector, BigDecimal stockPrice) {
+        this.stockId = stockIdCounter++;
+        ;
         this.stockId = stockId;
         this.stockPrice = stockPrice;
         this.companyName = companyName;
         this.sector = sector;
-    }
-
-    public Long getStockId() {
-        return stockId;
-    }
-
-    public void setStockId(Long stockId) {
-        this.stockId = stockId;
     }
 
     public BigDecimal getStockPrice() {
@@ -49,19 +42,19 @@ public class Stock {
         this.companyName = companyName;
     }
 
-    public Long getSector() {
+    public Sector getSector() {
         return sector;
     }
 
-    public void setSector(Long sector) {
+    public void setSector(Sector sector) {
         this.sector = sector;
     }
 
-    public Sector getSectorObj() {
-        return sectorObj;
+    public int getStockId() {
+        return stockId;
     }
 
-    public void setSectorObj(Sector sectorObj) {
-        this.sectorObj = sectorObj;
+    public void setStockId(int stockId) {
+        this.stockId = stockId;
     }
 }
