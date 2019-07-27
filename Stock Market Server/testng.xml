@@ -17,4 +17,9 @@
 			<class name="Model.BrokerTest" />
 		</classes>
 	</test>
+	<test thread-count="5" name="StockTest" parallel="classes">
+		<classes>
+			<class name="Model.StockTest" />
+		</classes>
+	</test>
 </suite> 
