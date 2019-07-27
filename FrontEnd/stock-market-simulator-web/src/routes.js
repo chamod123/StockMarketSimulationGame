@@ -21,12 +21,14 @@ import Person from "@material-ui/icons/Person";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import BubbleChart from "@material-ui/icons/BubbleChart";
 import Assessment from "@material-ui/icons/Assessment";
+import Money from "@material-ui/icons/Money";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.jsx";
 import UserProfile from "views/UserProfile/UserProfile.jsx";
 import GameBoard from "views/GameBoard/GameBoard.jsx";
+import TransactionHistory from "views/TransactionHistory/TransactionHistory.jsx";
 import Typography from "views/Typography/Typography.jsx";
-import Icons from "views/Icons/Icons.jsx";
+import Bank from "views/Bank/bank";
 import StocksPage from "views/Stocks/Stocks.jsx";
 
 const dashboardRoutes = [
@@ -53,16 +55,23 @@ const dashboardRoutes = [
   },
   {
     path: "/portfolio",
-    name: "Portfolio",
+    name: "Leader Board",
     icon: LibraryBooks,
     component: Typography,
     layout: "/admin"
   },
   {
+    path: "/TransactionHistory",
+    name: "Transaction History",
+    icon: LibraryBooks,
+    component: TransactionHistory,
+    layout: "/admin"
+  },
+  {
     path: "/bank",
     name: "Bank",
-    icon: BubbleChart,
-    component: Icons,
+    icon: Money,
+    component: Bank,
     layout: "/admin"
   },
   {

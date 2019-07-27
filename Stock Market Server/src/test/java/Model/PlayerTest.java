@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 public class PlayerTest {
 
 	public Logger log;
+	Player player;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -28,21 +29,48 @@ public class PlayerTest {
 	@Test
 	public void createPlayer() {
 		try {
-			log.debug("Start of Create Player");
-			Player player = new Player((long) 25, "Deelaka");
-			assertEquals(player.getName(), "Deelaka");
-			assertEquals(player.getId().toString(), "25");
-			log.debug("Player Created Successfully with the Name: "+player.getName() + " and ID: "+player.getId().toString());
-			log.debug("End of Create Player");
+			log.debug("Creating New Player");
+			player = new Player((long) 25, "Test User");
+			log.debug("Player Created Successfully with the Name: " + player.getName() + " and ID: "
+					+ player.getId().toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.debug("Player Creation Unsuccessful" + e);
-			log.debug("End of Create Player");
 		}
+	}
+
+	@Test
+	public void updatePlayerName() {
+		log.debug("Updating Player Name: \"" + player.getName() + "\" to \"Test User Revised\"");
+		player.setName("Test User Revised");
+		log.debug("Player Name Successfully Updated");
+	}
+
+	@Test
+	public void verifyUpdatedPlayerName() {
+		log.debug("Verifying PLayer Name");
+		assertEquals(player.getName().toString(), "Test User Revised");
+		log.debug("Player Name Successfully Verified");
+	}
+
+	@Test
+	public void updatePlayerId() {
+		log.debug("Updating Player ID: \"" + player.getId() + "\" to \"20\"");
+		player.setId((long) 20);
+		log.debug("Player ID Successfully Updated");
+	}
+
+	@Test
+	public void verifyUpdatedPlayerId() {
+		log.debug("Verifying PLayer Name");
+		assertEquals(player.getId().toString(), "20");
+		log.debug("Player Name Successfully Verified");
 	}
 
 	@AfterClass
 	public void afterClass() {
+		log.debug("Player: \"" + player.getName() + "\" Created & Verified Successfully with an ID: "
+				+ player.getId().toString());
 		log.debug("End of Player Test");
 	}
 }
