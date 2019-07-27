@@ -1,0 +1,56 @@
+2019-07-27 13:44:47 TestStep:- Stock Market Server - Testing
+2019-07-27 13:44:47 TestStep:- Start of Account Test
+2019-07-27 13:44:47 TestStep:- Creating New Account
+2019-07-27 13:44:47 TestStep:- Account: "Test Account" Successfully Created
+2019-07-27 13:44:47 TestStep:- Updating the Account Name to "Test Account Revised"
+2019-07-27 13:44:47 TestStep:- Account Name Successfully Updated
+2019-07-27 13:44:47 TestStep:- Setting Account Balance to "1000"
+2019-07-27 13:44:47 TestStep:- Account Balance Successfully Set
+2019-07-27 13:44:47 TestStep:- Verifying Account Balance
+2019-07-27 13:44:47 TestStep:- Account Balance Successfully Verified
+2019-07-27 13:44:47 TestStep:- Verifying Account Name
+2019-07-27 13:44:47 TestStep:- Account Name Successfully Verified
+2019-07-27 13:44:47 TestStep:- Account: "Test Account Revised" Created & Verified Successfully with a Balance: 1000
+2019-07-27 13:44:47 TestStep:- End of Account Test
+2019-07-27 13:44:47 TestStep:- Stock Market Server - Testing
+2019-07-27 13:44:47 TestStep:- Start of Player Test
+2019-07-27 13:44:47 TestStep:- Creating New Player
+2019-07-27 13:44:47 TestStep:- Player Created Successfully with the Name: Test User and ID: 25
+2019-07-27 13:44:47 TestStep:- Updating Player ID: "25" to "20"
+2019-07-27 13:44:47 TestStep:- Player ID Successfully Updated
+2019-07-27 13:44:47 TestStep:- Updating Player Name: "Test User" to "Test User Revised"
+2019-07-27 13:44:47 TestStep:- Player Name Successfully Updated
+2019-07-27 13:44:47 TestStep:- Verifying PLayer ID
+2019-07-27 13:44:47 TestStep:- Player ID Successfully Verified
+2019-07-27 13:44:47 TestStep:- Verifying PLayer Name
+2019-07-27 13:44:47 TestStep:- Player Name Successfully Verified
+2019-07-27 13:44:47 TestStep:- Player: "Test User Revised" Created & Verified Successfully with an ID: 20
+2019-07-27 13:44:47 TestStep:- End of Player Test
+2019-07-27 13:44:47 TestStep:- Stock Market Server - Testing
+2019-07-27 13:44:47 TestStep:- Start of Broker Test
+2019-07-27 13:44:47 TestStep:- Creating New Broker
+2019-07-27 13:44:47 TestStep:- Broker: "Test Broker" Successfully Created
+2019-07-27 13:44:47 TestStep:- Verifying  Broker ID
+2019-07-27 13:44:47 TestStep:- Broker ID Successfully Verified
+2019-07-27 13:44:47 TestStep:- Verifying Broker Name
+2019-07-27 13:44:47 TestStep:- Broker Name Successfully Verified
+2019-07-27 13:44:47 TestStep:- Broker: "Test Broker" Created & Verified Successfully with an ID: 25
+2019-07-27 13:44:47 TestStep:- End of Broker Test
+2019-07-27 13:44:47 TestStep:- Stock Market Server - Testing
+2019-07-27 13:44:47 TestStep:- Start of Stock Test
+2019-07-27 13:44:47 TestStep:- Creating New Player
+2019-07-27 13:44:47 TestStep:- Stock Created Successfully with the ID: 0
+2019-07-27 13:44:47 TestStep:- Updating Stock Company: "Test Company" to "Apple"
+2019-07-27 13:44:47 TestStep:- Stock Company Successfully Updated
+2019-07-27 13:44:47 TestStep:- Updating Stock ID: "0" to "10"
+2019-07-27 13:44:47 TestStep:- Stock ID Successfully Updated
+2019-07-27 13:44:47 TestStep:- Updating Stock Price: "250" to "500"
+2019-07-27 13:44:47 TestStep:- Stock Price Successfully Updated
+2019-07-27 13:44:47 TestStep:- Verifying Updated Stock Company
+2019-07-27 13:44:47 TestStep:- Stock Company Successfully Verified
+2019-07-27 13:44:47 TestStep:- Verifying Updated Stock ID
+2019-07-27 13:44:47 TestStep:- Stock ID Successfully Verified
+2019-07-27 13:44:47 TestStep:- Verifying Updated Stock Price
+2019-07-27 13:44:47 TestStep:- Stock Price Successfully Verified
+2019-07-27 13:44:47 TestStep:- Stock: "10" Created & Verified Successfully.
+2019-07-27 13:44:47 TestStep:- End of Stock Test

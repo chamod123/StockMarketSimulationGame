@@ -1,5 +1,7 @@
 package Messages;
 
+import akka.actor.ActorRef;
+
 import java.io.Serializable;
 
 public interface AnalystMessages {
@@ -16,15 +18,30 @@ public interface AnalystMessages {
             return description;
         }
     }
+
     //start game
     class StartGameMessage implements Serializable {
-//        private final int turns;
+        private static ActorRef brokerActor;
 
-        public StartGameMessage() {
+        public StartGameMessage(ActorRef brokerActor) {
+            this.brokerActor=brokerActor;
         }
 
-//        public int getTurns() {
-//            return turns;
-//        }
+        public static ActorRef getBrokerActor() {
+            return brokerActor;
+        }
+    }
+
+    //Next turn
+    class NextTurnMessage implements Serializable {
+        private static ActorRef brokerActor;
+
+        public NextTurnMessage(ActorRef brokerActor) {
+            this.brokerActor=brokerActor;
+        }
+
+        public static ActorRef getBrokerActor() {
+            return brokerActor;
+        }
     }
 }

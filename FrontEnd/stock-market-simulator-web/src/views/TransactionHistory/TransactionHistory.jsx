@@ -43,9 +43,6 @@ class TransactionHistory extends React.Component {
             <Card>
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Transaction History</h4>
-                {/* <p className={classes.cardCategoryWhite}>
-                  Top 4 Players Achievements
-                </p> */}
               </CardHeader>
               <CardBody>
                 <Table

@@ -85,22 +85,37 @@ public class StockServer extends AllDirectives {
                 , path(segment("winner"), this::getWinner)// #GET - get winner
                 , path(segment("allPlayers"), this::getAllPlayers)// #GET - get all Players
                 , path("start", this::StartGame) // #POST - Start Game
+                , path("nextTurn", this::NextTurn) // #POST - next Turn
+
 
 
         );
+    }
+
+    // #POST - next Turn
+    private Route NextTurn() {
+        return route(
+                post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
+                    CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(analystActor, new AnalystMessages.NextTurnMessage(brokerActor), timeout)
+                            .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+
+                    return onSuccess(() -> startGame, performed -> {
+                        return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
+                    });
+                })));
     }
 
     // #POST - Start Game
     private Route StartGame() {
         return route(
                 post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
-            CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(analystActor, new AnalystMessages.StartGameMessage(), timeout)
-                    .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+                    CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(analystActor, new AnalystMessages.StartGameMessage(brokerActor), timeout)
+                            .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
 
-            return onSuccess(() -> startGame, performed -> {
-                return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
-            });
-        })));
+                    return onSuccess(() -> startGame, performed -> {
+                        return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
+                    });
+                })));
     }
 
     // #GET - get all Players

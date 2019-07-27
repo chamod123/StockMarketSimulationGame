@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 public class StockTest {
 	public Logger log;
 	Stock stock;
+	private Sector sector;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -31,7 +32,7 @@ public class StockTest {
 	public void createStock() {
 		try {
 			log.debug("Creating New Player");
-			stock = new Stock((long) 01, BigDecimal.valueOf(250), "Test Company", (long) 25);
+			stock = new Stock("Test Company", sector, BigDecimal.valueOf(250));
 			log.debug("Stock Created Successfully with the ID: " + stock.getStockId());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -41,15 +42,15 @@ public class StockTest {
 
 	@Test
 	public void updateStockID() {
-		log.debug("Updating Stock ID: \"" + stock.getStockId().toString() + "\" to \"10\"");
-		stock.setStockId((long) 10);
+		log.debug("Updating Stock ID: \"" + stock.getStockId() + "\" to \"10\"");
+		stock.setStockId(10);
 		log.debug("Stock ID Successfully Updated");
 	}
 
 	@Test
 	public void verifyUpdatedStockId() {
 		log.debug("Verifying Updated Stock ID");
-		assertEquals(stock.getStockId().toString(), "10");
+		assertEquals(stock.getStockId(), 10);
 		log.debug("Stock ID Successfully Verified");
 	}
 
