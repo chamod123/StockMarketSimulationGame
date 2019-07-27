@@ -1,0 +1,14 @@
+2019-07-27 11:17:59 TestStep:- Stock Market Server - Testing
+2019-07-27 11:17:59 TestStep:- Start of Account Test
+2019-07-27 11:17:59 TestStep:- Creating New Account
+2019-07-27 11:17:59 TestStep:- Account: "Test Account" Successfully Created
+2019-07-27 11:17:59 TestStep:- Updating the Account Name to "Test Account Revised"
+2019-07-27 11:17:59 TestStep:- Account Name Successfully Updated
+2019-07-27 11:17:59 TestStep:- Setting Account Balance to "1000"
+2019-07-27 11:17:59 TestStep:- Account Balance Successfully Set
+2019-07-27 11:17:59 TestStep:- Verifying Account Balance
+2019-07-27 11:17:59 TestStep:- Account Balance Successfully Verified
+2019-07-27 11:17:59 TestStep:- Verifying Account Name
+2019-07-27 11:17:59 TestStep:- Account Name Successfully Verified
+2019-07-27 11:17:59 TestStep:- Account: "Test Account Revised" Created & Verified Successfully with a Balance: 1000
+2019-07-27 11:17:59 TestStep:- End of Account Test
