@@ -11,7 +11,7 @@ public class BrokerService {
     MarketService marketService = new MarketService();
     BankService bankService = new BankService();
     public ArrayList<Player> stockAccounts = new ArrayList<>();
-    public ArrayList<Transaction> Transactions;
+    public ArrayList<Transaction> Transactions = new ArrayList<>();
 
     static {
         brokers.add(new Broker(1l, "ChamodBroker"));
@@ -21,6 +21,15 @@ public class BrokerService {
         brokers.add(new Broker(5l, "DilakaBroker"));
         brokers.add(new Broker(6l, "NiroshimaBroker"));
     }
+
+    public Player CreateAccount(String name){
+        bankService.CreateAccount( new Account(name));
+        Player newPlayer = new Player(name);
+        stockAccounts.add(newPlayer);
+        return newPlayer;
+
+    }
+
 
     public Optional<Broker> getBroker(Long id) {
         return brokers.stream()
