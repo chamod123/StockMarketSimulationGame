@@ -86,10 +86,26 @@ public class StockServer extends AllDirectives {
                 , path(segment("allPlayers"), this::getAllPlayers)// #GET - get all Players
                 , path("start", this::StartGame) // #POST - Start Game
                 , path("nextTurn", this::NextTurn) // #POST - next Turn
+                , path(segment("prediction"), this::getPrediction)// #GET - get prediction
 
 
 
         );
+    }
+
+    // #GET - get prediction
+    private Route getPrediction() {
+        return get(() -> {
+            CompletionStage<Optional<Player>> prediction = Patterns.ask(analystActor, new AnalystMessages.GetPredictionMessage(brokerActor), timeout)
+                    .thenApply(obj -> (Optional<Player>) obj);
+            return onSuccess(() -> prediction,
+                    performed -> {
+                        if (prediction != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
+                        else
+                            return complete(StatusCodes.NOT_FOUND);
+                    });
+        });
     }
 
     // #POST - next Turn
@@ -251,6 +267,7 @@ public class StockServer extends AllDirectives {
 
     //#POST - Create new Player
     private Route postPlayer() {
+        System.out.println("t 1 ");
         return route(post(() -> entity(Jackson.unmarshaller(Player.class), player -> {
             CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns.ask(playerActor, new PlayerMessages.CreatePlayerMessage(player, bankActor), timeout)
                     .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
@@ -334,6 +351,7 @@ public class StockServer extends AllDirectives {
 
     //#GET - get a Player Data
     private Route getPlayer(Long id) {
+        System.out.println("t 2 ");
         return get(() -> {
             CompletionStage<Optional<Player>> player = Patterns.ask(playerActor, new PlayerMessages.GetPlayerMessage(id), timeout)
                     .thenApply(obj -> (Optional<Player>) obj);

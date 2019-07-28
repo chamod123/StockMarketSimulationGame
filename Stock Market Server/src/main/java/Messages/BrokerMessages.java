@@ -151,5 +151,10 @@ public interface BrokerMessages {
         }
     }
 
+    class GetPredictionMessage implements Serializable {
+        public GetPredictionMessage() {
+        }
+    }
+
 
 }

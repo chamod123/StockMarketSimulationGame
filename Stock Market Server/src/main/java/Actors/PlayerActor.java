@@ -22,10 +22,11 @@ public class PlayerActor extends AbstractActor {
     private FI.UnitApply<PlayerMessages.CreatePlayerMessage> handleCreatePlayer() {
         return createPlayerMessage -> {
             playerService.createPlayer(createPlayerMessage.getPlayer());
-            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", createPlayerMessage.getPlayer()
-                    .getName())), getSelf());
             //Create Bank Account for Player
             createPlayerMessage.getBankActor().tell(new BankMessages.CreateAccountMessage(new Account(createPlayerMessage.getPlayer().getName())), getSelf());
+
+            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", createPlayerMessage.getPlayer()
+                    .getName())), getSelf());
         };
     }
 

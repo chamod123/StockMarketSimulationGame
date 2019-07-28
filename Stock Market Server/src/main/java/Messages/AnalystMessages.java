@@ -44,4 +44,15 @@ public interface AnalystMessages {
             return brokerActor;
         }
     }
+
+    class GetPredictionMessage implements Serializable {
+        private static ActorRef brokerActor;
+        public GetPredictionMessage(ActorRef brokerActor ) {
+            this.brokerActor=brokerActor;
+        }
+
+        public static ActorRef getBrokerActor() {
+            return brokerActor;
+        }
+    }
 }
