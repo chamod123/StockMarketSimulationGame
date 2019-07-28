@@ -27,7 +27,7 @@ function getMyStocks() {
 function getPlayers() {
     console.log("called getPlayers")
     return new Promise((resolve, reject) => {
-        fetch('http://localhost:8080/players/1',myInit)
+        fetch('http://localhost:8080/players/1')
             .then(function (response) {
                 console.log(response)
                 return response.json();
