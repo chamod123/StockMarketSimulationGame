@@ -1,6 +1,7 @@
 package Controller;
 import Model.Player;
 import Model.Stock;
+import Model.Transaction;
 import Service.BrokerService;
 import Service.MarketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +110,18 @@ public class MainRestController {
 
     }
 
+    //get all Transactions
+    // http://localhost:8080/transactions
+    @RequestMapping(value = "/transactions", //
+            method = RequestMethod.GET, //
+            produces = { MediaType.APPLICATION_JSON_VALUE, //
+                    MediaType.APPLICATION_XML_VALUE })
+    @ResponseBody
+    public  ArrayList<Transaction> transactions()throws Exception {
 
+        return brokerServer.getTransactions();
+
+    }
 
 
 
