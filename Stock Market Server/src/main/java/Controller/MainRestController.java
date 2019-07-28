@@ -96,6 +96,20 @@ public class MainRestController {
 
     }
 
+    //get player total stock value
+    // http://localhost:8080/stockValue
+    @RequestMapping(value = "/stockValue", //
+            method = RequestMethod.GET, //
+            produces = { MediaType.APPLICATION_JSON_VALUE, //
+                    MediaType.APPLICATION_XML_VALUE })
+    @ResponseBody
+    public  BigDecimal stockValue(@PathVariable("name") String name)throws Exception {
+
+        return brokerServer.GetTotalStockValue(name);
+
+    }
+
+
 
 
 
