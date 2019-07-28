@@ -24,7 +24,22 @@ function getMyStocks() {
     })
 }
 
+function getPlayers() {
+    console.log("called getPlayers")
+    return new Promise((resolve, reject) => {
+        fetch('http://localhost:8080/players/1',myInit)
+            .then(function (response) {
+                console.log(response)
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}X
+
 export {
     getStocks,
-    getMyStocks
+    getMyStocks,
+    getPlayers
 }

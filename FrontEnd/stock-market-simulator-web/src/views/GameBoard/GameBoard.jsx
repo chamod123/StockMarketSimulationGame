@@ -30,6 +30,7 @@ import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardS
 import { Typography } from "@material-ui/core";
 import { getStocks } from "server/server.js";
 import { getMyStocks } from "server/server.js";
+import { getPlayers } from "server/server.js";
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -78,6 +79,7 @@ class GameBoard extends React.Component {
 
   handleToggleOnMyStock = ()=>{
     this.loadStockDataFromAPI()
+    getPlayers()
   }
 
   handleChangeNoOfSharesToBuy = (event) => {
