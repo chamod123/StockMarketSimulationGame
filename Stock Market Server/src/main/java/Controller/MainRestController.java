@@ -122,8 +122,17 @@ public class MainRestController {
         return brokerServer.getTransactions();
 
     }
+    //get current winner name
+    // http://localhost:8080/winner/
+    @RequestMapping(value = "winner/", //
+            method = RequestMethod.GET, //
+            produces = { MediaType.APPLICATION_JSON_VALUE, //
+                    MediaType.APPLICATION_XML_VALUE })
+    @ResponseBody
+    public Player GetWinner(@RequestParam("name") String name)throws Exception {
+        return brokerServer.GetPlayer(name);
 
-
+    }
 
 
 }
