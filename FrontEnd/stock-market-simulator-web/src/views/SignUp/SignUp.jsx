@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 function Create() {
   return (
@@ -51,6 +53,16 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const [firstName, setFirstName] = useState(false);
+  const [lastName, setLastName] = useState(false);
+
+  const handleChangeFistName = (event) => {
+    setFirstName(event.target.value)
+  }
+
+  const handleChangeLastName = (event) => {
+    setLastName(event.target.value)
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -65,27 +77,35 @@ export default function SignUp() {
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
+              <FormControl error={firstName === ""}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                  onChange={handleChangeFistName}
+                />
+                {firstName == "" && <FormHelperText  >Please enter your first name</FormHelperText>}
+              </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
+              <FormControl error={lastName === ""}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="lname"
+                  onChange={handleChangeLastName}
+                />
+                {firstName == "" && <FormHelperText  >Please enter your last name</FormHelperText>}
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <TextField
