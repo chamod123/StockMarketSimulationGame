@@ -37,6 +37,19 @@ function getLeaderBoard() {
     })
 }
 
+function getTransactioHistory() {
+    console.log("called")
+    return  new Promise((resolve, reject) => { 
+        fetch('https://api.myjson.com/bins/1cwg6l')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            });
+    })
+}
+
 function getPlayers() {
     console.log("called getPlayers")
     return new Promise((resolve, reject) => {
@@ -55,5 +68,6 @@ export {
     getStocks,
     getMyStocks,
     getPlayers,
-    getLeaderBoard
+    getLeaderBoard,
+    getTransactioHistory
 }
