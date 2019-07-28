@@ -36,7 +36,7 @@ function getPlayers() {
                 resolve(myJson)
             })
     })
-}X
+}
 
 export {
     getStocks,
