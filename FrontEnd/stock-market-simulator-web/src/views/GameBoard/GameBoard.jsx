@@ -23,89 +23,14 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-
-
-// react plugin for creating charts
-import ChartistGraph from "react-chartist";
-
+import LinearProgressBar from 'components/ProgressIndicators/LinearProgressBar'
+import Timer from "./Timer.jsx"
+import Chart from './Chart.jsx'
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
-import {
-  dailySalesChart,
-} from "variables/charts.jsx";
-
-
-const response = [{
-  "sector": "Finance",
-  "stocks": [{
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  },
-  {
-    "companyName": "facebook",
-    "stockPrice": 123,
-    "rate": 1.7
-  },
-  {
-    "companyName": "amazon",
-    "stockPrice": 123,
-    "rate": 1.7
-  }
-  ]
-
-},
-{
-  "sector": "Human Resources",
-  "stocks": [{
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }]
-}
-  ,
-{
-  "sector": "Sector 3",
-  "stocks": [{
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "fb",
-    "stockPrice": 123,
-    "rate": 1.7
-  }, {
-    "companyName": "google",
-    "stockPrice": 123,
-    "rate": 1.7
-  }]
-}
-]
-const chartData = {
-  "labels": ["M", "T", "W", "T", "F", "S", "S"],
-  "series": [[12, 17, 7, 17, 23, 18, 38]]
-}
+import { Typography } from "@material-ui/core";
+import { getStocks } from "server/server.js";
+import { getMyStocks } from "server/server.js";
+import { getPlayers } from "server/server.js";
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -114,41 +39,52 @@ class GameBoard extends React.Component {
       stockArray: [],
       selectedSectorIndex: 0,
       selectedStock: 0,
-      chartData: chartData
+      isOnMyStocks: false,
+      noOfSharesToBuy: 0
     };
   }
 
   componentDidMount() {
-    this.setState(
-      {
-        stockArray: response
-      })
-
+    getStocks().then(response => {
+      this.setState({ stockArray: response })
+    })
   }
 
-  // to stop the warning of calling setState of unmounted component
-  componentWillUnmount() {
-    var id = window.setTimeout(null, 0);
-    while (id--) {
-      window.clearTimeout(id);
+  loadStockDataFromAPI = () => {
+    const {isOnMyStocks} = this.state
+    if(!isOnMyStocks){
+      getMyStocks().then(response => {
+        this.setState({ 
+          stockArray: response,
+          isOnMyStocks: true
+         })
+      })
+    }else{
+      getStocks().then(response => {
+        this.setState({ 
+          stockArray: response,
+          isOnMyStocks: false
+         })
+      })
     }
   }
-  // showNotification(place) {
-  //   var x = [];
-  //   x[place] = true;
-  //   this.setState(x);
-  //   this.alertTimeout = setTimeout(
-  //     function() {
-  //       x[place] = false;
-  //       this.setState(x);
-  //     }.bind(this),
-  //     6000
-  //   );
-  // }
+
   handleStockSelect = (selectedstockIndex, selectedSectorIndex) => {
     this.setState({
       selectedStock: selectedstockIndex,
-      selectedSectorIndex: selectedSectorIndex
+      selectedSectorIndex: selectedSectorIndex,
+      noOfSharesToBuy:0
+    })
+  }
+
+  handleToggleOnMyStock = ()=>{
+    this.loadStockDataFromAPI()
+    getPlayers()
+  }
+
+  handleChangeNoOfSharesToBuy = (event) => {
+    this.setState({
+      noOfSharesToBuy:event.target.value
     })
   }
 
@@ -160,24 +96,17 @@ class GameBoard extends React.Component {
     return rowArray;
   }
 
-  getChartData = () => {
-    const { chartData, selectedStock, selectedSectorIndex } = this.state;
-    //API Call to recieve the data lable and series from backend 
-    //params sector, companyName of stock
-
-  }
-
   getHeaderColor = () => {
     const { selectedSectorIndex } = this.state;
 
-    if (selectedSectorIndex == 0) {
+    if (selectedSectorIndex === 0) {
       return "info"
     }
-    if (selectedSectorIndex == 1) {
+    if (selectedSectorIndex === 1) {
       return "success"
     }
-    if (selectedSectorIndex == 2) {
-      return "info"
+    if (selectedSectorIndex === 2) {
+      return "warning"
     }
   }
 
@@ -188,9 +117,15 @@ class GameBoard extends React.Component {
     return sector + " : " + stock
   }
 
+  getShareValueToBeBought = () => {
+    const { selectedSectorIndex, selectedStock, stockArray, noOfSharesToBuy } = this.state;
+    var stockPrice = stockArray[selectedSectorIndex].stocks[selectedStock].stockPrice
+    return stockPrice*noOfSharesToBuy
+  }
+
   render() {
     const { classes } = this.props;
-    const { stockArray, chartData } = this.state;
+    const { stockArray, chartData, isOnMyStocks, noOfSharesToBuy } = this.state;
     return (
       <div>
         <GridContainer>
@@ -225,7 +160,7 @@ class GameBoard extends React.Component {
                   <Icon>access_time</Icon>
                 </CardIcon>
                 <p className={classes.cardCategory}>Time slot</p>
-                <h3 className={classes.cardTitle}>4 min</h3>
+                <Timer className={classes.cardTitle} startCount={5}></Timer>
               </CardHeader>
             </Card>
           </GridItem>
@@ -243,12 +178,10 @@ class GameBoard extends React.Component {
         </GridContainer>
         <GridContainer>
           <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>GameBoard</h4>
-            </CardHeader>
             <CardBody>
-              {stockArray.length == 3 ? <GridContainer>
+              {stockArray.length === 3 ? <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
+                  <Typography>{isOnMyStocks?"Portfolio":"Stocks"}</Typography>
                   <CustomTabs
                     headerColor="primary"
                     tabs={
@@ -263,6 +196,7 @@ class GameBoard extends React.Component {
                               tableData={this.getTableData(stockArray[0].stocks)}
                               handleRowSelect={this.handleStockSelect}
                               selectedSectorIndex={0}
+                              isMyStock={isOnMyStocks}
                             />
                           )
                         },
@@ -276,6 +210,7 @@ class GameBoard extends React.Component {
                               tableData={this.getTableData(stockArray[1].stocks)}
                               handleRowSelect={this.handleStockSelect}
                               selectedSectorIndex={1}
+                              isMyStock={isOnMyStocks}
                             />
                           )
                         },
@@ -289,22 +224,19 @@ class GameBoard extends React.Component {
                               tableData={this.getTableData(stockArray[2].stocks)}
                               handleRowSelect={this.handleStockSelect}
                               selectedSectorIndex={2}
+                              isMyStock={isOnMyStocks}
                             />
                           )
                         }
                       ]}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={7}>
+                <GridItem xs={12} sm={12} md={8}>
                   <Card chart>
                     <CardHeader color={this.getHeaderColor()}>
-                      <ChartistGraph
-                        className="ct-chart"
-                        data={chartData}
-                        type="Line"
-                        options={dailySalesChart.options}
-                        listener={dailySalesChart.animation}
-                      />
+                      <Chart startChartData={chartData}
+                        //send data of selected stock n sector to call getChartData from API 
+                      ></Chart>
                     </CardHeader>
                     <CardBody>
                       <h4 className={classes.cardTitle}>{this.getChartTitle()}</h4>
@@ -314,24 +246,23 @@ class GameBoard extends React.Component {
                           <TextField
                             id="outlined-adornment-amount"
                             variant="outlined"
-                            label="Amount"
+                            label="shares"
                             type="number"
                             inputProps={{ min: "0", max: "100", step: "1" }}
-                            // value={values.amount}
-                            // onChange={handleChange('amount')}
-                            InputProps={{
-                              startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                            }}
+                            value={noOfSharesToBuy}
+                            onChange={this.handleChangeNoOfSharesToBuy}
                           />
                         </GridItem>
-                        <GridItem><Button color="primary">Buy</Button></GridItem>
+                        {noOfSharesToBuy > 0 ? <GridItem style={{ "align-self": 'center' }}><Typography>$ {this.getShareValueToBeBought()}</Typography></GridItem> : null}
+                        <GridItem><Button disabled={noOfSharesToBuy === 0} color="primary"> {isOnMyStocks ? "Sell" : "Buy"}</Button></GridItem>
                       </GridContainer>
                     </CardBody>
                     <CardFooter chart>
                     </CardFooter>
                   </Card>
+                  <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks?"Buy New shares":"View your portfolio"}</Button>
                 </GridItem>
-              </GridContainer> : null}
+              </GridContainer> : <LinearProgressBar></LinearProgressBar>}
               <br />
               <br />
 
