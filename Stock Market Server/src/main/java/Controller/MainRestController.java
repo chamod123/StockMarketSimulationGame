@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 @CrossOrigin
@@ -133,6 +134,21 @@ public class MainRestController {
         return brokerServer.GetPlayer(name);
 
     }
+
+    //get all Players 
+    // http://localhost:8080/SomeContextPath/game/players
+    @RequestMapping(value = "/players", //
+            method = RequestMethod.GET, //
+            produces = { MediaType.APPLICATION_JSON_VALUE, //
+                    MediaType.APPLICATION_XML_VALUE })
+    @ResponseBody
+    public HashMap<String, ArrayList<BigDecimal>> players()throws Exception {
+
+        return brokerServer.GetAllPlayers();
+
+    }
+
+
 
 
 }
