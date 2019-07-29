@@ -153,11 +153,11 @@ public class StockServer extends AllDirectives {
     // #GET - get winner
     private Route getWinner() {
         return get(() -> {
-            CompletionStage<Optional<Player>> transaction = Patterns.ask(brokerActor, new BrokerMessages.GetWinnerMessage(), timeout)
+            CompletionStage<Optional<Player>> winner = Patterns.ask(brokerActor, new BrokerMessages.GetWinnerMessage(), timeout)
                     .thenApply(obj -> (Optional<Player>) obj);
-            return onSuccess(() -> transaction,
+            return onSuccess(() -> winner,
                     performed -> {
-                        if (transaction != null)
+                        if (winner != null)
                             return complete(StatusCodes.OK, performed, Jackson.marshaller());
                         else
                             return complete(StatusCodes.NOT_FOUND);

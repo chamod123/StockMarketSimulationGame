@@ -8,6 +8,7 @@ import Messages.StockMessages;
 import Model.Player;
 import Model.Stock;
 import Model.Market;
+import Model.Transaction;
 import Model.Bank;
 import Service.PlayerService;
 import akka.http.javadsl.marshallers.jackson.Jackson;
@@ -151,26 +152,16 @@ public class StockController {
     }
 
 
-//    @RequestMapping(value = "/players/10", //
-//            method = RequestMethod.GET, //
-//            produces = {MediaType.APPLICATION_JSON_VALUE, //
-//                    MediaType.APPLICATION_XML_VALUE})
-//    @ResponseBody
-//    public Player players() throws Exception {
-//        return new Player(1l, "Chamod");
-//    }
+    //#GET - get all stock
+    @GetMapping("/transactions")
+    public CompletionStage<ArrayList<Transaction>> getAllTransactions() {
+        CompletionStage<ArrayList<Transaction>> transaction = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetAllTransactionsMessage(), timeout)
+                .thenApply(obj -> (ArrayList<Transaction>) obj);
+        return transaction;
+    }
 
 
-//        @RequestMapping("players/{id}")
-//        public Player players(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
-//         actorSystemCreate.getPlayerActor().tell(  new PlayerMessages.GetPlayerMessage(id),actorSystemCreate.getServer());
-//        }
 
-//    @RequestMapping(value = "players", method = RequestMethod.POST)
-//    public void saveMainCatergory(@ModelAttribute("mainCatergoryForm") Player player, Model model, BindingResult brequest, HttpServletRequest request) {
-////        playerService.createPlayer(player);
-//        actorSystemCreate.getPlayerActor().tell( new PlayerMessages.CreatePlayerMessage(player, actorSystemCreate.getBankActor()),actorSystemCreate.getServer());
-//    }
 
 
 }
