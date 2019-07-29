@@ -3,6 +3,7 @@ package Service;
 import Model.Event;
 import Model.Sector;
 import Model.Stock;
+import com.opencsv.CSVWriter;
 /*import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.network.protocol.Encoders;
@@ -52,16 +53,16 @@ public class MarketService {
         stocks.add(new Stock("Volkswagen",Sector.Manufacturing,new BigDecimal(55)));
         stocks.add(new Stock("Samsung",Sector.Manufacturing,new BigDecimal(56)));
         stocks.add(new Stock("Daimler",Sector.Manufacturing,new BigDecimal(34)));
-       /* SparkConf conf = new SparkConf().setAppName("StartingSpark").setMaster("Local[*]");
+/*        SparkConf conf = new SparkConf().setAppName("StartingSpark").setMaster("Local[*]");
         JavaSparkContext sc = new JavaSparkContext(conf);
 
-        JavaRDD myRDD = sc.parallelize(stocks);
-        //String csv = "data.csv";
+        JavaRDD myRDD = sc.parallelize(stocks);*/
+        String csv = "data.csv";
         try {
             CSVWriter writer = new CSVWriter(new FileWriter(csv));
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
     }
 
