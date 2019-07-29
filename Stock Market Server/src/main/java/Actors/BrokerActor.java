@@ -113,14 +113,14 @@ public class BrokerActor extends AbstractActor {
     //get winner
     private FI.UnitApply<BrokerMessages.GetWinnerMessage> getWinner() {
         return getWinnerMessage -> {
-            sender().tell(brokerService.getTransactions(), getSelf());
+            sender().tell(brokerService.GetWinner(), getSelf());
         };
     }
 
     //get All Players
     private FI.UnitApply<BrokerMessages.GetAllPlayerMessage> getAllPlayers() {
         return getAllPlayerMessage -> {
-            sender().tell(brokerService.getTransactions(), getSelf());
+            sender().tell(brokerService.GetAllPlayers(), getSelf());
         };
     }
 

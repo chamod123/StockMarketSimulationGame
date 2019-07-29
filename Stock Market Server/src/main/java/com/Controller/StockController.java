@@ -161,7 +161,13 @@ public class StockController {
     }
 
 
-
+    //#GET - get winner
+    @GetMapping("/winner")
+    public CompletionStage<Optional<Player>> getWinner() {
+        CompletionStage<Optional<Player>> winner = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetWinnerMessage(), timeout)
+                .thenApply(obj -> (Optional<Player>) obj);
+        return winner;
+    }
 
 
 }
