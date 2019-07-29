@@ -79,7 +79,9 @@ class GameBoard extends React.Component {
 
   handleToggleOnMyStock = ()=>{
     this.loadStockDataFromAPI()
-    getPlayers()
+    getPlayers().then(response => {
+        console.log(response)
+      })
   }
 
   handleChangeNoOfSharesToBuy = (event) => {

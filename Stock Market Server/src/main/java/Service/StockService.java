@@ -16,14 +16,17 @@ public class StockService {
                 .findFirst();
     }
 
-    public static Optional<Stock> getStockBySector(Long Sector) {
+    public Optional<Stock> getStockBySector(Long Sector) {
         return stocks.stream()
                 .filter(stock -> stock.getSector()
                         .equals(Sector))
                 .findFirst();
     }
 
-    public static void createStock(Stock user) {
-        stocks.add(user);
+    public void createStock(Stock stock) {
+        stocks.add(stock);
+        for (Stock stock1 : stocks) {
+            System.out.println("accountList  " + stock1.getCompanyName() +"  " + stock1.getStockId());
+        }
     }
 }

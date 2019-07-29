@@ -10,8 +10,6 @@ public class BankService {
     private final static List<Account> accountList = new ArrayList<>();
 
     public void CreateAccount(Account Account1) {
-
-        System.out.println("Account added " + Account1.getPlayerId());
         this.accountList.add(Account1);
         for (Account account : accountList) {
             System.out.println("accountList  " + account.getName());

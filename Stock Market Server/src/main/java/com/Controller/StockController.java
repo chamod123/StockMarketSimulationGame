@@ -2,7 +2,9 @@ package com.Controller;
 
 import Actors.PlayerActor;
 import Messages.PlayerMessages;
+import Messages.StockMessages;
 import Model.Player;
+import Model.Stock;
 import Service.PlayerService;
 import akka.http.javadsl.marshallers.jackson.Jackson;
 import akka.http.javadsl.model.StatusCodes;
@@ -36,6 +38,7 @@ public class StockController {
         return "Welcome to Stock market Simulator API.";
     }
 
+    //#POST - Create new Player
     @PostMapping("/players")
     public String addPlayer(@RequestBody Player player) {
         System.out.println("" + player);
@@ -48,13 +51,37 @@ public class StockController {
         return "not sucess";
     }
 
+    //#GET - get a Player Data
     @GetMapping("/players/{id}")
     public CompletionStage<Optional<Player>> getPlayer(@PathVariable("id") Long id) {
-        System.out.println("Post");
+        System.out.println("GET");
         CompletionStage<Optional<Player>> maybeUser = Patterns
                 .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetPlayerMessage(id), timeout)
                 .thenApply(Optional.class::cast);
         return maybeUser;
+    }
+
+    //#POST - Create new stock
+    @PostMapping("/stock")
+    public String postStock(@RequestBody Stock stock) {
+        System.out.println("stock : " + stock);
+        CompletionStage<StockMessages.ActionPerformed> stockCreated = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.CreateStockMessage(stock), timeout)
+                .thenApply(obj -> (StockMessages.ActionPerformed) obj);
+
+        if (stockCreated != null) {
+            return "sucess";
+        }
+        return "not sucess";
+
+    }
+
+    //#GET - get a Player Data
+    @GetMapping("/stock/{id}")
+    public CompletionStage<Optional<Stock>> getStock(@PathVariable("id") Long id) {
+        System.out.println("GET Stock " + id);
+        CompletionStage<Optional<Stock>> stock = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetStockMessage(id), timeout)
+                .thenApply(obj -> (Optional<Stock>) obj);
+        return stock;
     }
 
 //    @RequestMapping(value = "/players/10", //
@@ -67,7 +94,6 @@ public class StockController {
 //    }
 
 
-
 //        @RequestMapping("players/{id}")
 //        public Player players(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
 //         actorSystemCreate.getPlayerActor().tell(  new PlayerMessages.GetPlayerMessage(id),actorSystemCreate.getServer());
@@ -78,7 +104,6 @@ public class StockController {
 ////        playerService.createPlayer(player);
 //        actorSystemCreate.getPlayerActor().tell( new PlayerMessages.CreatePlayerMessage(player, actorSystemCreate.getBankActor()),actorSystemCreate.getServer());
 //    }
-
 
 
 }
