@@ -169,5 +169,13 @@ public class StockController {
         return winner;
     }
 
+    //#GET - get all players
+    @GetMapping("/allPlayers")
+    public CompletionStage<HashMap<String, ArrayList<BigDecimal>>> getAllPlayers() {
+        CompletionStage<HashMap<String, ArrayList<BigDecimal>>> allPlayer = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetAllPlayerMessage(), timeout)
+                .thenApply(obj -> (HashMap<String, ArrayList<BigDecimal>>) obj);
+        return allPlayer;
+    }
+
 
 }

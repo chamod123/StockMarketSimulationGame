@@ -138,11 +138,11 @@ public class StockServer extends AllDirectives {
     // #GET - get all Players
     private Route getAllPlayers() {
         return get(() -> {
-            CompletionStage<Optional<Player>> transaction = Patterns.ask(brokerActor, new BrokerMessages.GetAllPlayerMessage(), timeout)
+            CompletionStage<Optional<Player>> allPlayer = Patterns.ask(brokerActor, new BrokerMessages.GetAllPlayerMessage(), timeout)
                     .thenApply(obj -> (Optional<Player>) obj);
-            return onSuccess(() -> transaction,
+            return onSuccess(() -> allPlayer,
                     performed -> {
-                        if (transaction != null)
+                        if (allPlayer != null)
                             return complete(StatusCodes.OK, performed, Jackson.marshaller());
                         else
                             return complete(StatusCodes.NOT_FOUND);
