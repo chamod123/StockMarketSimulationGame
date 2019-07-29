@@ -115,3 +115,8 @@ http://localhost:8081/winner
 http://localhost:8081/allPlayers
 
 
+need to complete
+http://localhost:8081/start
+
+need to complete
+http://localhost:8081/nextTurn

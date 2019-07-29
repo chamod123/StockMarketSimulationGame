@@ -1,10 +1,7 @@
 package com.Controller;
 
 import Actors.PlayerActor;
-import Messages.BankMessages;
-import Messages.BrokerMessages;
-import Messages.PlayerMessages;
-import Messages.StockMessages;
+import Messages.*;
 import Model.Player;
 import Model.Stock;
 import Model.Market;
@@ -69,12 +66,10 @@ public class StockController {
     public String postStock(@RequestBody Stock stock) {
         CompletionStage<StockMessages.ActionPerformed> stockCreated = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.CreateStockMessage(stock), timeout)
                 .thenApply(obj -> (StockMessages.ActionPerformed) obj);
-
         if (stockCreated != null) {
             return "sucess";
         }
         return "not sucess";
-
     }
 
     //#GET - get a stock by id
@@ -106,12 +101,10 @@ public class StockController {
     public String sellStock(@RequestBody Market market) {
         CompletionStage<BrokerMessages.ActionPerformed> stockSell = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.SellStockMessage(market, actorSystemCreate.getBankActor()), timeout)
                 .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
-
         if (stockSell != null) {
             return "sucess";
         }
         return "not sucess";
-
     }
 
     //#POST - buy stock
@@ -119,12 +112,10 @@ public class StockController {
     public String buyStock(@RequestBody Market market) {
         CompletionStage<BrokerMessages.ActionPerformed> stockBuy = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.BuyStockMessage(market, actorSystemCreate.getBankActor()), timeout)
                 .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
-
         if (stockBuy != null) {
             return "sucess";
         }
         return "not sucess";
-
     }
 
     // #GET - get total stock value for player
@@ -177,5 +168,26 @@ public class StockController {
         return allPlayer;
     }
 
+    //#POST - start game
+    @PostMapping("/start")
+    public String StartGame() {
+        CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.StartGameMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+        if (startGame != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
+    //#POST - next turn
+    @PostMapping("/nextTurn")
+    public String NextTurn() {
+        CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+        if (startGame != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
 
 }
