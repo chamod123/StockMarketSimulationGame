@@ -75,11 +75,20 @@ public class StockController {
 
     }
 
-    //#GET - get a Player Data
+    //#GET - get a stock by id
     @GetMapping("/stock/{id}")
     public CompletionStage<Optional<Stock>> getStock(@PathVariable("id") Long id) {
         System.out.println("GET Stock " + id);
         CompletionStage<Optional<Stock>> stock = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetStockMessage(id), timeout)
+                .thenApply(obj -> (Optional<Stock>) obj);
+        return stock;
+    }
+
+    //#GET - get a stock by id
+    @GetMapping("/stockBySector/{sector}")
+    public CompletionStage<Optional<Stock>> getStockBySector(@PathVariable("sector") Long sector) {
+        System.out.println("GET Stock By Sector " + sector);
+        CompletionStage<Optional<Stock>> stock = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetStockSectorMessage(sector), timeout)
                 .thenApply(obj -> (Optional<Stock>) obj);
         return stock;
     }
