@@ -10,23 +10,24 @@ public class PlayerService {
     private final static List<Player> players = new ArrayList<>();
 
     static {
-        players.add(new Player(1l, "Chamod"));
-        players.add(new Player(2l, "Indika"));
-        players.add(new Player(3l, "Melani"));
-        players.add(new Player(4l, "Nipuni"));
-        players.add(new Player(5l, "Dilaka"));
-        players.add(new Player(6l, "Niroshima"));
+        players.add(new Player(1, "Chamod"));
+        players.add(new Player(2, "Indika"));
+        players.add(new Player(3, "Melani"));
+        players.add(new Player(4, "Nipuni"));
+        players.add(new Player(5, "Dilaka"));
+        players.add(new Player(6, "Niroshima"));
     }
 
     public Optional<Player> getPlayer(Long id) {
         return players.stream()
-                .filter(player -> player.getId()
+                .filter(player ->  Long.valueOf(player.getId())
                         .equals(id))
                 .findFirst();
     }
 
-    public void createPlayer(Player user) {
-        players.add(user);
+    public void createPlayer(Player player) {
+        player.setId(players.size()+1);
+        players.add(player);
     }
 
     public List<Player> getPlayers(){

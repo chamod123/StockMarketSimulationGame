@@ -22,7 +22,6 @@ http://localhost:8081/players/1
 http://localhost:8081/players
 
 {
-"id": 7,
 "name":"Kara"
 }
 
@@ -39,7 +38,6 @@ not working correctly. need to recheck
 http://localhost:8081/stock
 
 {
-    "stockId": 1,
     "stockPrice": 11,
     "companyName": "Google18",
     "sector": "Finance"

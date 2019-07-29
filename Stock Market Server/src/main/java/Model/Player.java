@@ -4,25 +4,20 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 
 public class Player {
-    private Long id = null;
+    private int id;
     private String name;
     HashMap<String,Integer> stocks;
 
     public Player(String name) {
         this.name = name;
-       if(id==null){
-           id=1l;
-       }else{
-           id+=1;
-       }
     }
 
     public Player() {
         this.name = "";
-        this.id = null;
+//        this.id = null;
     }
 
-    public Player(Long id, String name) {
+    public Player(int id, String name) {
         this.name = name;
         this.id = id;
     }
@@ -35,11 +30,11 @@ public class Player {
         return name;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

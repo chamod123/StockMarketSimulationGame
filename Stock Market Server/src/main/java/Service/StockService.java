@@ -24,6 +24,7 @@ public class StockService {
     }
 
     public void createStock(Stock stock) {
+        stock.setStockId(stocks.size()+1);
         stocks.add(stock);
         for (Stock stock1 : stocks) {
             System.out.println("accountList  " + stock1.getCompanyName() +"  " + stock1.getStockId());
