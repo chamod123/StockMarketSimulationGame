@@ -12,6 +12,9 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useState } from 'react';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 //import CustomInput from "components/CustomInput/CustomInput.jsx";
 
 function Create() {
@@ -53,6 +56,26 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const [holdername, setholdername] = useState(false);
+  const [cardnumber, setcardnumber] = useState(false);
+  const [expirydate, setexpirydate] = useState(false);
+  const [cvv, setcvv] = useState(false);
+  
+  const handleChangeholdername = (event) => {
+    setholdername(event.target.value)
+  }
+
+  const handleChangecardnumber = (event) => {
+    setcardnumber(event.target.value)
+  }
+  
+  const handleChangeexpirydate = (event) => {
+    setexpirydate(event.target.value)
+  }
+  const handleChangecvv = (event) => {
+    setcvv(event.target.value)
+  }
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -66,40 +89,55 @@ export default function SignIn() {
           Payment Details
         </Typography>
         <form className={classes.form} noValidate>
+        <FormControl error={holdername==""}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="holder-name"
+            id="holdername"
             label="Holder's Name"
-          //  type="text"
-            name="holder-name"
-            autoComplete="holder-name"
+            type="text"
+            name="holdername"
+            autoComplete="holdername"
             autoFocus
+            onChange={handleChangeholdername}
           />
+          {holdername=="" && <FormHelperText>Please enter your card holder's name</FormHelperText>}
+        </FormControl>
+        <FormControl error={cardnumber==""}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            name="card-number"
+            name="cardnumber"
             label="Card Number"
         //    type="number"
-            id="card-number"
-            autoComplete="card-number"
+            id="cardnumber"
+            autoComplete="cardnumber"
+            autoFocus
+            onChange={handleChangecardnumber}
           />
+          {cardnumber=="" && <FormHelperText>Please enter your card number</FormHelperText>}
+          </FormControl>
+          <FormControl error={expirydate==""}>
            <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            name="expiry-date"
+            name="expirydate"
             label="Expiry Date"
             type="date"
-            id="expiry-date"
-            autoComplete="expiry-date"
+            id="expirydate"
+            autoComplete="expirydate"
+            autoFocus
+            onChange={handleChangeexpirydate}
           />
+          {expirydate=="" && <FormHelperText>Please enter your card expiry date</FormHelperText>}
+          </FormControl>
+          <FormControl error={cvv==""}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -110,7 +148,11 @@ export default function SignIn() {
           //  type="number"
             id="cvv"
             autoComplete="cvv"
+            autoFocus
+            onChange={handleChangecvv}
           />
+          {cvv=="" && <FormHelperText>Please enter your card CVV</FormHelperText>}
+           </FormControl>
           <Button
             type="submit"
             fullWidth
