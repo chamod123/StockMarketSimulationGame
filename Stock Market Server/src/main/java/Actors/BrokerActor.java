@@ -99,7 +99,7 @@ public class BrokerActor extends AbstractActor {
     //get Portofolio
     private FI.UnitApply<BrokerMessages.GetPortofolioMessage> handleGetPortofolio() {
         return getPortofolioMessage -> {
-            sender().tell(brokerService.GetPlayer(getPortofolioMessage.getName().toString()).GetPortofolio(), getSelf());
+            sender().tell(brokerService.GetPlayer(getPortofolioMessage.getName()).GetPortofolio(), getSelf());
         };
     }
 

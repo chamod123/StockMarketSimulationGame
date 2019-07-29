@@ -141,6 +141,15 @@ public class StockController {
         return player;
     }
 
+    // #GET - get getPortofolio
+    @GetMapping("/portofolio/{name}")
+    public CompletionStage<HashMap<String, Integer>> getPortofolio(@PathVariable("name") String name) {
+        System.out.println("GET all Stock By Sector ");
+        CompletionStage<HashMap<String, Integer>> player = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetPortofolioMessage(name), timeout)
+                .thenApply(obj -> (HashMap<String, Integer>) obj);
+        return player;
+    }
+
 
 //    @RequestMapping(value = "/players/10", //
 //            method = RequestMethod.GET, //

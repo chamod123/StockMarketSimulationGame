@@ -115,13 +115,13 @@ public interface BrokerMessages {
     }
 
     class GetPortofolioMessage implements Serializable {
-        private final Long name;
+        private final String name;
 
-        public GetPortofolioMessage(Long name) {
+        public GetPortofolioMessage(String name) {
             this.name = name;
         }
 
-        public Long getName() {
+        public String getName() {
             return name;
         }
     }
