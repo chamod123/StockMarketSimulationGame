@@ -80,6 +80,31 @@ http://localhost:8081/sellStock
 
 
 
+http://localhost:8081/allStock
+[
+    {
+        "stockId": 0,
+        "stockPrice": 50,
+        "companyName": "Apple",
+        "sector": "Technology"
+    },
+    {
+        "stockId": 1,
+        "stockPrice": 44,
+        "companyName": "Microsoft",
+        "sector": "Technology"
+    },
+    {
+        "stockId": 2,
+        "stockPrice": 52,
+        "companyName": "Google",
+        "sector": "Technology"
+    }
+]
+
+
+
+
 
 
 

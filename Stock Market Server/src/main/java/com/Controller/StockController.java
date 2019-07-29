@@ -95,6 +95,15 @@ public class StockController {
         return stock;
     }
 
+    //#GET - get all stock
+    @GetMapping("/allStock")
+    public CompletionStage<ArrayList<Stock>> getAllStock() {
+        System.out.println("GET all Stock By Sector ");
+        CompletionStage<ArrayList<Stock>> stock = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetAllStockMessage(), timeout)
+                .thenApply(obj -> (ArrayList<Stock>) obj);
+        return stock;
+    }
+
     //#POST - sell stock
     @PostMapping("/sellStock")
     public String sellStock(@RequestBody Market market) {
