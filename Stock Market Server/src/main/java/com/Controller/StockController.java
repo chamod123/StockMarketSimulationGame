@@ -1,10 +1,12 @@
 package com.Controller;
 
 import Actors.PlayerActor;
+import Messages.BrokerMessages;
 import Messages.PlayerMessages;
 import Messages.StockMessages;
 import Model.Player;
 import Model.Stock;
+import Model.Market;
 import Service.PlayerService;
 import akka.http.javadsl.marshallers.jackson.Jackson;
 import akka.http.javadsl.model.StatusCodes;
@@ -84,13 +86,27 @@ public class StockController {
         return stock;
     }
 
-    //#GET - get a stock by id
+    //#GET - get a stock by sector
     @GetMapping("/stockBySector/{sector}")
-    public CompletionStage<Optional<Stock>> getStockBySector(@PathVariable("sector") Long sector) {
+    public CompletionStage<List<Stock>> getStockBySector(@PathVariable("sector") String sector) {
         System.out.println("GET Stock By Sector " + sector);
-        CompletionStage<Optional<Stock>> stock = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetStockSectorMessage(sector), timeout)
-                .thenApply(obj -> (Optional<Stock>) obj);
+        CompletionStage<List<Stock>> stock = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetStockSectorMessage(sector), timeout)
+                .thenApply(obj -> (List<Stock>) obj);
         return stock;
+    }
+
+    //#POST - sell stock
+    @PostMapping("/sellStock")
+    public String sellStock(@RequestBody Market market) {
+        System.out.println("market : " + market);
+        CompletionStage<BrokerMessages.ActionPerformed> stockSell = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.SellStockMessage(market, actorSystemCreate.getBankActor()), timeout)
+                .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
+
+        if (stockSell != null) {
+            return "sucess";
+        }
+        return "not sucess";
+
     }
 
 //    @RequestMapping(value = "/players/10", //

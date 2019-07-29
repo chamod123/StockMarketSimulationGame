@@ -73,7 +73,7 @@ public class BrokerActor extends AbstractActor {
     private FI.UnitApply<BrokerMessages.SellStockMessage> handleSellStock() {
         return sellStockMessage -> {
             BigDecimal totalvalue = marketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
-            System.out.println("totalvalue" + totalvalue);
+            System.out.println("totalvalue" + totalvalue + ": stock :" + marketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice()+ ": stock :" + BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
 
             //passe username,stock, quantity to buy the stock for that user
             boolean done = brokerService.selltock(sellStockMessage.getMarket().getUsername(), sellStockMessage.getMarket().getStock(), sellStockMessage.getMarket().getQuantity(), totalvalue);
@@ -91,7 +91,7 @@ public class BrokerActor extends AbstractActor {
         return getTotalStockValueMessage -> {
             //passe username,stock, quantity to buy the stock for that user
 
-            sender().tell(brokerService.GetTotalStockValue(getTotalStockValueMessage.getName().toString()),getSelf());
+            sender().tell(brokerService.GetTotalStockValue(getTotalStockValueMessage.getName().toString()), getSelf());
 
         };
     }
@@ -99,35 +99,35 @@ public class BrokerActor extends AbstractActor {
     //get Portofolio
     private FI.UnitApply<BrokerMessages.GetPortofolioMessage> handleGetPortofolio() {
         return getPortofolioMessage -> {
-            sender().tell(brokerService.GetPlayer(getPortofolioMessage.getName().toString()).GetPortofolio(),getSelf());
+            sender().tell(brokerService.GetPlayer(getPortofolioMessage.getName().toString()).GetPortofolio(), getSelf());
         };
     }
 
     //get all transaction Data
     private FI.UnitApply<BrokerMessages.GetAllTransactionsMessage> getAllTransactions() {
         return getAllTransactionsMessage -> {
-            sender().tell(brokerService.getTransactions(),getSelf());
+            sender().tell(brokerService.getTransactions(), getSelf());
         };
     }
 
     //get winner
     private FI.UnitApply<BrokerMessages.GetWinnerMessage> getWinner() {
         return getWinnerMessage -> {
-            sender().tell(brokerService.getTransactions(),getSelf());
+            sender().tell(brokerService.getTransactions(), getSelf());
         };
     }
 
     //get All Players
     private FI.UnitApply<BrokerMessages.GetAllPlayerMessage> getAllPlayers() {
         return getAllPlayerMessage -> {
-            sender().tell(brokerService.getTransactions(),getSelf());
+            sender().tell(brokerService.getTransactions(), getSelf());
         };
     }
 
     //start game
     private FI.UnitApply<BrokerMessages.StartGameMessage> startGame() {
         return startGameMessage -> {
-            sender().tell( brokerService.CreateAccount("Computer"),getSelf());
+            sender().tell(brokerService.CreateAccount("Computer"), getSelf());
         };
     }
 

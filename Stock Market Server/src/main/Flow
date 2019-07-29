@@ -44,3 +44,45 @@ http://localhost:8081/stock
 }
 
 
+
+http://localhost:8081/stockBySector/Finance
+[
+    {
+        "stockId": 2,
+        "stockPrice": 11,
+        "companyName": "Google2",
+        "sector": "Finance"
+    },
+    {
+        "stockId": 3,
+        "stockPrice": 11,
+        "companyName": "Google3",
+        "sector": "Finance"
+    },
+    {
+        "stockId": 5,
+        "stockPrice": 11,
+        "companyName": "Google5",
+        "sector": "Finance"
+    }
+]
+
+
+
+http://localhost:8081/sellStock
+
+{
+"username" : "Chamod",
+"stock":"Google",
+"quantity":3
+}
+
+
+
+
+
+
+
+
+
+
