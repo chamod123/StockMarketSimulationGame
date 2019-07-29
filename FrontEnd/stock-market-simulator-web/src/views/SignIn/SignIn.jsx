@@ -105,10 +105,6 @@ export default function SignIn() {
           />
            {password=="" && <FormHelperText>Please enter your password</FormHelperText>}
  </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
