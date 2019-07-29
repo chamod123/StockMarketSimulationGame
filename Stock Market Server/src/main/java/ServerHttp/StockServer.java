@@ -27,6 +27,7 @@ import akka.stream.javadsl.Flow;
 
 import static akka.http.javadsl.server.PathMatchers.*;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -182,12 +183,12 @@ public class StockServer extends AllDirectives {
     // #GET - get Bank Balance for a player
     private Route getBankBalance(Long id) {
         return get(() -> {
-            CompletionStage<Optional<Bank>> bank = Patterns.ask(bankActor, new BankMessages.GetBankBalanceMessage(id), timeout)
-                    .thenApply(obj -> (Optional<Bank>) obj);
+            CompletionStage<BigDecimal> bank = Patterns.ask(bankActor, new BankMessages.GetBankBalanceMessage(id.toString()), timeout)
+                    .thenApply(obj -> (BigDecimal) obj);
             return onSuccess(() -> bank,
                     performed -> {
-                        if (performed.isPresent())
-                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
+                        if (bank != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
                         else
                             return complete(StatusCodes.NOT_FOUND);
                     });

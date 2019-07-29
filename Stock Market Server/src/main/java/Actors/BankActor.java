@@ -53,7 +53,7 @@ public class BankActor extends AbstractActor {
     //get Bank Balance for a player
     private FI.UnitApply<BankMessages.GetBankBalanceMessage> getBankBalance() {
         return getBankBalanceMessage -> {
-            sender().tell(bankService.Balance(getBankBalanceMessage.getName().toString()),getSelf());
+            sender().tell(bankService.Balance(getBankBalanceMessage.getName()),getSelf());
         };
     }
 

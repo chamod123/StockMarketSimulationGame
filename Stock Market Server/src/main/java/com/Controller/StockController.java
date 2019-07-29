@@ -1,12 +1,14 @@
 package com.Controller;
 
 import Actors.PlayerActor;
+import Messages.BankMessages;
 import Messages.BrokerMessages;
 import Messages.PlayerMessages;
 import Messages.StockMessages;
 import Model.Player;
 import Model.Stock;
 import Model.Market;
+import Model.Bank;
 import Service.PlayerService;
 import akka.http.javadsl.marshallers.jackson.Jackson;
 import akka.http.javadsl.model.StatusCodes;
@@ -43,7 +45,6 @@ public class StockController {
     //#POST - Create new Player
     @PostMapping("/players")
     public String addPlayer(@RequestBody Player player) {
-        System.out.println("" + player);
         CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns
                 .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.CreatePlayerMessage(player, actorSystemCreate.getBankActor()), timeout)
                 .thenApply(PlayerMessages.ActionPerformed.class::cast);
@@ -56,7 +57,6 @@ public class StockController {
     //#GET - get a Player Data
     @GetMapping("/players/{id}")
     public CompletionStage<Optional<Player>> getPlayer(@PathVariable("id") Long id) {
-        System.out.println("GET");
         CompletionStage<Optional<Player>> maybeUser = Patterns
                 .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetPlayerMessage(id), timeout)
                 .thenApply(Optional.class::cast);
@@ -66,7 +66,6 @@ public class StockController {
     //#POST - Create new stock
     @PostMapping("/stock")
     public String postStock(@RequestBody Stock stock) {
-        System.out.println("stock : " + stock);
         CompletionStage<StockMessages.ActionPerformed> stockCreated = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.CreateStockMessage(stock), timeout)
                 .thenApply(obj -> (StockMessages.ActionPerformed) obj);
 
@@ -80,7 +79,6 @@ public class StockController {
     //#GET - get a stock by id
     @GetMapping("/stock/{id}")
     public CompletionStage<Optional<Stock>> getStock(@PathVariable("id") Long id) {
-        System.out.println("GET Stock " + id);
         CompletionStage<Optional<Stock>> stock = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetStockMessage(id), timeout)
                 .thenApply(obj -> (Optional<Stock>) obj);
         return stock;
@@ -89,7 +87,6 @@ public class StockController {
     //#GET - get a stock by sector
     @GetMapping("/stockBySector/{sector}")
     public CompletionStage<List<Stock>> getStockBySector(@PathVariable("sector") String sector) {
-        System.out.println("GET Stock By Sector " + sector);
         CompletionStage<List<Stock>> stock = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetStockSectorMessage(sector), timeout)
                 .thenApply(obj -> (List<Stock>) obj);
         return stock;
@@ -98,7 +95,6 @@ public class StockController {
     //#GET - get all stock
     @GetMapping("/allStock")
     public CompletionStage<ArrayList<Stock>> getAllStock() {
-        System.out.println("GET all Stock By Sector ");
         CompletionStage<ArrayList<Stock>> stock = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetAllStockMessage(), timeout)
                 .thenApply(obj -> (ArrayList<Stock>) obj);
         return stock;
@@ -107,7 +103,6 @@ public class StockController {
     //#POST - sell stock
     @PostMapping("/sellStock")
     public String sellStock(@RequestBody Market market) {
-        System.out.println("market : " + market);
         CompletionStage<BrokerMessages.ActionPerformed> stockSell = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.SellStockMessage(market, actorSystemCreate.getBankActor()), timeout)
                 .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
 
@@ -121,7 +116,6 @@ public class StockController {
     //#POST - buy stock
     @PostMapping("/buyStock")
     public String buyStock(@RequestBody Market market) {
-        System.out.println("market : " + market);
         CompletionStage<BrokerMessages.ActionPerformed> stockBuy = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.BuyStockMessage(market, actorSystemCreate.getBankActor()), timeout)
                 .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
 
@@ -135,7 +129,6 @@ public class StockController {
     // #GET - get total stock value for player
     @GetMapping("/stockValue")
     public CompletionStage<Optional<Player>> stockValue(@PathVariable("name") String name) {
-        System.out.println("GET all Stock By Sector ");
         CompletionStage<Optional<Player>> player = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetTotalStockValueMessage(name), timeout)
                 .thenApply(obj -> (Optional<Player>) obj);
         return player;
@@ -144,10 +137,17 @@ public class StockController {
     // #GET - get getPortofolio
     @GetMapping("/portofolio/{name}")
     public CompletionStage<HashMap<String, Integer>> getPortofolio(@PathVariable("name") String name) {
-        System.out.println("GET all Stock By Sector ");
         CompletionStage<HashMap<String, Integer>> player = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetPortofolioMessage(name), timeout)
                 .thenApply(obj -> (HashMap<String, Integer>) obj);
         return player;
+    }
+
+    // #GET - get Bank Balance for a player
+    @GetMapping("/bankBalance/{name}")
+    public CompletionStage<BigDecimal> getBankBalance(@PathVariable("name") String name) {
+        CompletionStage<BigDecimal> balance = Patterns.ask(actorSystemCreate.getBankActor(), new BankMessages.GetBankBalanceMessage(name), timeout)
+                .thenApply(obj -> (BigDecimal) obj);
+        return balance;
     }
 
 
