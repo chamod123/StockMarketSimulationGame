@@ -5,3 +5,42 @@ playerActor -> create player
 need to check broker service "BuyStock" - " Integer count = GetPlayer(name).getStocks().get(stock);"
 
 when login user need to all to marketServer
+
+######################################################################################################
+######################################################################################################
+######################################################################################################
+
+http://localhost:8081/players/1
+
+{
+    "id": 1,
+    "name": "Chamod",
+    "stocks": null
+}
+
+
+http://localhost:8081/players
+
+{
+"name":"Kara"
+}
+
+not working correctly. need to recheck
+http://localhost:8081/stock/1
+{
+    "stockId": 1,
+    "stockPrice": 11,
+    "companyName": "Google18",
+    "sector": "Finance"
+}
+
+not working correctly. need to recheck
+http://localhost:8081/stock
+
+{
+    "stockPrice": 11,
+    "companyName": "Google18",
+    "sector": "Finance"
+}
+
+
