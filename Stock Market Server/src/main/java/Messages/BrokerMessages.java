@@ -103,13 +103,13 @@ public interface BrokerMessages {
     }
 
     class GetTotalStockValueMessage implements Serializable {
-        private final Long name;
+        private final String name;
 
-        public GetTotalStockValueMessage(Long name) {
+        public GetTotalStockValueMessage(String name) {
             this.name = name;
         }
 
-        public Long getName() {
+        public String getName() {
             return name;
         }
     }

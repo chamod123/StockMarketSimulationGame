@@ -78,7 +78,7 @@ public class StockServer extends AllDirectives {
                 , path("buyStock", this::buyStock) //#POST - buyStock
                 , path("sellStock", this::sellStock) //#POST - sellStock
                 , path(segment("allStock"), this::getAllStock)// #GET - get a stock Data
-                , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id)))// #GET - get total stock value for player
+//                , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id)))// #GET - get total stock value for player
                 , path(segment("portofolio").slash(longSegment()), id -> route(getPortofolio(id)))// #GET - get getPortofolio
                 , path(segment("bankBalance").slash(longSegment()), id -> route(getBankBalance(id)))// #GET - get Bank Balance for a player
                 , path(segment("transactions"), this::getAllTransactions)// #GET - get all transaction Data
@@ -211,7 +211,7 @@ public class StockServer extends AllDirectives {
 
 
     // #GET - get total stock value for player
-    private Route stockValue(Long id) {
+    private Route stockValue(String id) {
         return get(() -> {
             CompletionStage<Optional<Player>> player = Patterns.ask(brokerActor, new BrokerMessages.GetTotalStockValueMessage(id), timeout)
                     .thenApply(obj -> (Optional<Player>) obj);

@@ -132,6 +132,16 @@ public class StockController {
 
     }
 
+    // #GET - get total stock value for player
+    @GetMapping("/stockValue")
+    public CompletionStage<Optional<Player>> stockValue(@PathVariable("name") String name) {
+        System.out.println("GET all Stock By Sector ");
+        CompletionStage<Optional<Player>> player = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetTotalStockValueMessage(name), timeout)
+                .thenApply(obj -> (Optional<Player>) obj);
+        return player;
+    }
+
+
 //    @RequestMapping(value = "/players/10", //
 //            method = RequestMethod.GET, //
 //            produces = {MediaType.APPLICATION_JSON_VALUE, //
