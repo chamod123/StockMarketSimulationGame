@@ -30,20 +30,40 @@ import CardFooter from "components/Card/CardFooter.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Button } from "@material-ui/core";
+import { getLeaderBoard } from "server/server";
 
 class Dashboard extends React.Component {
   state = {
-    value: 0
+    value: 0,
+    tableData:[]
   };
   handleChange = (event, value) => {
     this.setState({ value });
   };
 
+  componentDidMount() {
+    getLeaderBoard().then(response => {
+      console.log(response)
+      this.setState({ tableData: this.getTableData(response) })
+    })
+  }
+  
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
+
+  getTableData = (response) => {
+    var rowArray = []
+    response.forEach(function (element) {
+      rowArray.push([element.id, element.name, element.price])
+    });
+    console.log(rowArray)
+    return rowArray;
+  }
+
   render() {
     const { classes } = this.props;
+    const { tableData } = this.state;
     return (
       <div>
         <GridContainer>
@@ -179,16 +199,12 @@ class Dashboard extends React.Component {
                 </p>
               </CardHeader>
               <CardBody>
+                {tableData.length>0?
                 <Table
                   tableHeaderColor="warning"
                   tableHead={["ID", "Name", "Won Prize"]}
-                  tableData={[
-                    ["1", "Mick Peterson", "$36,738"],
-                    ["2", "Damon Silvester", "$23,789"],
-                    ["3", "Rick Panday", "$56,142"],
-                    ["4", "Philip Chaney", "$38,735"]
-                  ]}
-                />
+                  tableData={tableData}
+                />:null}
               </CardBody>
             </Card>
           </GridItem>

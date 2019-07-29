@@ -12,6 +12,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useState } from 'react';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 function Create() {
   return (
@@ -52,7 +55,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignIn() {
   const classes = useStyles();
-
+  const [userName, setuserName] = useState(false);
+  const handleChangeEmail=(event)=>{
+    setuserName(event.target.value)
+  }
+  const [password, setpassword] = useState(false);
+  const handleChangepassword=(event)=>{
+    setpassword(event.target.value)
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -64,20 +74,25 @@ export default function SignIn() {
           Sign in
         </Typography>
         <form className={classes.form} noValidate>
+        <FormControl error={userName==""}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="userName"
+            label="Uesr Name"
+            type ="username"
+            name="userName"
+            autoComplete="userName"
             autoFocus
+            onChange={handleChangeEmail}
           />
+          {userName=="" && <FormHelperText>Please enter your user name</FormHelperText>}
+    </FormControl>
+    <FormControl error={password==""}>
           <TextField
             variant="outlined"
-            margin="normal"
             required
             fullWidth
             name="password"
@@ -85,7 +100,11 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            autoFocus
+            onChange={handleChangepassword}
           />
+           {password=="" && <FormHelperText>Please enter your password</FormHelperText>}
+ </FormControl>
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
@@ -100,11 +119,6 @@ export default function SignIn() {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
               <Link href="#" variant="body2">
                 {"Don't have an account? Sign Up"}
