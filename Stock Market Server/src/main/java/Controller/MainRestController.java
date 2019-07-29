@@ -135,7 +135,7 @@ public class MainRestController {
 
     }
 
-    //get all Players 
+    //get all Players
     // http://localhost:8080/SomeContextPath/game/players
     @RequestMapping(value = "/players", //
             method = RequestMethod.GET, //
@@ -145,6 +145,19 @@ public class MainRestController {
     public HashMap<String, ArrayList<BigDecimal>> players()throws Exception {
 
         return brokerServer.GetAllPlayers();
+
+    }
+
+    //Get prediction
+    // http://localhost:8080/transactions
+    @RequestMapping(value = "/transactions", //
+            method = RequestMethod.GET, //
+            produces = { MediaType.APPLICATION_JSON_VALUE, //
+                    MediaType.APPLICATION_XML_VALUE })
+    @ResponseBody
+    public ArrayList<String> predictions()throws Exception {
+
+        return brokerServer.Prediction();
 
     }
 
