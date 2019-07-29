@@ -118,6 +118,20 @@ public class StockController {
 
     }
 
+    //#POST - buy stock
+    @PostMapping("/buyStock")
+    public String buyStock(@RequestBody Market market) {
+        System.out.println("market : " + market);
+        CompletionStage<BrokerMessages.ActionPerformed> stockBuy = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.BuyStockMessage(market, actorSystemCreate.getBankActor()), timeout)
+                .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
+
+        if (stockBuy != null) {
+            return "sucess";
+        }
+        return "not sucess";
+
+    }
+
 //    @RequestMapping(value = "/players/10", //
 //            method = RequestMethod.GET, //
 //            produces = {MediaType.APPLICATION_JSON_VALUE, //
