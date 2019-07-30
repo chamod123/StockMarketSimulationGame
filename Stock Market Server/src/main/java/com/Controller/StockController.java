@@ -13,6 +13,7 @@ import akka.http.javadsl.model.StatusCodes;
 import akka.pattern.Patterns;
 import com.ActorSystemCreate;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -63,9 +64,9 @@ public class StockController {
 
     //#GET - login User
     @GetMapping("/login/{id}/{password}")
-    public CompletionStage<Boolean> loginUser(@PathVariable("id") Long id,@PathVariable("password") String password) {
+    public CompletionStage<Boolean> loginUser(@PathVariable("id") Long id, @PathVariable("password") String password) {
         CompletionStage<Boolean> maybeUser = Patterns
-                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.LoginPlayerMessage(id,password), timeout)
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.LoginPlayerMessage(id, password), timeout)
                 .thenApply(obj -> (Boolean) obj);
         return maybeUser;
     }
@@ -209,10 +210,22 @@ public class StockController {
 
     //#GET - get Current Turn
     @GetMapping("/currentTurn")
-    public CompletionStage<ArrayList<String>> currentTurn() {
-        CompletionStage<ArrayList<String>> turn = Patterns.ask(actorSystemCreate.getStockActor(), new AnalystMessages.GetCurrentTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(obj -> (ArrayList<String>) obj);
+    public CompletionStage<Integer> currentTurn() {
+        CompletionStage<Integer> turn = Patterns.ask(actorSystemCreate.getStockActor(), new AnalystMessages.GetCurrentTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (Integer) obj);
         return turn;
+    }
+
+    //go to next turn after 45 seconds
+    @Scheduled(fixedDelay = 45000)
+    public String nextTurnS() throws Exception {
+
+        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+        if (nextTurn != null) {
+            return "sucess";
+        }
+        return "not sucess";
     }
 
 }
