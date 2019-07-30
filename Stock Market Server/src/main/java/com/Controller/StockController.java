@@ -55,9 +55,18 @@ public class StockController {
     //#GET - get a Player Data
     @GetMapping("/players/{id}")
     public CompletionStage<Optional<Player>> getPlayer(@PathVariable("id") Long id) {
-        CompletionStage<Optional<Player>> maybeUser = Patterns
+        CompletionStage<Optional<Player>> player = Patterns
                 .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetPlayerMessage(id), timeout)
                 .thenApply(Optional.class::cast);
+        return player;
+    }
+
+    //#GET - login User
+    @GetMapping("/login/{id}/{password}")
+    public CompletionStage<Boolean> loginUser(@PathVariable("id") Long id,@PathVariable("password") String password) {
+        CompletionStage<Boolean> maybeUser = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.LoginPlayerMessage(id,password), timeout)
+                .thenApply(obj -> (Boolean) obj);
         return maybeUser;
     }
 

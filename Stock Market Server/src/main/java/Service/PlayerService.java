@@ -33,4 +33,13 @@ public class PlayerService {
     public List<Player> getPlayers(){
         return players;
     }
+
+    public Boolean loginPlayer(Long id, String password) {
+        for (Player player : players) {
+           if(Long.valueOf(player.getId()).equals(id) && password.equals(player.getPassword())){
+               return true;
+           }
+        }
+        return false;
+    }
 }

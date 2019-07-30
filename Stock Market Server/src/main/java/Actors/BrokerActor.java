@@ -53,7 +53,6 @@ public class BrokerActor extends AbstractActor {
 
     //buy Stock
     private FI.UnitApply<BrokerMessages.BuyStockMessage> handleBuyStock() {
-        System.out.println("awa 2");
         return getBrokerMessage -> {
             //get stock Price*Quantity from stock item in market
             BigDecimal totalvalue = marketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));

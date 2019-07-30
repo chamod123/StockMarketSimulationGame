@@ -73,13 +73,13 @@ public class StockServer extends AllDirectives {
                 , path(segment("players").slash(longSegment()), id -> route(getPlayer(id)))//#GET - get a Player Data
                 , path(segment("stock").slash(longSegment()), id -> route(getStock(id)))// #GET - get a stock Data
                 , path("stock", this::postStock)// #POST - Create new stock
-//                , path(segment("stockBySector").slash(longSegment()), sectorId -> route(getStockBySector(sectorId)))// #GET - get stocks Data by sector
+                , path(segment("stockBySector").slash(longSegment()), sectorId -> route(getStockBySector(sectorId.toString())))// #GET - get stocks Data by sector
                 , path(segment("brokers").slash(longSegment()), id -> route(getBroker(id))) //#GET - get a broker data
                 , path("brokers", this::postBroker) //#POST - Create Broker
                 , path("buyStock", this::buyStock) //#POST - buyStock
                 , path("sellStock", this::sellStock) //#POST - sellStock
                 , path(segment("allStock"), this::getAllStock)// #GET - get a stock Data
-//                , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id)))// #GET - get total stock value for player
+                , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id.toString())))// #GET - get total stock value for player
                 , path(segment("portofolio").slash(longSegment()), id -> route(getPortofolio(id.toString())))// #GET - get getPortofolio
                 , path(segment("bankBalance").slash(longSegment()), id -> route(getBankBalance(id)))// #GET - get Bank Balance for a player
                 , path(segment("transactions"), this::getAllTransactions)// #GET - get all transaction Data

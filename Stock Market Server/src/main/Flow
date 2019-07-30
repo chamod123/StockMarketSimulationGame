@@ -10,20 +10,35 @@ when login user need to all to marketServer
 ######################################################################################################
 ######################################################################################################
 
-http://localhost:8081/players/1
+http://localhost:8081/players/7
 
 {
-    "id": 1,
-    "name": "Chamod",
-    "stocks": null
+      "id": 7,
+      "name": "Chamod",
+      "secondName": "wijesena",
+      "email": "chamod@gmail.com",
+      "userName": "chamod",
+      "password": "1234",
+      "tpNumber": "1234567890",
+      "stocks": null
+
 }
 
 
 http://localhost:8081/players
 
 {
-"name":"Kara"
+    "name": "Chamod",
+    "secondName": "wijesena",
+    "email": "chamod@gmail.com",
+    "userName": "chamod",
+    "password": "1234",
+    "tpNumber": "1234567890"
 }
+
+
+http://localhost:8081/login/7/1234
+true
 
 not working correctly. need to recheck
 http://localhost:8081/stock/1
