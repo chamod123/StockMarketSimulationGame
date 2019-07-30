@@ -207,4 +207,12 @@ public class StockController {
         return prediction;
     }
 
+    //#GET - get Current Turn
+    @GetMapping("/currentTurn")
+    public CompletionStage<ArrayList<String>> currentTurn() {
+        CompletionStage<ArrayList<String>> turn = Patterns.ask(actorSystemCreate.getStockActor(), new AnalystMessages.GetCurrentTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (ArrayList<String>) obj);
+        return turn;
+    }
+
 }

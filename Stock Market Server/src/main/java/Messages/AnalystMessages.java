@@ -24,7 +24,7 @@ public interface AnalystMessages {
         private static ActorRef brokerActor;
 
         public StartGameMessage(ActorRef brokerActor) {
-            this.brokerActor=brokerActor;
+            this.brokerActor = brokerActor;
         }
 
         public static ActorRef getBrokerActor() {
@@ -37,7 +37,7 @@ public interface AnalystMessages {
         private static ActorRef brokerActor;
 
         public NextTurnMessage(ActorRef brokerActor) {
-            this.brokerActor=brokerActor;
+            this.brokerActor = brokerActor;
         }
 
         public static ActorRef getBrokerActor() {
@@ -45,14 +45,29 @@ public interface AnalystMessages {
         }
     }
 
+    //get prediction
     class GetPredictionMessage implements Serializable {
         private static ActorRef brokerActor;
-        public GetPredictionMessage(ActorRef brokerActor ) {
-            this.brokerActor=brokerActor;
+
+        public GetPredictionMessage(ActorRef brokerActor) {
+            this.brokerActor = brokerActor;
         }
 
         public static ActorRef getBrokerActor() {
             return brokerActor;
         }
+    }
+
+    //get current turn
+    class GetCurrentTurnMessage implements Serializable {
+        private static ActorRef brokerActor;
+
+        public GetCurrentTurnMessage(ActorRef brokerActor) {
+            this.brokerActor = brokerActor;
+        }
+        public static ActorRef getBrokerActor() {
+            return brokerActor;
+        }
+
     }
 }

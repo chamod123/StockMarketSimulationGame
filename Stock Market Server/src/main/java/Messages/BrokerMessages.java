@@ -156,5 +156,13 @@ public interface BrokerMessages {
         }
     }
 
+    //get current turn
+    class GetCurrentTurnMessage implements Serializable {
+
+        public GetCurrentTurnMessage() {
+        }
+
+    }
+
 
 }

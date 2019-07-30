@@ -33,6 +33,7 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.StartGameMessage.class, startGame())//Start game
                 .match(BrokerMessages.NextTurnMessage.class, nextTurn())//Start game
                 .match(BrokerMessages.GetPredictionMessage.class, Prediction())//Start game
+                .match(BrokerMessages.GetCurrentTurnMessage.class, currentTurn())//get current turn
                 .build();
     }
 
@@ -144,6 +145,14 @@ public class BrokerActor extends AbstractActor {
         return getPredictionMessage -> {
             brokerService.Prediction();
             sender().tell(new BrokerMessages.ActionPerformed(String.format("get prediction")), getSelf());
+        };
+    }
+
+    //get Prediction
+    private FI.UnitApply<BrokerMessages.GetCurrentTurnMessage> currentTurn() {
+        return getPredictionMessage -> {
+            marketService.GetCurrentTurn();
+            sender().tell(new BrokerMessages.ActionPerformed(String.format("get current turn")), getSelf());
         };
     }
 
