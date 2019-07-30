@@ -40,7 +40,8 @@ class GameBoard extends React.Component {
       selectedSectorIndex: 0,
       selectedStock: 0,
       isOnMyStocks: false,
-      noOfSharesToBuy: 0
+      noOfSharesToBuy: 0,
+      currentPlayers:[]
     };
   }
 
@@ -79,15 +80,22 @@ class GameBoard extends React.Component {
 
   handleToggleOnMyStock = ()=>{
     this.loadStockDataFromAPI()
-    getPlayers().then(response => {
-        console.log(response)
-      })
   }
 
   handleChangeNoOfSharesToBuy = (event) => {
     this.setState({
       noOfSharesToBuy:event.target.value
     })
+  }
+
+  handlePressStartGame = () => {
+    getPlayers().then(response => { 
+      console.log(response)
+      this.setState({
+        currentPlayers:response
+      })
+     })
+    //Call Startgame
   }
 
   getTableData = (array) => {
@@ -127,7 +135,7 @@ class GameBoard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { stockArray, chartData, isOnMyStocks, noOfSharesToBuy } = this.state;
+    const { stockArray, chartData, isOnMyStocks, noOfSharesToBuy, currentPlayers } = this.state;
     return (
       <div>
         <GridContainer>
@@ -234,6 +242,13 @@ class GameBoard extends React.Component {
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={8}>
+                  <Card>
+                    <CardBody>
+                      {currentPlayers.length == 0 ? <Button color="success" onClick={this.handlePressStartGame}>Start Game</Button>
+                        :
+                        <GridContainer spacing={3}>{currentPlayers.map(player => { return <GridItem xs>{player.name}</GridItem> })}</GridContainer>}
+                    </CardBody>
+                  </Card>
                   <Card chart>
                     <CardHeader color={this.getHeaderColor()}>
                       <Chart startChartData={chartData}
