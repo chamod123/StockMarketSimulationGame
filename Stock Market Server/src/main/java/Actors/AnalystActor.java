@@ -18,7 +18,7 @@ public class AnalystActor extends AbstractActor {
         return receiveBuilder()
                 .match(AnalystMessages.StartGameMessage.class, startGame())//start game
                 .match(AnalystMessages.NextTurnMessage.class, nextTurn())//next turn
-//                .match(AnalystMessages.GetPredictionMessage.class, Prediction())//next turn
+                .match(AnalystMessages.GetPredictionMessage.class, Prediction())//Prediction
                 .build();
     }
 
@@ -42,6 +42,16 @@ public class AnalystActor extends AbstractActor {
             }
             marketService.GetCurrentTurn();
             sender().tell(new AnalystMessages.ActionPerformed(String.format("go to next turn "
+            )), getSelf());
+        };
+    }
+
+    //Prediction
+    private FI.UnitApply<AnalystMessages.GetPredictionMessage> Prediction() {
+        return getPredictionMessage -> {
+            //call to broker actor to get Prediction
+            getPredictionMessage.getBrokerActor().tell(new BrokerMessages.GetPredictionMessage(),getSelf());
+            sender().tell(new AnalystMessages.ActionPerformed(String.format("get prediction "
             )), getSelf());
         };
     }

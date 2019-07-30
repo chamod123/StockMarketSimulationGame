@@ -190,4 +190,12 @@ public class StockController {
         return "not sucess";
     }
 
+    //#GET - get prediction
+    @GetMapping("/prediction")
+    public CompletionStage<ArrayList<String>> getPrediction() {
+        CompletionStage<ArrayList<String>> prediction = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.GetPredictionMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (ArrayList<String>) obj);
+        return prediction;
+    }
+
 }

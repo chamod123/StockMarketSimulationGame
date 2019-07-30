@@ -32,6 +32,7 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.GetAllPlayerMessage.class, getAllPlayers())//get all Players
                 .match(BrokerMessages.StartGameMessage.class, startGame())//Start game
                 .match(BrokerMessages.NextTurnMessage.class, nextTurn())//Start game
+                .match(BrokerMessages.GetPredictionMessage.class, Prediction())//Start game
                 .build();
     }
 
@@ -136,6 +137,14 @@ public class BrokerActor extends AbstractActor {
         return nextTurnMessage -> {
             brokerService.ComputerPlay();
             sender().tell(new BrokerMessages.ActionPerformed(String.format("Computer Player created")), getSelf());
+        };
+    }
+
+    //get Prediction
+    private FI.UnitApply<BrokerMessages.GetPredictionMessage> Prediction() {
+        return getPredictionMessage -> {
+            brokerService.Prediction();
+            sender().tell(new BrokerMessages.ActionPerformed(String.format("get prediction")), getSelf());
         };
     }
 
