@@ -27,6 +27,7 @@ function getMyStocks() {
 function getLeaderBoard() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
+        // fetch('http://localhost:8081/"allPlayers')
         fetch('https://api.myjson.com/bins/1cwg6l')
             .then(function (response) {
                 return response.json();
@@ -40,7 +41,7 @@ function getLeaderBoard() {
 function getTransactioHistory() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-        fetch('https://api.myjson.com/bins/1cwg6l')
+        fetch('https://api.myjson.com/bins/xwzqh')
             .then(function (response) {
                 return response.json();
             })

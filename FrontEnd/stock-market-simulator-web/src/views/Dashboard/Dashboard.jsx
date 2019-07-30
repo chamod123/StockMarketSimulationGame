@@ -16,18 +16,11 @@ import Accessibility from "@material-ui/icons/Accessibility";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Table from "components/Table/Table.jsx";
-
-
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-
-
-
-
-
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Button } from "@material-ui/core";
 import { getLeaderBoard } from "server/server";
@@ -57,6 +50,7 @@ class Dashboard extends React.Component {
     response.forEach(function (element) {
       rowArray.push([element.id, element.name, element.price])
     });
+
     console.log(rowArray)
     return rowArray;
   }
@@ -189,8 +183,7 @@ class Dashboard extends React.Component {
           </GridItem>
         </GridContainer>
         <GridContainer>
-         
-          <GridItem xs={12} sm={12} md={12}>
+         <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Leader Board</h4>
