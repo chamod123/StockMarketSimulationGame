@@ -25,11 +25,13 @@ import java.util.Random;
 public class MarketService {
     public static ArrayList<Stock> stocks;
     public static ArrayList<Stock> stocksHistory;
-    public int turns=20;
+    public int turns = 20;
     public static HashMap<Sector, ArrayList<Integer>> sectorTrends;
     public static ArrayList<Integer> marketTrends;
     public static ArrayList<Event> eventList;
-    private int currentTurn=0;
+    private int currentTurn = 0;
+    Random random = new Random();
+    Random randomvalue = new Random();
 
 
     static {
@@ -38,21 +40,21 @@ public class MarketService {
         marketTrends = new ArrayList<>();
         sectorTrends = new HashMap<>();
         //add stocks
-        stocks.add(new Stock("Apple",Sector.Technology,new BigDecimal(50)));
-        stocks.add(new Stock("Microsoft",Sector.Technology,new BigDecimal(44.)));
-        stocks.add(new Stock("Google",Sector.Technology,new BigDecimal(52.)));
+        stocks.add(new Stock("Apple", Sector.Technology, new BigDecimal(50)));
+        stocks.add(new Stock("Microsoft", Sector.Technology, new BigDecimal(44.)));
+        stocks.add(new Stock("Google", Sector.Technology, new BigDecimal(52.)));
 
-        stocks.add(new Stock("Allianz",Sector.Finance,new BigDecimal(39.)));
-        stocks.add(new Stock("ICBC",Sector.Finance,new BigDecimal(45)));
-        stocks.add(new Stock("AXA",Sector.Finance,new BigDecimal(55)));
+        stocks.add(new Stock("Allianz", Sector.Finance, new BigDecimal(39.)));
+        stocks.add(new Stock("ICBC", Sector.Finance, new BigDecimal(45)));
+        stocks.add(new Stock("AXA", Sector.Finance, new BigDecimal(55)));
 
-        stocks.add(new Stock("SERV",Sector.ConsumerServices,new BigDecimal(33.5)));
-        stocks.add(new Stock("BID",Sector.ConsumerServices,new BigDecimal(36.5)));
-        stocks.add(new Stock("HRB",Sector.ConsumerServices,new BigDecimal(38)));
+        stocks.add(new Stock("SERV", Sector.ConsumerServices, new BigDecimal(33.5)));
+        stocks.add(new Stock("BID", Sector.ConsumerServices, new BigDecimal(36.5)));
+        stocks.add(new Stock("HRB", Sector.ConsumerServices, new BigDecimal(38)));
 
-        stocks.add(new Stock("Volkswagen",Sector.Manufacturing,new BigDecimal(55)));
-        stocks.add(new Stock("Samsung",Sector.Manufacturing,new BigDecimal(56)));
-        stocks.add(new Stock("Daimler",Sector.Manufacturing,new BigDecimal(34)));
+        stocks.add(new Stock("Volkswagen", Sector.Manufacturing, new BigDecimal(55)));
+        stocks.add(new Stock("Samsung", Sector.Manufacturing, new BigDecimal(56)));
+        stocks.add(new Stock("Daimler", Sector.Manufacturing, new BigDecimal(34)));
 /*        SparkConf conf = new SparkConf().setAppName("StartingSpark").setMaster("Local[*]");
         JavaSparkContext sc = new JavaSparkContext(conf);
 
@@ -63,7 +65,11 @@ public class MarketService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public MarketService() {
+
+        ChangeStockValues();
     }
 
 
@@ -75,7 +81,7 @@ public class MarketService {
                 return c;
             }
         }
-        throw new Exception("Stock with the name "+name+" does not exsist");
+        throw new Exception("Stock with the name " + name + " does not exsist");
 
     }
 
@@ -92,7 +98,6 @@ public class MarketService {
 */
 
 
-
     //get current turn
     public int GetCurrentTurn() {
         return this.currentTurn;
@@ -100,20 +105,20 @@ public class MarketService {
 
     //return future array list
     public ArrayList<Stock> GetPredictedStocks() {
-        ArrayList<Stock> temp=new ArrayList<Stock>(stocks);
+        ArrayList<Stock> temp = new ArrayList<Stock>(stocks);
         Random ran = new Random();
-        int number = ran.nextInt(3)+currentTurn;
+        int number = ran.nextInt(3) + currentTurn;
         for (int i = 0; i < stocks.size(); i++) {
             //get market trend value for current turn
-            int marketValue=marketTrends.get(number);
+            int marketValue = marketTrends.get(number);
             //get sector trend value value for current turn
-            int sectorValue=sectorTrends.get(temp.get(i).getSector()).get(number);
-            int eventValue=ChangeEventStockValue(temp.get(i),number);
-            String sName=temp.get(i).getCompanyName();
-            BigDecimal stockprice=temp.get(i).getStockPrice();
-            Sector sec=temp.get(i).getSector();
+            int sectorValue = sectorTrends.get(temp.get(i).getSector()).get(number);
+            int eventValue = ChangeEventStockValue(temp.get(i), number);
+            String sName = temp.get(i).getCompanyName();
+            BigDecimal stockprice = temp.get(i).getStockPrice();
+            Sector sec = temp.get(i).getSector();
 //            need to complet
-            temp.add(new Stock(sName+"Temp",sec,stockprice.add(BigDecimal.valueOf(eventValue+sectorValue+marketValue))));
+            temp.add(new Stock(sName + "Temp", sec, stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue))));
 
         }
         return temp;
@@ -121,13 +126,13 @@ public class MarketService {
 
 
     //change stock value based on events
-    public int ChangeEventStockValue(Stock stock,int turn){
-        int eventValue=0;
+    public int ChangeEventStockValue(Stock stock, int turn) {
+        int eventValue = 0;
         //loop all events
-        for(int i=0;i<eventList.size();i++) {
-            if ((eventList.get(i).getSector() == stock.getSector())||(eventList.get(i).getStock()==stock)) {
+        for (int i = 0; i < eventList.size(); i++) {
+            if ((eventList.get(i).getSector() == stock.getSector()) || (eventList.get(i).getStock() == stock)) {
                 if (turn >= eventList.get(i).getStartTurn() && turn <= eventList.get(i).getEndTurn()) {
-                    eventValue=eventValue+eventList.get(i).getValue();
+                    eventValue = eventValue + eventList.get(i).getValue();
                 }
 
             }
@@ -150,15 +155,29 @@ public class MarketService {
 
         for (int i = 0; i < stocks.size(); i++) {
             //get market trend value for current turn
-            int marketValue=marketTrends.get(currentTurn);
+
+            int marketValue = marketTrends.get(currentTurn);
             //get sector trend value value for current turn
-            int sectorValue=sectorTrends.get(stocks.get(i).getSector()).get(currentTurn);
-            int eventValue=ChangeEventStockValue(stocks.get(i),currentTurn);
-            BigDecimal stockprice=stocks.get(i).getStockPrice();
-            stocks.get(i).setStockPrice(stockprice.add(BigDecimal.valueOf(eventValue+sectorValue+marketValue)));
-            if (stocks.get(i).getStockPrice().compareTo(BigDecimal.ZERO)<=0) {
+            int sectorValue = sectorTrends.get(stocks.get(i).getSector()).get(currentTurn);
+            int eventValue = ChangeEventStockValue(stocks.get(i), currentTurn);
+            BigDecimal stockprice = stocks.get(i).getStockPrice();
+            stocks.get(i).setStockPrice(stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue)));
+            if (stocks.get(i).getStockPrice().compareTo(BigDecimal.ZERO) <= 0) {
                 stocks.get(i).setStockPrice(BigDecimal.valueOf(1));
             }
         }
     }
+
+    //get current events
+    public ArrayList<Event> GetCurrentEvents() {
+        ArrayList<Event> eList = new ArrayList<>();
+        for (int i = 0; i < eventList.size(); i++) {
+            if (this.currentTurn >= eventList.get(i).getStartTurn() && this.currentTurn <= eventList.get(i).getEndTurn()) {
+                eList.add(eventList.get(i));
+            }
+        }
+        return eList;
+    }
+
+
 }

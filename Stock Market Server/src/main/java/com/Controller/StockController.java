@@ -5,6 +5,7 @@ import Messages.*;
 import Model.Player;
 import Model.Stock;
 import Model.Market;
+import Model.Event;
 import Model.Transaction;
 import Model.Bank;
 import Service.PlayerService;
@@ -219,13 +220,21 @@ public class StockController {
     //go to next turn after 45 seconds
     @Scheduled(fixedDelay = 45000)
     public String nextTurnS() throws Exception {
-
         CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
                 .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
         if (nextTurn != null) {
             return "sucess";
         }
         return "not sucess";
+    }
+
+    //get Current Event
+    @GetMapping("/currentEvents")
+    public CompletionStage<ArrayList<Event>> currentEvents() throws Exception {
+        CompletionStage<ArrayList<Event>> event = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetCurrentEventMessage(), timeout)
+                .thenApply(obj -> (ArrayList<Event>) obj);
+        return event;
+
     }
 
 }

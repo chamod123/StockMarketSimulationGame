@@ -69,6 +69,12 @@ public interface StockMessages {
 
     }
 
+    class GetCurrentEventMessage implements Serializable {
+
+        public GetCurrentEventMessage() {
+        }
+
+    }
 
 
 }

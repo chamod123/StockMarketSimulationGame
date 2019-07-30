@@ -17,6 +17,7 @@ public class StockActor extends AbstractActor {
                 .match(StockMessages.GetStockMessage.class, handleGetStock())
                 .match(StockMessages.GetStockSectorMessage.class, handleGetStockBySector())
                 .match(StockMessages.GetAllStockMessage.class, handleGetAllStock())//get all stock
+                .match(StockMessages.GetCurrentEventMessage.class, currentEvents())//get current event
                 .build();
     }
 
@@ -43,6 +44,13 @@ public class StockActor extends AbstractActor {
     private FI.UnitApply<StockMessages.GetAllStockMessage> handleGetAllStock() {
         return getAllStockMessage -> {
             sender().tell(marketService.getStocks(), getSelf());
+        };
+    }
+
+    //get current event
+    private FI.UnitApply<StockMessages.GetCurrentEventMessage> currentEvents() {
+        return currentEventMessage -> {
+            sender().tell(marketService.GetCurrentEvents(), getSelf());
         };
     }
 
