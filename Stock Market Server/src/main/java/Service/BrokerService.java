@@ -101,6 +101,7 @@ public class BrokerService {
     public BigDecimal GetTotalStockValue(String name) throws Exception {
         HashMap<String, Integer> stocks = GetPlayer(name).GetPortofolio();
         BigDecimal total = BigDecimal.valueOf(0);
+
         for (Map.Entry<String, Integer> entry : stocks.entrySet()) {
             total = total.add(marketService.getStock(entry.getKey()).getStockPrice().multiply(BigDecimal.valueOf(entry.getValue())));
         }

@@ -30,7 +30,6 @@ public class BankActor extends AbstractActor {
 
     //Withdraw from player
     private FI.UnitApply<BankMessages.WithdrawMessage> withdraw() {
-        System.out.println("awa 7");
         return withdrawMessage -> {
             //Withdraw from player
             bankService.Withdraw(withdrawMessage.getTransaction().getName(),withdrawMessage.getTransaction().getAmount());
@@ -41,7 +40,6 @@ public class BankActor extends AbstractActor {
 
     //Deposit from player
     private FI.UnitApply<BankMessages.DepositMessage> deposit() {
-        System.out.println("awa 7");
         return depositMessage -> {
             //Withdraw from player
             bankService.Deposit(depositMessage.getTransaction().getName(),depositMessage.getTransaction().getAmount());
@@ -53,7 +51,7 @@ public class BankActor extends AbstractActor {
     //get Bank Balance for a player
     private FI.UnitApply<BankMessages.GetBankBalanceMessage> getBankBalance() {
         return getBankBalanceMessage -> {
-            sender().tell(bankService.Balance(getBankBalanceMessage.getName().toString()),getSelf());
+            sender().tell(bankService.Balance(getBankBalanceMessage.getName()),getSelf());
         };
     }
 

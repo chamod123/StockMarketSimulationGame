@@ -55,7 +55,8 @@ export default function SignUp() {
   const classes = useStyles();
   const [firstName, setFirstName] = useState(false);
   const [lastName, setLastName] = useState(false);
-
+  const [Email, setEmail] = useState(false);
+  const [password, setpassword] = useState(false);
   const handleChangeFistName = (event) => {
     setFirstName(event.target.value)
   }
@@ -63,7 +64,13 @@ export default function SignUp() {
   const handleChangeLastName = (event) => {
     setLastName(event.target.value)
   }
-
+  
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value)
+  }
+  const handleChangepassword = (event) => {
+    setpassword(event.target.value)
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -102,23 +109,31 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="lname"
+                  autoFocus
                   onChange={handleChangeLastName}
                 />
-                {firstName == "" && <FormHelperText  >Please enter your last name</FormHelperText>}
+                {lastName == "" && <FormHelperText  >Please enter your last name</FormHelperText>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>
+            <FormControl error={Email === ""}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
+                id="Email"
                 label="Email Address"
-                name="email"
+                name="Email"
                 autoComplete="email"
+                type ="email"
+                autoFocus
+                onChange={handleChangeEmail}
               />
+              {lastName == "" && <FormHelperText  >Please enter your email</FormHelperText>}
+           </FormControl>
             </Grid>
             <Grid item xs={12}>
+            <FormControl error={password === ""}>
               <TextField
                 variant="outlined"
                 required
@@ -128,13 +143,11 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                autoFocus
+                onChange={handleChangepassword}
               />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
+               {password == "" && <FormHelperText  >Please enter your password</FormHelperText>}
+           </FormControl>
             </Grid>
           </Grid>
           <Button
@@ -144,7 +157,7 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Add Bank Info
           </Button>
           <Grid container justify="flex-end">
             <Grid item>

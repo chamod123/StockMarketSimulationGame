@@ -3,16 +3,28 @@ package Service;
 import Model.Event;
 import Model.Sector;
 import Model.Stock;
+import com.opencsv.CSVWriter;
+/*import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.network.protocol.Encoders;
+import org.apache.spark.*;
+import org.apache.spark.sql.*;
+import org.apache.spark.sql.Dataset;*/
 
 import javax.management.AttributeList;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Random;
+//import java.io.FileWriter;
+//import au.com.bytecode.opencsv.CSVWriter;
 
 public class MarketService {
     public static ArrayList<Stock> stocks;
+    public static ArrayList<Stock> stocksHistory;
     public int turns=20;
     public static HashMap<Sector, ArrayList<Integer>> sectorTrends;
     public static ArrayList<Integer> marketTrends;
@@ -41,6 +53,16 @@ public class MarketService {
         stocks.add(new Stock("Volkswagen",Sector.Manufacturing,new BigDecimal(55)));
         stocks.add(new Stock("Samsung",Sector.Manufacturing,new BigDecimal(56)));
         stocks.add(new Stock("Daimler",Sector.Manufacturing,new BigDecimal(34)));
+/*        SparkConf conf = new SparkConf().setAppName("StartingSpark").setMaster("Local[*]");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+
+        JavaRDD myRDD = sc.parallelize(stocks);*/
+        String csv = "data.csv";
+        try {
+            CSVWriter writer = new CSVWriter(new FileWriter(csv));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -49,17 +71,27 @@ public class MarketService {
     public Stock getStock(String name) throws Exception {
         for (Stock c : stocks) {
             if (name.equals(c.getCompanyName())) {
+
                 return c;
             }
         }
         throw new Exception("Stock with the name "+name+" does not exsist");
+
     }
 
     //get all stocks
     public ArrayList<Stock> getStocks() throws Exception {
         return this.stocks;
-
     }
+
+/*
+    //get all stocks for charts
+    public Dataset<String> getStocksCharts() throws Exception {
+        return dataDs;
+    }
+*/
+
+
 
     //get current turn
     public int GetCurrentTurn() {
@@ -115,6 +147,7 @@ public class MarketService {
 
     //change stock value based on event market and sector trends
     public void ChangeStockValues() {
+
         for (int i = 0; i < stocks.size(); i++) {
             //get market trend value for current turn
             int marketValue=marketTrends.get(currentTurn);

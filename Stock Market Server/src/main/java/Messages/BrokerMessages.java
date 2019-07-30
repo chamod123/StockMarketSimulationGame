@@ -103,25 +103,25 @@ public interface BrokerMessages {
     }
 
     class GetTotalStockValueMessage implements Serializable {
-        private final Long name;
+        private final String name;
 
-        public GetTotalStockValueMessage(Long name) {
+        public GetTotalStockValueMessage(String name) {
             this.name = name;
         }
 
-        public Long getName() {
+        public String getName() {
             return name;
         }
     }
 
     class GetPortofolioMessage implements Serializable {
-        private final Long name;
+        private final String name;
 
-        public GetPortofolioMessage(Long name) {
+        public GetPortofolioMessage(String name) {
             this.name = name;
         }
 
-        public Long getName() {
+        public String getName() {
             return name;
         }
     }
@@ -154,6 +154,14 @@ public interface BrokerMessages {
     class GetPredictionMessage implements Serializable {
         public GetPredictionMessage() {
         }
+    }
+
+    //get current turn
+    class GetCurrentTurnMessage implements Serializable {
+
+        public GetCurrentTurnMessage() {
+        }
+
     }
 
 

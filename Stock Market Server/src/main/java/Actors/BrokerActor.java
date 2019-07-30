@@ -32,6 +32,8 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.GetAllPlayerMessage.class, getAllPlayers())//get all Players
                 .match(BrokerMessages.StartGameMessage.class, startGame())//Start game
                 .match(BrokerMessages.NextTurnMessage.class, nextTurn())//Start game
+                .match(BrokerMessages.GetPredictionMessage.class, Prediction())//Start game
+                .match(BrokerMessages.GetCurrentTurnMessage.class, currentTurn())//get current turn
                 .build();
     }
 
@@ -52,7 +54,6 @@ public class BrokerActor extends AbstractActor {
 
     //buy Stock
     private FI.UnitApply<BrokerMessages.BuyStockMessage> handleBuyStock() {
-        System.out.println("awa 2");
         return getBrokerMessage -> {
             //get stock Price*Quantity from stock item in market
             BigDecimal totalvalue = marketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
@@ -73,7 +74,7 @@ public class BrokerActor extends AbstractActor {
     private FI.UnitApply<BrokerMessages.SellStockMessage> handleSellStock() {
         return sellStockMessage -> {
             BigDecimal totalvalue = marketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
-            System.out.println("totalvalue" + totalvalue);
+            System.out.println("totalvalue" + totalvalue + ": stock :" + marketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice()+ ": stock :" + BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
 
             //passe username,stock, quantity to buy the stock for that user
             boolean done = brokerService.selltock(sellStockMessage.getMarket().getUsername(), sellStockMessage.getMarket().getStock(), sellStockMessage.getMarket().getQuantity(), totalvalue);
@@ -91,7 +92,7 @@ public class BrokerActor extends AbstractActor {
         return getTotalStockValueMessage -> {
             //passe username,stock, quantity to buy the stock for that user
 
-            sender().tell(brokerService.GetTotalStockValue(getTotalStockValueMessage.getName().toString()),getSelf());
+            sender().tell(brokerService.GetTotalStockValue(getTotalStockValueMessage.getName().toString()), getSelf());
 
         };
     }
@@ -99,35 +100,35 @@ public class BrokerActor extends AbstractActor {
     //get Portofolio
     private FI.UnitApply<BrokerMessages.GetPortofolioMessage> handleGetPortofolio() {
         return getPortofolioMessage -> {
-            sender().tell(brokerService.GetPlayer(getPortofolioMessage.getName().toString()).GetPortofolio(),getSelf());
+            sender().tell(brokerService.GetPlayer(getPortofolioMessage.getName()).GetPortofolio(), getSelf());
         };
     }
 
     //get all transaction Data
     private FI.UnitApply<BrokerMessages.GetAllTransactionsMessage> getAllTransactions() {
         return getAllTransactionsMessage -> {
-            sender().tell(brokerService.getTransactions(),getSelf());
+            sender().tell(brokerService.getTransactions(), getSelf());
         };
     }
 
     //get winner
     private FI.UnitApply<BrokerMessages.GetWinnerMessage> getWinner() {
         return getWinnerMessage -> {
-            sender().tell(brokerService.getTransactions(),getSelf());
+            sender().tell(brokerService.GetWinner(), getSelf());
         };
     }
 
     //get All Players
     private FI.UnitApply<BrokerMessages.GetAllPlayerMessage> getAllPlayers() {
         return getAllPlayerMessage -> {
-            sender().tell(brokerService.getTransactions(),getSelf());
+            sender().tell(brokerService.GetAllPlayers(), getSelf());
         };
     }
 
     //start game
     private FI.UnitApply<BrokerMessages.StartGameMessage> startGame() {
         return startGameMessage -> {
-            sender().tell( brokerService.CreateAccount("Computer"),getSelf());
+            sender().tell(brokerService.CreateAccount("Computer"), getSelf());
         };
     }
 
@@ -136,6 +137,22 @@ public class BrokerActor extends AbstractActor {
         return nextTurnMessage -> {
             brokerService.ComputerPlay();
             sender().tell(new BrokerMessages.ActionPerformed(String.format("Computer Player created")), getSelf());
+        };
+    }
+
+    //get Prediction
+    private FI.UnitApply<BrokerMessages.GetPredictionMessage> Prediction() {
+        return getPredictionMessage -> {
+            brokerService.Prediction();
+            sender().tell(new BrokerMessages.ActionPerformed(String.format("get prediction")), getSelf());
+        };
+    }
+
+    //get Prediction
+    private FI.UnitApply<BrokerMessages.GetCurrentTurnMessage> currentTurn() {
+        return getPredictionMessage -> {
+            marketService.GetCurrentTurn();
+            sender().tell(new BrokerMessages.ActionPerformed(String.format("get current turn")), getSelf());
         };
     }
 
