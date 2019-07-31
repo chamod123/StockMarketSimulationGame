@@ -69,7 +69,7 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Finance</p>
                 <h3 className={classes.cardTitle}>
-                  This Week Sold Stock : <small> 20</small>
+                  Total Sold Stock : <small> 20</small>
                 </h3>
               </CardHeader>
            
@@ -83,7 +83,7 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Technology</p>
                 <h3 className={classes.cardTitle}>
-                  This Week Sold Stock : <small> 20</small>
+                Total Sold Stock : <small> 20</small>
                 </h3>
               </CardHeader>
            
@@ -97,7 +97,7 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Consumer Service</p>
                 <h3 className={classes.cardTitle}>
-                  This Week Sold Stock : <small> 20</small>
+                Total Sold Stock : <small> 20</small>
                 </h3>
               </CardHeader>
              
@@ -111,7 +111,7 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Manufacturing</p>
                 <h3 className={classes.cardTitle}>
-                  This Week Sold Stock : <small> 20</small>
+                Total Sold Stock : <small> 20</small>
                 </h3>
               </CardHeader>
              
