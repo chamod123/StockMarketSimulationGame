@@ -72,4 +72,19 @@ public interface PlayerMessages {
             return password;
         }
     }
+
+
+    class AddPlayerToGameMessage implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private final Player player;
+
+        public AddPlayerToGameMessage(Player player) {
+            this.player = player;
+        }
+
+        public Player getPlayer() {
+            return player;
+        }
+
+    }
 }

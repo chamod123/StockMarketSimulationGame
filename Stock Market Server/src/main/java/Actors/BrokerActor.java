@@ -128,7 +128,8 @@ public class BrokerActor extends AbstractActor {
     //start game
     private FI.UnitApply<BrokerMessages.StartGameMessage> startGame() {
         return startGameMessage -> {
-            sender().tell(brokerService.CreateAccount("Computer"), getSelf());
+            //need to complete
+//            sender().tell(brokerService.CreateAccount("Computer"), getSelf());
         };
     }
 

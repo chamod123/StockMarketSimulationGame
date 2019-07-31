@@ -13,20 +13,21 @@ public class BrokerService {
     public ArrayList<Player> stockAccounts = new ArrayList<>();
     public ArrayList<Transaction> Transactions = new ArrayList<>();
 
-    static {
-        brokers.add(new Broker(1l, "ChamodBroker"));
-        brokers.add(new Broker(2l, "IndikaBroker"));
-        brokers.add(new Broker(3l, "MelaniBroker"));
-        brokers.add(new Broker(4l, "NipuniBroker"));
-        brokers.add(new Broker(5l, "DilakaBroker"));
-        brokers.add(new Broker(6l, "NiroshimaBroker"));
-    }
+//    static {
+//        brokers.add(new Broker(1l, "ChamodBroker"));
+//        brokers.add(new Broker(2l, "IndikaBroker"));
+//        brokers.add(new Broker(3l, "MelaniBroker"));
+//        brokers.add(new Broker(4l, "NipuniBroker"));
+//        brokers.add(new Broker(5l, "DilakaBroker"));
+//        brokers.add(new Broker(6l, "NiroshimaBroker"));
+//    }
 
-    public Player CreateAccount(String name){
-        bankService.CreateAccount( new Account(name));
-        Player newPlayer = new Player(name);
-        stockAccounts.add(newPlayer);
-        return newPlayer;
+    public Player CreateAccount(Player player){
+        System.out.println("broker service ");
+//        bankService.CreateAccount( new Account(name));
+//        Player newPlayer = new Player(name);
+        stockAccounts.add(player);
+        return player;
 
     }
 

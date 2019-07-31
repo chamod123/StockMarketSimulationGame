@@ -68,7 +68,8 @@ public class MarketService {
     }
 
     public MarketService() {
-
+        setEvents();
+        setTrends();
         ChangeStockValues();
     }
 
@@ -179,5 +180,41 @@ public class MarketService {
         return eList;
     }
 
+    public void setTrends() {
+        //set market Trends
 
+        int nextInt;
+        for (int i = 0; i < this.turns; i++) {
+            nextInt = random.nextInt(100);
+            if (nextInt < 50) {
+                if (nextInt > 25) {
+                    marketTrends.add(randomvalue.nextInt(4) - 5);
+                    ;
+                } else {
+                    marketTrends.add(randomvalue.nextInt(4) + 1);
+                }
+
+            } else {
+                marketTrends.add(0);
+            }
+
+        }
+    }
+
+    public void setEvents() {
+        int probability = 0;
+        Random random = new Random();
+        int nextInt;
+        //loop for number of turns in the game
+        for (int i = 0; i < this.turns; i++) {
+            nextInt = random.nextInt(10);
+            if (nextInt < probability) {
+                Event evnt = new Event(stocks, i);
+                eventList.add(evnt);
+                probability = 0;
+            }
+            probability++;
+
+        }
+    }
 }

@@ -237,4 +237,15 @@ public class StockController {
 
     }
 
+    //#POST - add player to game
+    @PostMapping("/addPlayer")
+    public String addPlayerToGame(@RequestBody Player player) {
+        CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.AddPlayerToGameMessage(player), timeout)
+                .thenApply(PlayerMessages.ActionPerformed.class::cast);
+        if (playerCreated != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
 }

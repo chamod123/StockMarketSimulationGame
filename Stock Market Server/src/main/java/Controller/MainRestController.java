@@ -28,16 +28,16 @@ public class MainRestController {
 
     //start a game
     // http://localhost:8080/start/
-    @RequestMapping(value = "/start", //
-            method = RequestMethod.POST, //
-            produces = { MediaType.APPLICATION_JSON_VALUE, //
-                    MediaType.APPLICATION_XML_VALUE })
-    @ResponseBody
-    public Player CreateAccount(@RequestParam(value="name", required=true) String name)throws Exception {
-        System.out.println("(Service Side) Game Started : " + name);
-        return  brokerServer.CreateAccount(name);
-
-    }
+//    @RequestMapping(value = "/start", //
+//            method = RequestMethod.POST, //
+//            produces = { MediaType.APPLICATION_JSON_VALUE, //
+//                    MediaType.APPLICATION_XML_VALUE })
+//    @ResponseBody
+//    public Player CreateAccount(@RequestParam(value="name", required=true) String name)throws Exception {
+//        System.out.println("(Service Side) Game Started : " + name);
+//        return  brokerServer.CreateAccount(name);
+//
+//    }
 
     //Buy Stock
     // http://localhost:8080/buyStock/

@@ -18,11 +18,17 @@ public class PlayerService {
         players.add(new Player(6, "Niroshima"));
     }
 
-    public Optional<Player> getPlayer(Long id) {
-        return players.stream()
-                .filter(player ->  Long.valueOf(player.getId())
-                        .equals(id))
-                .findFirst();
+    public Player getPlayer(Long id) {
+        for (Player player : players) {
+            if(Long.valueOf(player.getId()).equals(id)){
+                return player;
+            }
+        }
+        return null;
+//        return players.stream()
+//                .filter(player ->  Long.valueOf(player.getId())
+//                        .equals(id))
+//                .findFirst();
     }
 
     public void createPlayer(Player player) {
