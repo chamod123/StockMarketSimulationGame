@@ -40,13 +40,8 @@ function getLeaderBoard() {
 
 function getTransactioHistory() {
     console.log("called")
-<<<<<<< HEAD
-    return  new Promise((resolve, reject) => { 
-        fetch('https://api.myjson.com/bins/xwzqh')
-=======
     return  new Promise((resolve, reject) => {
         fetch('https://api.myjson.com/bins/1cwg6l')
->>>>>>> 241f265f447137c7dc9f20273a016e916a3b270a
             .then(function (response) {
                 return response.json();
             })
@@ -136,7 +131,7 @@ function getStocksBySector(id) {
 }
 
 // GET - get all transaction Data
-function getTransactionHistory() {
+{/*function getTransactionHistory() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
         fetch('http://localhost:8081/transactions')
@@ -147,6 +142,7 @@ function getTransactionHistory() {
                 resolve(myJson)
             });
     })
+}*/
 }
 
 // GET - get Bank Balance for a player
