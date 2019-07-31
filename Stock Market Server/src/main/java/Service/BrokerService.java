@@ -27,6 +27,9 @@ public class BrokerService {
 //        bankService.CreateAccount( new Account(name));
 //        Player newPlayer = new Player(name);
         stockAccounts.add(player);
+        for (Player playere : stockAccounts) {
+            System.out.println("Player is :  " + playere);
+        }
         return player;
 
     }

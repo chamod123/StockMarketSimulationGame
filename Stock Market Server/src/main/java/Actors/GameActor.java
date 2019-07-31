@@ -19,8 +19,8 @@ public class GameActor extends AbstractActor {
             System.out.println("Game actor 1");
 //            brokerService.CreateAccount(createPlayerMessage.getPlayer());
             playerToGameMessage.getPlayerActor().tell( new PlayerMessages.AddPlayerToGameMessage(playerToGameMessage.getId(),playerToGameMessage.getBrokerActor()), getSelf());
-
-            sender().tell(new GameMessage.ActionPerformed("Player %s created."), getSelf());
+//            System.out.println("Game actor 2");
+            sender().tell(new GameMessage.ActionPerformed("Player added"), getSelf());
         };
     }
 }
