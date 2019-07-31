@@ -3,6 +3,7 @@ package Service;
 import Model.Event;
 import Model.Sector;
 import Model.Stock;
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 /*import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -12,13 +13,11 @@ import org.apache.spark.sql.*;
 import org.apache.spark.sql.Dataset;*/
 
 import javax.management.AttributeList;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.String.valueOf;
 //import java.io.FileWriter;
@@ -34,9 +33,16 @@ public class MarketService {
     private int currentTurn = 0;
     Random random = new Random();
     Random randomvalue = new Random();
+    public static String csv = "data.csv";
 
+    public static CSVWriter writer;
 
     static {
+        try {
+            writer = new CSVWriter(new FileWriter(csv));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         stocks = new ArrayList<>();
         eventList = new ArrayList<>();
         marketTrends = new ArrayList<>();
@@ -57,24 +63,23 @@ public class MarketService {
         stocks.add(new Stock("Volkswagen", Sector.Manufacturing, new BigDecimal(55)));
         stocks.add(new Stock("Samsung", Sector.Manufacturing, new BigDecimal(56)));
         stocks.add(new Stock("Daimler", Sector.Manufacturing, new BigDecimal(34)));
-/*        SparkConf conf = new SparkConf().setAppName("StartingSpark").setMaster("Local[*]");
-        JavaSparkContext sc = new JavaSparkContext(conf);
 
-        JavaRDD myRDD = sc.parallelize(stocks);*/
-        String csv = "data.csv";
+        //will remove after the front end integration
+
+        for (int i = 0; i < stocks.size(); i++) {
+            String record = stocks.get(i).getStockPrice().toString();
+            String [] record3 = {record};
+            writer.writeNext(record3);
+        }
         try {
-            CSVWriter writer = new CSVWriter(new FileWriter(csv));
-            
-            for (int i = 0; i < stocks.size(); i++) {
-                String record = stocks.get(i).getStockPrice().toString();
-                String [] record3 = {record};
-                writer.writeNext(record3);
-            }
             writer.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
+
     }
 
     public MarketService() {
@@ -99,6 +104,16 @@ public class MarketService {
     //get all stocks
     public ArrayList<Stock> getStocks() throws Exception {
         return this.stocks;
+    }
+
+    //get all stocks from csv  for graph
+    public ArrayList<String> getStocksPerGraph() throws Exception {
+        //Build reader instance
+        CSVReader reader = new CSVReader(new FileReader("data.csv"), ',', '"', 0);
+
+        //Read all rows at once
+        List<String[]> allRows = reader.readAll();
+        return (ArrayList<String>) allRows;
     }
 
 /*
@@ -177,6 +192,18 @@ public class MarketService {
                 stocks.get(i).setStockPrice(BigDecimal.valueOf(1));
             }
         }
+
+        for (int i = 0; i < stocks.size(); i++) {
+            String record = stocks.get(i).getStockPrice().toString();
+            String [] record3 = {record};
+            writer.writeNext(record3);
+        }
+        try {
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     //get current events
