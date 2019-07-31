@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Random;
+
+import static java.lang.String.valueOf;
 //import java.io.FileWriter;
 //import au.com.bytecode.opencsv.CSVWriter;
 
@@ -62,6 +64,14 @@ public class MarketService {
         String csv = "data.csv";
         try {
             CSVWriter writer = new CSVWriter(new FileWriter(csv));
+            
+            for (int i = 0; i < stocks.size(); i++) {
+                String record = stocks.get(i).getStockPrice().toString();
+                String [] record3 = {record};
+                writer.writeNext(record3);
+            }
+            writer.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
