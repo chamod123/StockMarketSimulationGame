@@ -2,6 +2,7 @@ package Actors;
 
 import Messages.BankMessages;
 import Messages.BrokerMessages;
+import Messages.GameMessage;
 import Messages.PlayerMessages;
 import Model.Account;
 import Service.BrokerService;
@@ -12,7 +13,7 @@ import akka.japi.pf.FI;
 
 public class PlayerActor extends AbstractActor {
     private PlayerService playerService = new PlayerService();
-    private BrokerService brokerService = new BrokerService();
+//    private BrokerService brokerService = new BrokerService();
 
     @Override
     public Receive createReceive() {
@@ -53,10 +54,15 @@ public class PlayerActor extends AbstractActor {
 
     //get player
     private FI.UnitApply<PlayerMessages.AddPlayerToGameMessage> addPlayerToGame() {
-        System.out.println("player actor 1");
+
         return playerToGameMessage -> {
-//            playerToGameMessage.getBrokerActor().tell(new BrokerMessages.AddPlayerToGameMessage(playerService.getPlayer(playerToGameMessage.getId())), getSelf());
-            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player added.")), getSelf());
+            System.out.println("player actor 1 : " + playerService.getPlayer(playerToGameMessage.getId()).getName());
+
+            playerToGameMessage.getBrokerActor().tell(new BrokerMessages.AddPlayerToGameMessage(playerService.getPlayer(playerToGameMessage.getId())), getSelf());
+//            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player added.")), getSelf());
+//            sender().tell(playerService.getPlayer(playerToGameMessage.getId()), getSelf());
+//            sender().tell(new PlayerMessages.ActionPerformed("Player added 1"), getSelf());
+            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", playerToGameMessage.getId())), getSelf());
         };
     }
 }

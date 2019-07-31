@@ -75,7 +75,7 @@ public class BrokerActor extends AbstractActor {
     private FI.UnitApply<BrokerMessages.SellStockMessage> handleSellStock() {
         return sellStockMessage -> {
             BigDecimal totalvalue = marketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
-            System.out.println("totalvalue" + totalvalue + ": stock :" + marketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice()+ ": stock :" + BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
+            System.out.println("totalvalue" + totalvalue + ": stock :" + marketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice() + ": stock :" + BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
 
             //passe username,stock, quantity to buy the stock for that user
             boolean done = brokerService.selltock(sellStockMessage.getMarket().getUsername(), sellStockMessage.getMarket().getStock(), sellStockMessage.getMarket().getQuantity(), totalvalue);
@@ -159,8 +159,9 @@ public class BrokerActor extends AbstractActor {
     }
 
     private FI.UnitApply<BrokerMessages.AddPlayerToGameMessage> addPlayerToGame() {
-        System.out.println("broker actor 1");
+
         return playerToGameMessage -> {
+            System.out.println("broker actor 1");
             sender().tell(brokerService.CreateAccount(playerToGameMessage.getPlayer()), getSelf());
         };
     }
