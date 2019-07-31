@@ -236,13 +236,13 @@ public class StockController {
         return event;
 
     }
-
+    
     //#POST - add player to game
-    @PostMapping("/addPlayer")
-    public String addPlayerToGame(@RequestBody Player player) {
-        CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns
-                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.AddPlayerToGameMessage(player), timeout)
-                .thenApply(PlayerMessages.ActionPerformed.class::cast);
+    @PostMapping("/addPlayer/{id}")
+    public String addPlayerToGame(@PathVariable("id") Long id) {
+        CompletionStage<GameMessage.ActionPerformed> playerCreated = Patterns
+                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id,actorSystemCreate.getPlayerActor(),actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(GameMessage.ActionPerformed.class::cast);
         if (playerCreated != null) {
             return "sucess";
         }

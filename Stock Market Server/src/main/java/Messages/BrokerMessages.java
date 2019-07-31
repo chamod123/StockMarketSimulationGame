@@ -164,5 +164,18 @@ public interface BrokerMessages {
 
     }
 
+    class AddPlayerToGameMessage implements Serializable {
+        private final Player player;
+
+        public AddPlayerToGameMessage(Player player) {
+            this.player = player;
+        }
+
+        public Player getPlayer() {
+            return player;
+        }
+    }
+
+
 
 }

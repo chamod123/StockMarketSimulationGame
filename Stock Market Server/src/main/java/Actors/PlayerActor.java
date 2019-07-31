@@ -1,6 +1,7 @@
 package Actors;
 
 import Messages.BankMessages;
+import Messages.BrokerMessages;
 import Messages.PlayerMessages;
 import Model.Account;
 import Service.BrokerService;
@@ -23,14 +24,6 @@ public class PlayerActor extends AbstractActor {
                 .build();
     }
 
-    private FI.UnitApply<PlayerMessages.AddPlayerToGameMessage> addPlayerToGame() {
-        return createPlayerMessage -> {
-            System.out.println("player actor 1");
-            brokerService.CreateAccount(createPlayerMessage.getPlayer());
-             sender().tell(new PlayerMessages.ActionPerformed(String.format("add Player to game", createPlayerMessage.getPlayer()
-                    .getName())), getSelf());
-        };
-    }
 
     private FI.UnitApply<PlayerMessages.CreatePlayerMessage> handleCreatePlayer() {
         return createPlayerMessage -> {
@@ -54,6 +47,16 @@ public class PlayerActor extends AbstractActor {
     private FI.UnitApply<PlayerMessages.LoginPlayerMessage> loginPlayer() {
         return loginPlayerMessage -> {
             sender().tell(playerService.loginPlayer(loginPlayerMessage.getPlayerId(),loginPlayerMessage.getPassword()), getSelf());
+        };
+    }
+
+
+    //get player
+    private FI.UnitApply<PlayerMessages.AddPlayerToGameMessage> addPlayerToGame() {
+        System.out.println("player actor 1");
+        return playerToGameMessage -> {
+//            playerToGameMessage.getBrokerActor().tell(new BrokerMessages.AddPlayerToGameMessage(playerService.getPlayer(playerToGameMessage.getId())), getSelf());
+            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player added.")), getSelf());
         };
     }
 }

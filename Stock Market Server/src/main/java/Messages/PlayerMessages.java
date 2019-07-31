@@ -74,17 +74,23 @@ public interface PlayerMessages {
     }
 
 
+
     class AddPlayerToGameMessage implements Serializable {
-        private static final long serialVersionUID = 1L;
-        private final Player player;
+        private final Long id;
+        private static ActorRef brokerActor;
 
-        public AddPlayerToGameMessage(Player player) {
-            this.player = player;
+        public AddPlayerToGameMessage(Long id, ActorRef brokerActor) {
+            this.id = id;
+            this.brokerActor=brokerActor;
         }
 
-        public Player getPlayer() {
-            return player;
+        public Long getId() {
+            return id;
         }
 
+        public static ActorRef getBrokerActor() {
+            return brokerActor;
+        }
     }
+
 }
