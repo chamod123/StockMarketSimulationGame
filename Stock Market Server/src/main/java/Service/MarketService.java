@@ -124,7 +124,6 @@ public class MarketService {
 
     //get current turn
     public static int GetCurrentTurn() {
-        System.out.println("currentTurn "+ currentTurn);
         return currentTurn;
     }
 

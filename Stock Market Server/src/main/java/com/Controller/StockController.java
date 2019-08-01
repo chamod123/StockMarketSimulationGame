@@ -210,12 +210,25 @@ public class StockController {
         return "not sucess";
     }
 
+    //checked
     //#POST - next turn
     @PostMapping("/nextTurn")
     public String NextTurn() {
-        CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
                 .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
-        if (startGame != null) {
+        if (nextTurn != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
+    //checked
+    //go to next turn after 45 seconds
+    @Scheduled(fixedDelay = 45000)
+    public String nextTurnS() throws Exception {
+        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+        if (nextTurn != null) {
             return "sucess";
         }
         return "not sucess";
@@ -237,16 +250,7 @@ public class StockController {
         return turn;
     }
 
-//    //go to next turn after 45 seconds
-//    @Scheduled(fixedDelay = 45000)
-//    public String nextTurnS() throws Exception {
-//        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
-//                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
-//        if (nextTurn != null) {
-//            return "sucess";
-//        }
-//        return "not sucess";
-//    }
+
 
     //get Current Event
     @GetMapping("/currentEvents")
