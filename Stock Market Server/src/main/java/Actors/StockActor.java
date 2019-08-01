@@ -7,8 +7,6 @@ import akka.actor.AbstractActor;
 import akka.japi.pf.FI;
 
 public class StockActor extends AbstractActor {
-    private StockService stockService = new StockService();
-    private MarketService marketService = new MarketService();
 
     @Override
     public Receive createReceive() {
@@ -23,7 +21,7 @@ public class StockActor extends AbstractActor {
 
     private FI.UnitApply<StockMessages.CreateStockMessage> handleCreateStock() {
         return createStockMessage -> {
-            stockService.createStock(createStockMessage.getStock());
+            StockService.createStock(createStockMessage.getStock());
             sender().tell(new StockMessages.ActionPerformed(String.format("Stock %s added.", createStockMessage.getStock()
                     .getCompanyName())), getSelf());
         };
@@ -31,26 +29,26 @@ public class StockActor extends AbstractActor {
 
     private FI.UnitApply<StockMessages.GetStockMessage> handleGetStock() {
         return getStockMessage -> {
-            sender().tell(stockService.getStock(getStockMessage.getStockId()), getSelf());
+            sender().tell(StockService.getStock(getStockMessage.getStockId()), getSelf());
         };
     }
 
     private FI.UnitApply<StockMessages.GetStockSectorMessage> handleGetStockBySector() {
         return getStockSectorMessage -> {
-            sender().tell(stockService.getStockBySector(getStockSectorMessage.getSector()), getSelf());
+            sender().tell(StockService.getStockBySector(getStockSectorMessage.getSector()), getSelf());
         };
     }
 
     private FI.UnitApply<StockMessages.GetAllStockMessage> handleGetAllStock() {
         return getAllStockMessage -> {
-            sender().tell(marketService.getStocks(), getSelf());
+            sender().tell(MarketService.getStocks(), getSelf());
         };
     }
 
     //get current event
     private FI.UnitApply<StockMessages.GetCurrentEventMessage> currentEvents() {
         return currentEventMessage -> {
-            sender().tell(marketService.GetCurrentEvents(), getSelf());
+            sender().tell(MarketService.GetCurrentEvents(), getSelf());
         };
     }
 

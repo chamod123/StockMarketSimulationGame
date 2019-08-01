@@ -29,7 +29,7 @@ public class MarketService {
     public static HashMap<Sector, ArrayList<Integer>> sectorTrends;
     public static ArrayList<Integer> marketTrends;
     public static ArrayList<Event> eventList;
-    private int currentTurn = 0;
+    private static int currentTurn = 0;
     Random random = new Random();
     Random randomvalue = new Random();
 
@@ -75,7 +75,7 @@ public class MarketService {
 
 
     //get stock buy name
-    public Stock getStock(String name) throws Exception {
+    public static Stock getStock(String name) throws Exception {
         for (Stock c : stocks) {
             if (name.equals(c.getCompanyName())) {
 
@@ -87,8 +87,8 @@ public class MarketService {
     }
 
     //get all stocks
-    public ArrayList<Stock> getStocks() throws Exception {
-        return this.stocks;
+    public static ArrayList<Stock> getStocks() throws Exception {
+        return stocks;
     }
 
 /*
@@ -100,12 +100,12 @@ public class MarketService {
 
 
     //get current turn
-    public int GetCurrentTurn() {
-        return this.currentTurn;
+    public static int GetCurrentTurn() {
+        return currentTurn;
     }
 
     //return future array list
-    public ArrayList<Stock> GetPredictedStocks() {
+    public static ArrayList<Stock> GetPredictedStocks() {
         ArrayList<Stock> temp = new ArrayList<Stock>(stocks);
         Random ran = new Random();
         int number = ran.nextInt(3) + currentTurn;
@@ -127,7 +127,7 @@ public class MarketService {
 
 
     //change stock value based on events
-    public int ChangeEventStockValue(Stock stock, int turn) {
+    public static int ChangeEventStockValue(Stock stock, int turn) {
         int eventValue = 0;
         //loop all events
         for (int i = 0; i < eventList.size(); i++) {
@@ -170,10 +170,10 @@ public class MarketService {
     }
 
     //get current events
-    public ArrayList<Event> GetCurrentEvents() {
+    public static ArrayList<Event> GetCurrentEvents() {
         ArrayList<Event> eList = new ArrayList<>();
         for (int i = 0; i < eventList.size(); i++) {
-            if (this.currentTurn >= eventList.get(i).getStartTurn() && this.currentTurn <= eventList.get(i).getEndTurn()) {
+            if (currentTurn >= eventList.get(i).getStartTurn() && currentTurn <= eventList.get(i).getEndTurn()) {
                 eList.add(eventList.get(i));
             }
         }

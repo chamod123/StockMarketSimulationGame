@@ -10,8 +10,6 @@ import akka.actor.AbstractActor;
 import akka.japi.pf.FI;
 
 public class AnalystActor extends AbstractActor {
-    private BrokerService brokerService = new BrokerService();
-    private MarketService marketService = new MarketService();
 
     @Override
     public Receive createReceive() {

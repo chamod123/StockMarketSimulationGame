@@ -56,16 +56,16 @@ public interface PlayerMessages {
     }
 
     class LoginPlayerMessage implements Serializable {
-        private final Long playerId;
+        private final String userName;
         private final String password;
 
-        public LoginPlayerMessage(Long playerId,String password) {
-            this.playerId = playerId;
+        public LoginPlayerMessage(String userName,String password) {
+            this.userName = userName;
             this.password=password;
         }
 
-        public Long getPlayerId() {
-            return playerId;
+        public String getUserName() {
+            return userName;
         }
 
         public String getPassword() {

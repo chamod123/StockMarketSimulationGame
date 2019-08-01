@@ -8,17 +8,16 @@ import java.util.Optional;
 
 public class PlayerService {
     private final static List<Player> players = new ArrayList<>();
-
     static {
-        players.add(new Player(1, "Chamod"));
-        players.add(new Player(2, "Indika"));
-        players.add(new Player(3, "Melani"));
-        players.add(new Player(4, "Nipuni"));
-        players.add(new Player(5, "Dilaka"));
-        players.add(new Player(6, "Niroshima"));
+        players.add(new Player(1, "Chamod","wijesena","chamod@gmail.com","chamod","1234","1234567890"));
+        players.add(new Player(2, "Indika","wijesena","chamod@gmail.com","chamod","1234","1234567890"));
+        players.add(new Player(3, "Melani","wijesena","chamod@gmail.com","chamod","1234","1234567890"));
+        players.add(new Player(4, "Nipuni","wijesena","chamod@gmail.com","chamod","1234","1234567890"));
+        players.add(new Player(5, "Dilaka","wijesena","chamod@gmail.com","chamod","1234","1234567890"));
+        players.add(new Player(6, "Niroshima","wijesena","chamod@gmail.com","chamod","1234","1234567890"));
     }
 
-    public Player getPlayer(Long id) {
+    public static Player getPlayer(Long id) {
         for (Player player : players) {
             if(Long.valueOf(player.getId()).equals(id)){
                 return player;
@@ -31,7 +30,7 @@ public class PlayerService {
 //                .findFirst();
     }
 
-    public void createPlayer(Player player) {
+    public static void createPlayer(Player player) {
         player.setId(players.size()+1);
         players.add(player);
     }
@@ -40,12 +39,13 @@ public class PlayerService {
         return players;
     }
 
-    public Boolean loginPlayer(Long id, String password) {
+    public static int loginPlayer(String userName, String password) {
         for (Player player : players) {
-           if(Long.valueOf(player.getId()).equals(id) && password.equals(player.getPassword())){
-               return true;
+           if(player.getUserName().equals(userName)
+                   && password.equals(player.getPassword())){
+               return player.getId();
            }
         }
-        return false;
+        return 0;
     }
 }

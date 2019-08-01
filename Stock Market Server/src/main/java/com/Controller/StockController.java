@@ -64,11 +64,11 @@ public class StockController {
     }
 
     //#GET - login User
-    @GetMapping("/login/{id}/{password}")
-    public CompletionStage<Boolean> loginUser(@PathVariable("id") Long id, @PathVariable("password") String password) {
-        CompletionStage<Boolean> maybeUser = Patterns
-                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.LoginPlayerMessage(id, password), timeout)
-                .thenApply(obj -> (Boolean) obj);
+    @GetMapping("/login/{userName}/{password}")
+    public CompletionStage<Integer> loginUser(@PathVariable("userName") String userName, @PathVariable("password") String password) {
+        CompletionStage<Integer> maybeUser = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.LoginPlayerMessage(userName, password), timeout)
+                .thenApply(obj -> (Integer) obj);
         return maybeUser;
     }
 

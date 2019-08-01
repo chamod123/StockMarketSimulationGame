@@ -13,8 +13,6 @@ import akka.japi.pf.FI;
 import java.math.BigDecimal;
 
 public class BrokerActor extends AbstractActor {
-    MarketService marketService = new MarketService();
-    private BrokerService brokerService = new BrokerService();
 
     @Override
     public Receive createReceive() {
@@ -41,7 +39,7 @@ public class BrokerActor extends AbstractActor {
 
     private FI.UnitApply<BrokerMessages.CreateBrokerMessage> handleCreateBrocker() {
         return createBrokerMessage -> {
-            brokerService.createBroker(createBrokerMessage.getBroker());
+            BrokerService.createBroker(createBrokerMessage.getBroker());
             sender().tell(new BrokerMessages.ActionPerformed(String.format("Broker %s created.", createBrokerMessage.getBroker()
                     .getName())), getSelf());
         };
@@ -49,7 +47,7 @@ public class BrokerActor extends AbstractActor {
 
     private FI.UnitApply<BrokerMessages.GetBrokerMessage> handleGetBroker() {
         return getBrokerMessage -> {
-            sender().tell(brokerService.getBroker(getBrokerMessage.getBrokerId()), getSelf());
+            sender().tell(BrokerService.getBroker(getBrokerMessage.getBrokerId()), getSelf());
         };
     }
 
@@ -57,11 +55,11 @@ public class BrokerActor extends AbstractActor {
     private FI.UnitApply<BrokerMessages.BuyStockMessage> handleBuyStock() {
         return getBrokerMessage -> {
             //get stock Price*Quantity from stock item in market
-            BigDecimal totalvalue = marketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
+            BigDecimal totalvalue = MarketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
             System.out.println("totalvalue" + totalvalue);
 
             //passe username,stock, quantity to buy the stock for that user
-            boolean done = brokerService.buyStock(getBrokerMessage.getMarket().getUsername(), getBrokerMessage.getMarket().getStock(), getBrokerMessage.getMarket().getQuantity(), totalvalue);
+            boolean done = BrokerService.buyStock(getBrokerMessage.getMarket().getUsername(), getBrokerMessage.getMarket().getStock(), getBrokerMessage.getMarket().getQuantity(), totalvalue);
 
             if (done) {
                 //Withdraw
@@ -74,11 +72,11 @@ public class BrokerActor extends AbstractActor {
     //sell Stock
     private FI.UnitApply<BrokerMessages.SellStockMessage> handleSellStock() {
         return sellStockMessage -> {
-            BigDecimal totalvalue = marketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
-            System.out.println("totalvalue" + totalvalue + ": stock :" + marketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice() + ": stock :" + BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
+            BigDecimal totalvalue = MarketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
+            System.out.println("totalvalue" + totalvalue + ": stock :" + MarketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice() + ": stock :" + BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
 
             //passe username,stock, quantity to buy the stock for that user
-            boolean done = brokerService.selltock(sellStockMessage.getMarket().getUsername(), sellStockMessage.getMarket().getStock(), sellStockMessage.getMarket().getQuantity(), totalvalue);
+            boolean done = BrokerService.selltock(sellStockMessage.getMarket().getUsername(), sellStockMessage.getMarket().getStock(), sellStockMessage.getMarket().getQuantity(), totalvalue);
 
             if (done) {
                 //deposit
@@ -93,7 +91,7 @@ public class BrokerActor extends AbstractActor {
         return getTotalStockValueMessage -> {
             //passe username,stock, quantity to buy the stock for that user
 
-            sender().tell(brokerService.GetTotalStockValue(getTotalStockValueMessage.getName().toString()), getSelf());
+            sender().tell(BrokerService.GetTotalStockValue(getTotalStockValueMessage.getName().toString()), getSelf());
 
         };
     }
@@ -101,28 +99,28 @@ public class BrokerActor extends AbstractActor {
     //get Portofolio
     private FI.UnitApply<BrokerMessages.GetPortofolioMessage> handleGetPortofolio() {
         return getPortofolioMessage -> {
-            sender().tell(brokerService.GetPlayer(getPortofolioMessage.getName()).GetPortofolio(), getSelf());
+            sender().tell(BrokerService.GetPlayer(getPortofolioMessage.getName()).GetPortofolio(), getSelf());
         };
     }
 
     //get all transaction Data
     private FI.UnitApply<BrokerMessages.GetAllTransactionsMessage> getAllTransactions() {
         return getAllTransactionsMessage -> {
-            sender().tell(brokerService.getTransactions(), getSelf());
+            sender().tell(BrokerService.getTransactions(), getSelf());
         };
     }
 
     //get winner
     private FI.UnitApply<BrokerMessages.GetWinnerMessage> getWinner() {
         return getWinnerMessage -> {
-            sender().tell(brokerService.GetWinner(), getSelf());
+            sender().tell(BrokerService.GetWinner(), getSelf());
         };
     }
 
     //get All Players
     private FI.UnitApply<BrokerMessages.GetAllPlayerMessage> getAllPlayers() {
         return getAllPlayerMessage -> {
-            sender().tell(brokerService.GetAllPlayers(), getSelf());
+            sender().tell(BrokerService.GetAllPlayers(), getSelf());
         };
     }
 
@@ -137,7 +135,7 @@ public class BrokerActor extends AbstractActor {
     //next Turn
     private FI.UnitApply<BrokerMessages.NextTurnMessage> nextTurn() {
         return nextTurnMessage -> {
-            brokerService.ComputerPlay();
+            BrokerService.ComputerPlay();
             sender().tell(new BrokerMessages.ActionPerformed(String.format("Computer Player created")), getSelf());
         };
     }
@@ -145,7 +143,7 @@ public class BrokerActor extends AbstractActor {
     //get Prediction
     private FI.UnitApply<BrokerMessages.GetPredictionMessage> Prediction() {
         return getPredictionMessage -> {
-            brokerService.Prediction();
+            BrokerService.Prediction();
             sender().tell(new BrokerMessages.ActionPerformed(String.format("get prediction")), getSelf());
         };
     }
@@ -153,7 +151,7 @@ public class BrokerActor extends AbstractActor {
     //get Prediction
     private FI.UnitApply<BrokerMessages.GetCurrentTurnMessage> currentTurn() {
         return getPredictionMessage -> {
-            marketService.GetCurrentTurn();
+            MarketService.GetCurrentTurn();
             sender().tell(new BrokerMessages.ActionPerformed(String.format("get current turn")), getSelf());
         };
     }
@@ -161,8 +159,7 @@ public class BrokerActor extends AbstractActor {
     private FI.UnitApply<BrokerMessages.AddPlayerToGameMessage> addPlayerToGame() {
 
         return playerToGameMessage -> {
-            System.out.println("broker actor 1");
-            sender().tell(brokerService.CreateAccount(playerToGameMessage.getPlayer()), getSelf());
+            sender().tell(BrokerService.CreateAccount(playerToGameMessage.getPlayer()), getSelf());
         };
     }
 

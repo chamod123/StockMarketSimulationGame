@@ -16,7 +16,7 @@ public class StockService {
                 .findFirst();
     }
 
-    public List<Stock> getStockBySector(String Sector) {
+    public static List<Stock> getStockBySector(String Sector) {
         List<Stock> stocks2 = new ArrayList<>();
         for (Stock stock1 : stocks) {
             if(stock1.getSector().toString().equals(Sector)){
@@ -30,7 +30,7 @@ public class StockService {
 //                .findAny();
     }
 
-    public void createStock(Stock stock) {
+    public static void createStock(Stock stock) {
         stock.setStockId(stocks.size()+1);
         stocks.add(stock);
         for (Stock stock1 : stocks) {
