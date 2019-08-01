@@ -69,10 +69,9 @@ function getPlayers() {
 }
 
 function getPlayer(id) {
-    console.log("called getPlayers")
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:8081/players/${id}`)
-        // fetch('https://api.myjson.com/bins/1azzr5') //test myjson
+        // fetch(`http://localhost:8081/players/${id}`)
+        fetch('https://api.myjson.com/bins/dfc99') //test myjson
             .then(function (response) {
                 console.log(response)
                 return response.json();
