@@ -24,6 +24,10 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Button } from "@material-ui/core";
 import { getLeaderBoard } from "server/server";
+import React from "react";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 class Dashboard extends React.Component {
   state = {
@@ -124,7 +128,7 @@ class Dashboard extends React.Component {
                   <span className={classes.successText}>
                   
                   </span>{" "}
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
+                  Stock Market simulation Game is a multi-player stock market trading game that allows players to play the game with some of the market simulation features (e.g. stock level price changes).
                 </p>
               </CardBody>
               <CardFooter>
@@ -137,17 +141,18 @@ class Dashboard extends React.Component {
               <CardBody>
                 <h4 className={classes.cardTitle}>How To Play?</h4>
                 <p className={classes.cardCategory}>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Looking Forward to play? Then Let's start. You have already faced to the registration process. Looking Great! So now we can start the game. You should go to the Game Board to start the game. You can go to the Game Board by tapping on below 'Let's Start' button or tapping on 'Game Board' in side navigation bar. After that you should enter shares amount to the 'Share' box and buy them.
                 </p>
               </CardBody>
 
               
               <CardFooter>
-                
+              <Button color="primary">Let's Start</Button>
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={12} md={12}>
+
+          {/* <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardBody>
                 <h4 className={classes.cardTitle}>Looking Forward to Play? Then Let's Start</h4>
@@ -155,16 +160,11 @@ class Dashboard extends React.Component {
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
                 </p>
               </CardBody>
-
-             
               <CardFooter>
-               
-
                 <Button color="primary">Let's Start</Button>
-                
               </CardFooter>
             </Card>
-          </GridItem>
+          </GridItem> */}
 
           <GridItem xs={12} sm={12} md={12}>
          
