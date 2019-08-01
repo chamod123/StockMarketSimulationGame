@@ -24,10 +24,6 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 
-
-
-
-
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Button } from "@material-ui/core";
 import { getLeaderBoard } from "server/server";
@@ -43,7 +39,6 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     getLeaderBoard().then(response => {
-      console.log(response)
       this.setState({ tableData: this.getTableData(response) })
     })
   }
@@ -57,7 +52,6 @@ class Dashboard extends React.Component {
     response.forEach(function (element) {
       rowArray.push([element.id, element.name, element.price])
     });
-    console.log(rowArray)
     return rowArray;
   }
 
