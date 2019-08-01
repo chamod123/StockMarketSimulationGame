@@ -20,17 +20,16 @@ public class BrokerService {
 //        brokers.add(new Broker(6l, "NiroshimaBroker"));
 //    }
 
-    public static Player CreateAccount(Player player){
-        stockAccounts.add(player);
+    public static Player CreateAccount(Player player) {
+        if (player != null) {
+            stockAccounts.add(player);
+        }
         for (Player playere : stockAccounts) {
             System.out.println("Players in game :  " + playere.getName());
         }
         return player;
 
     }
-
-
-
 
 
     public static Optional<Broker> getBroker(Long id) {
@@ -145,13 +144,13 @@ public class BrokerService {
         int number = ran.nextInt(7 - 1 + 1) + 1;
         if (BankService.Balance("Computer").compareTo(MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(number))) > 0) {
             BigDecimal totalvalue = MarketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf(number));
-            buyStock("Computer", predictions.get(0), number,totalvalue);
+            buyStock("Computer", predictions.get(0), number, totalvalue);
         }
         Player p = GetPlayer("Computer");
 
         if (p.getStocks().get(predictions.get(1)) != null) {
-            BigDecimal totalvalue = MarketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf( p.getStocks().get(predictions.get(1))));
-            selltock("Computer", predictions.get(1), p.getStocks().get(predictions.get(1)),totalvalue);
+            BigDecimal totalvalue = MarketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf(p.getStocks().get(predictions.get(1))));
+            selltock("Computer", predictions.get(1), p.getStocks().get(predictions.get(1)), totalvalue);
         } else if (BankService.Balance("Computer").compareTo(BigDecimal.valueOf(500)) < 0) {
 
             for (Map.Entry<String, Integer> entry : p.getStocks().entrySet()) {
@@ -159,7 +158,7 @@ public class BrokerService {
                 int value = entry.getValue();
                 if (value > 0) {
                     BigDecimal totalvalue1 = MarketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf(value));
-                    selltock("Computer", key, value,totalvalue1);
+                    selltock("Computer", key, value, totalvalue1);
                     break;
                 }
             }
@@ -169,21 +168,21 @@ public class BrokerService {
     //return min and max stock in future or current turn
     public static ArrayList<String> Prediction() {
         ArrayList<Stock> futureStocks = MarketService.GetPredictedStocks();
-        String max = futureStocks.get(12).getCompanyName();
-        BigDecimal valMax = futureStocks.get(12).getStockPrice();
-        String min = futureStocks.get(12).getCompanyName();
-        BigDecimal valMin = futureStocks.get(12).getStockPrice();
-        for (int i = 12; i < futureStocks.size(); i++) {
+        String max = futureStocks.get(0).getCompanyName();
+        BigDecimal valMax = futureStocks.get(0).getStockPrice();
+        String min = futureStocks.get(0).getCompanyName();
+        BigDecimal valMin = futureStocks.get(0).getStockPrice();
+        for (int i = 0; i < futureStocks.size(); i++) {
             if (futureStocks.get(i).getStockPrice().compareTo(valMax) > 0) {
-                max = futureStocks.get(i - 12).getCompanyName();
+                max = futureStocks.get(i - 0).getCompanyName();
                 valMax = futureStocks.get(i).getStockPrice();
 
             }
 
         }
-        for (int i = 12; i < futureStocks.size(); i++) {
+        for (int i = 0; i < futureStocks.size(); i++) {
             if (futureStocks.get(i).getStockPrice().compareTo(valMin) < 0) {
-                min = futureStocks.get(i - 12).getCompanyName();
+                min = futureStocks.get(i - 0).getCompanyName();
                 valMin = futureStocks.get(i).getStockPrice();
 
             }

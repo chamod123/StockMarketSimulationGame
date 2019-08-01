@@ -114,6 +114,19 @@ public class StockController {
         return stock;
     }
 
+    //checked
+    //#POST - add player to game
+    @PostMapping("/addPlayer/{id}")
+    public CompletionStage<GameMessage.ActionPerformed> addPlayerToGame(@PathVariable("id") Long id) {
+        CompletionStage<GameMessage.ActionPerformed> playerCreated = Patterns
+                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id,actorSystemCreate.getPlayerActor(),actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(GameMessage.ActionPerformed.class::cast);
+        if (playerCreated != null) {
+            return playerCreated;
+        }
+        return playerCreated;
+    }
+
     //#POST - sell stock
     @PostMapping("/sellStock")
     public String sellStock(@RequestBody Market market) {
@@ -244,17 +257,7 @@ public class StockController {
 
     }
 
-    //#POST - add player to game
-    @PostMapping("/addPlayer/{id}")
-    public CompletionStage<GameMessage.ActionPerformed> addPlayerToGame(@PathVariable("id") Long id) {
-        CompletionStage<GameMessage.ActionPerformed> playerCreated = Patterns
-                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id,actorSystemCreate.getPlayerActor(),actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(GameMessage.ActionPerformed.class::cast);
-        if (playerCreated != null) {
-            return playerCreated;
-        }
-        return playerCreated;
-    }
+
 
 
 

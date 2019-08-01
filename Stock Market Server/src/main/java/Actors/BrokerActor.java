@@ -29,7 +29,7 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.GetWinnerMessage.class, getWinner())//get Winner
                 .match(BrokerMessages.GetAllPlayerMessage.class, getAllPlayers())//get all Players
                 .match(BrokerMessages.StartGameMessage.class, startGame())//Start game
-                .match(BrokerMessages.NextTurnMessage.class, nextTurn())//Start game
+                .match(BrokerMessages.NextTurnMessage.class, nextTurn())//Next turn
                 .match(BrokerMessages.GetPredictionMessage.class, Prediction())//Start game
                 .match(BrokerMessages.GetCurrentTurnMessage.class, currentTurn())//get current turn
                 .match(BrokerMessages.AddPlayerToGameMessage.class, addPlayerToGame())//add player to game
@@ -135,7 +135,8 @@ public class BrokerActor extends AbstractActor {
     //next Turn
     private FI.UnitApply<BrokerMessages.NextTurnMessage> nextTurn() {
         return nextTurnMessage -> {
-            BrokerService.ComputerPlay();
+//            BrokerService.ComputerPlay();
+            System.out.println("Computer Player need to complete");
             sender().tell(new BrokerMessages.ActionPerformed(String.format("Computer Player created")), getSelf());
         };
     }
