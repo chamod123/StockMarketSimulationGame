@@ -51,16 +51,14 @@ public class BrokerActor extends AbstractActor {
         };
     }
 
+    //checked
     //buy Stock
     private FI.UnitApply<BrokerMessages.BuyStockMessage> handleBuyStock() {
         return getBrokerMessage -> {
             //get stock Price*Quantity from stock item in market
             BigDecimal totalvalue = MarketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
-
-            //checked
             //passe username,stock, quantity to buy the stock for that user
             boolean done = BrokerService.buyStock(getBrokerMessage.getMarket().getUsername(), getBrokerMessage.getMarket().getStock(), getBrokerMessage.getMarket().getQuantity(), totalvalue);
-            //checked
             if (done) {
                 //Withdraw
                 // pass the name, amount
@@ -69,15 +67,14 @@ public class BrokerActor extends AbstractActor {
         };
     }
 
+    //checked
     //sell Stock
     private FI.UnitApply<BrokerMessages.SellStockMessage> handleSellStock() {
         return sellStockMessage -> {
             BigDecimal totalvalue = MarketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
             System.out.println("totalvalue" + totalvalue + ": stock :" + MarketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice() + ": stock :" + BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
-
-            //passe username,stock, quantity to buy the stock for that user
+            //passe username,stock, quantity to sell the stock for that user
             boolean done = BrokerService.selltock(sellStockMessage.getMarket().getUsername(), sellStockMessage.getMarket().getStock(), sellStockMessage.getMarket().getQuantity(), totalvalue);
-
             if (done) {
                 //deposit
                 // pass the name, amount

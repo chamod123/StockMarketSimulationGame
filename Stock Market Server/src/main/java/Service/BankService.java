@@ -46,14 +46,15 @@ public class BankService {
     }
 
     //deposit to an account
-    public static Boolean Deposit(String name, BigDecimal amount) throws Exception {
+    public static Boolean Deposit(String playerName, BigDecimal amount) throws Exception {
         for (Account account : accountList) {
-            if (name.equals(account.getName())) {
+            if (playerName.equals(account.getName())) {
                 account.setBalance(account.getBalance().add(amount));
+                System.out.println("playerName: " + playerName + " balance: " + account.getBalance());
                 return true;
             }
         }
-        throw new Exception("account with " + name + " does not  exists");
+        throw new Exception("account with " + playerName + " does not  exists");
     }
 
     //return balance for the user
