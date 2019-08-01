@@ -56,11 +56,11 @@ public class BrokerActor extends AbstractActor {
         return getBrokerMessage -> {
             //get stock Price*Quantity from stock item in market
             BigDecimal totalvalue = MarketService.getStock(getBrokerMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(getBrokerMessage.getMarket().getQuantity()));
-            System.out.println("totalvalue" + totalvalue);
 
+            //checked
             //passe username,stock, quantity to buy the stock for that user
             boolean done = BrokerService.buyStock(getBrokerMessage.getMarket().getUsername(), getBrokerMessage.getMarket().getStock(), getBrokerMessage.getMarket().getQuantity(), totalvalue);
-
+            //checked
             if (done) {
                 //Withdraw
                 // pass the name, amount

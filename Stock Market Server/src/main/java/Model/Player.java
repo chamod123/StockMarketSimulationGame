@@ -11,7 +11,7 @@ public class Player {
     private String userName;
     private String password;
     private String tpNumber;
-    HashMap<String, Integer> stocks;
+    HashMap<String, Integer> stocks = new HashMap<>();
 
     public Player(String name, String secondName, String email, String userName, String password, String tpNumber) {
         this.name = name;

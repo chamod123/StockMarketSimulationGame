@@ -27,17 +27,17 @@ public class BankService {
         throw new Exception("account with " + playerId + " does not  exists");
     }
 
+    //checked
     //withdraw from account
     public static Boolean Withdraw(String playerName, BigDecimal amount) throws Exception {
-        System.out.println("awa 8");
         for (Account account : accountList) {
             if (playerName.equals(account.getName())) {
+                System.out.println("playerName: " + playerName + " before balance: " + account.getBalance());
                 if (amount.compareTo(account.getBalance()) <= 0) {
                     account.setBalance(account.getBalance().subtract(amount));
-                    System.out.println("awa 9-1");
+                    System.out.println("playerName: " + playerName + " balance: " + account.getBalance());
                     return true;
                 } else {
-                    System.out.println("awa 9-2");
                     return false;
                 }
             }

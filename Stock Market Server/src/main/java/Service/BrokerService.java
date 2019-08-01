@@ -47,20 +47,30 @@ public class BrokerService {
         return brokers;
     }
 
-
+    //checked
     //buy stock
     public static Boolean buyStock(String name, String stock, int quantity, BigDecimal totalvalue) throws Exception {
-        System.out.println("awa 4  " + totalvalue + name);
+        System.out.println("awa buyStock  value : " + totalvalue + " name: " + name + " Stock: " + stock);
         //user value need to grater than total value. then can buy stock
         if (BankService.Balance(name).compareTo(totalvalue) >= 0) {
-            Integer count = GetPlayer(name).getStocks().get(stock);
-            ;
+
+            Integer count = null;
+            if (GetPlayer(name).getStocks() != null) {
+                count = GetPlayer(name).getStocks().get(stock);
+            }
+
             if (count == null) {// item has not buy from that item
                 GetPlayer(name).getStocks().put(stock, quantity);
             } else {// item has buy from that item
                 GetPlayer(name).getStocks().put(stock, count + quantity);
             }
+            System.out.println("Stocks of player : " + GetPlayer(name).getStocks());
             Transactions.add(new Transaction(name, MarketService.GetCurrentTurn(), "BUY", stock, quantity, totalvalue));
+            //remove for loop
+            for (Transaction c : Transactions) {
+                System.out.println("name: " + c.getName() + " stock:" + c.getStock() + " Type: " + c.getType() + " amount: " + c.getAmount() + " id: " + c.getId() + " quantity" + c.getQuantity() + " total: " + c.getTotal() + " turn: " + c.getTurn());
+            }
+
             return true;
         } else {
             return false;
@@ -76,6 +86,9 @@ public class BrokerService {
 //            BigDecimal totalvalue=market.getStock(stock).getStockPrice().multiply(BigDecimal.valueOf(quantity));
 
             Transactions.add(new Transaction(name, MarketService.GetCurrentTurn(), "SELL", stock, quantity, totalvalue));
+            for (Transaction c : Transactions) {
+                System.out.println("name: " + c.getName() + " stock:" + c.getStock() + " Type: " + c.getType() + " amount: " + c.getAmount() + " id: " + c.getId() + " quantity" + c.getQuantity() + " total: " + c.getTotal() + " turn: " + c.getTurn());
+            }
             return true;
         } else
             return false;
@@ -86,7 +99,7 @@ public class BrokerService {
     //get player buy name
     public static Player GetPlayer(String name) throws Exception {
         for (Player c : stockAccounts) {
-            System.out.println("c.getName" + c.getName());
+            System.out.println("c.getName " + c.getName());
             if (name.equals(c.getName())) {
                 return c;
             }

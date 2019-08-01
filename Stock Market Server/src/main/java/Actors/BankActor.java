@@ -30,8 +30,9 @@ public class BankActor extends AbstractActor {
     //Withdraw from player
     private FI.UnitApply<BankMessages.WithdrawMessage> withdraw() {
         return withdrawMessage -> {
+            //checked
             //Withdraw from player
-            BankService.Withdraw(withdrawMessage.getTransaction().getName(),withdrawMessage.getTransaction().getAmount());
+            BankService.Withdraw(withdrawMessage.getTransaction().getName(), withdrawMessage.getTransaction().getAmount());
             sender().tell(new BankMessages.ActionPerformed(String.format("Withdraw for %s .", withdrawMessage.getTransaction().getName()
             )), getSelf());
         };
@@ -41,7 +42,7 @@ public class BankActor extends AbstractActor {
     private FI.UnitApply<BankMessages.DepositMessage> deposit() {
         return depositMessage -> {
             //Withdraw from player
-            BankService.Deposit(depositMessage.getTransaction().getName(),depositMessage.getTransaction().getAmount());
+            BankService.Deposit(depositMessage.getTransaction().getName(), depositMessage.getTransaction().getAmount());
             sender().tell(new BankMessages.ActionPerformed(String.format("Withdraw for %s .", depositMessage.getTransaction().getName()
             )), getSelf());
         };
@@ -50,7 +51,7 @@ public class BankActor extends AbstractActor {
     //get Bank Balance for a player
     private FI.UnitApply<BankMessages.GetBankBalanceMessage> getBankBalance() {
         return getBankBalanceMessage -> {
-            sender().tell(BankService.Balance(getBankBalanceMessage.getName()),getSelf());
+            sender().tell(BankService.Balance(getBankBalanceMessage.getName()), getSelf());
         };
     }
 
