@@ -127,6 +127,29 @@ public class StockController {
         return playerCreated;
     }
 
+    //checked
+    //#GET - get Current Turn
+    @GetMapping("/currentTurn")
+    public CompletionStage<Integer> currentTurn() {
+//        CompletionStage<Integer> turn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.GetCurrentTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+//                .thenApply(obj -> (Integer) obj);
+
+        CompletionStage<Integer> turn = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetCurrentTurnMessage(), timeout)
+                .thenApply(obj -> (Integer) obj);
+        return turn;
+    }
+
+
+    //checked
+    //get Current Event
+    @GetMapping("/currentEvents")
+    public CompletionStage<ArrayList<Event>> currentEvents() throws Exception {
+        CompletionStage<ArrayList<Event>> event = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetCurrentEventMessage(), timeout)
+                .thenApply(obj -> (ArrayList<Event>) obj);
+        return event;
+
+    }
+
     //#POST - sell stock
     @PostMapping("/sellStock")
     public String sellStock(@RequestBody Market market) {
@@ -242,24 +265,7 @@ public class StockController {
         return prediction;
     }
 
-    //#GET - get Current Turn
-    @GetMapping("/currentTurn")
-    public CompletionStage<Integer> currentTurn() {
-        CompletionStage<Integer> turn = Patterns.ask(actorSystemCreate.getStockActor(), new AnalystMessages.GetCurrentTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(obj -> (Integer) obj);
-        return turn;
-    }
 
-
-
-    //get Current Event
-    @GetMapping("/currentEvents")
-    public CompletionStage<ArrayList<Event>> currentEvents() throws Exception {
-        CompletionStage<ArrayList<Event>> event = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetCurrentEventMessage(), timeout)
-                .thenApply(obj -> (ArrayList<Event>) obj);
-        return event;
-
-    }
 
 
 

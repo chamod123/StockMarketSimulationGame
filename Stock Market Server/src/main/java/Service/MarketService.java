@@ -211,6 +211,7 @@ public class MarketService {
     public static ArrayList<Event> GetCurrentEvents() {
         ArrayList<Event> eList = new ArrayList<>();
         for (int i = 0; i < eventList.size(); i++) {
+            System.out.println("eventList end: " + eventList.get(i).getEndTurn() + " Start :" + eventList.get(i).getStartTurn());
             if (currentTurn >= eventList.get(i).getStartTurn() && currentTurn <= eventList.get(i).getEndTurn()) {
                 eList.add(eventList.get(i));
             }

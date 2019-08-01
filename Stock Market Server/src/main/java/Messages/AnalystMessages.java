@@ -59,15 +59,15 @@ public interface AnalystMessages {
     }
 
     //get current turn
-    class GetCurrentTurnMessage implements Serializable {
-        private static ActorRef brokerActor;
-
-        public GetCurrentTurnMessage(ActorRef brokerActor) {
-            this.brokerActor = brokerActor;
-        }
-        public static ActorRef getBrokerActor() {
-            return brokerActor;
-        }
-
-    }
+//    class GetCurrentTurnMessage implements Serializable {
+//        private static ActorRef brokerActor;
+//
+//        public GetCurrentTurnMessage(ActorRef brokerActor) {
+//            this.brokerActor = brokerActor;
+//        }
+//        public static ActorRef getBrokerActor() {
+//            return brokerActor;
+//        }
+//
+//    }
 }

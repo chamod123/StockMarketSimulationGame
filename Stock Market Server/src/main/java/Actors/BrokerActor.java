@@ -152,8 +152,8 @@ public class BrokerActor extends AbstractActor {
     //get Prediction
     private FI.UnitApply<BrokerMessages.GetCurrentTurnMessage> currentTurn() {
         return getPredictionMessage -> {
-            MarketService.GetCurrentTurn();
-            sender().tell(new BrokerMessages.ActionPerformed(String.format("get current turn")), getSelf());
+//            MarketService.GetCurrentTurn();
+            sender().tell(MarketService.GetCurrentTurn(), getSelf());
         };
     }
 
