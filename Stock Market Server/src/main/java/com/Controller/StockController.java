@@ -173,15 +173,19 @@ public class StockController {
         return "not sucess";
     }
 
+    //checked
     // #GET - get total stock value for player
+    //if sell all items they have. how much they can earn
     @GetMapping("/stockValue/{name}")
-    public CompletionStage<Optional<Player>> stockValue(@PathVariable("name") String name) {
-        CompletionStage<Optional<Player>> player = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetTotalStockValueMessage(name), timeout)
-                .thenApply(obj -> (Optional<Player>) obj);
+    public CompletionStage<BigDecimal> stockValue(@PathVariable("name") String name) {
+        CompletionStage<BigDecimal> player = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetTotalStockValueMessage(name), timeout)
+                .thenApply(obj -> (BigDecimal) obj);
         return player;
     }
 
+    //checked
     // #GET - get getPortofolio
+    // stockes player have
     @GetMapping("/portofolio/{name}")
     public CompletionStage<HashMap<String, Integer>> getPortofolio(@PathVariable("name") String name) {
         CompletionStage<HashMap<String, Integer>> player = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetPortofolioMessage(name), timeout)
@@ -189,6 +193,7 @@ public class StockController {
         return player;
     }
 
+    //checked
     // #GET - get Bank Balance for a player
     @GetMapping("/bankBalance/{name}")
     public CompletionStage<BigDecimal> getBankBalance(@PathVariable("name") String name) {
@@ -198,7 +203,8 @@ public class StockController {
     }
 
 
-    //#GET - get all stock
+    //checked
+    //#GET - get all transactions
     @GetMapping("/transactions")
     public CompletionStage<ArrayList<Transaction>> getAllTransactions() {
         CompletionStage<ArrayList<Transaction>> transaction = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetAllTransactionsMessage(), timeout)
