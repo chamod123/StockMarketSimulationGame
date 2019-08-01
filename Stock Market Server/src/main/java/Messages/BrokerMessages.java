@@ -156,5 +156,26 @@ public interface BrokerMessages {
         }
     }
 
+    //get current turn
+    class GetCurrentTurnMessage implements Serializable {
+
+        public GetCurrentTurnMessage() {
+        }
+
+    }
+
+    class AddPlayerToGameMessage implements Serializable {
+        private final Player player;
+
+        public AddPlayerToGameMessage(Player player) {
+            this.player = player;
+        }
+
+        public Player getPlayer() {
+            return player;
+        }
+    }
+
+
 
 }

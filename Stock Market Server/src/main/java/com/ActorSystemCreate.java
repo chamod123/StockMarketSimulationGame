@@ -13,6 +13,7 @@ public class ActorSystemCreate {
     public static ActorRef stockActor;
     public static ActorRef bankActor;
     public static ActorRef analystActor;
+    public static ActorRef gameActor;
 
 public ActorSystemCreate() {
     ActorSystem system = ActorSystem.create("ServerHttp");
@@ -22,53 +23,34 @@ public ActorSystemCreate() {
     stockActor = system.actorOf(Props.create(StockActor.class), "stockActor");
     bankActor = system.actorOf(Props.create(BankActor.class), "bankActor");
     analystActor = system.actorOf(Props.create(AnalystActor.class), "analystActor");
+    gameActor = system.actorOf(Props.create(GameActor.class), "gameActor");
 }
+
+    public static ActorRef getServer() {
+        return server;
+    }
 
     public static ActorRef getPlayerActor() {
         return playerActor;
-    }
-
-    public static void setPlayerActor(ActorRef playerActor) {
-        ActorSystemCreate.playerActor = playerActor;
     }
 
     public static ActorRef getBrokerActor() {
         return brokerActor;
     }
 
-    public static void setBrokerActor(ActorRef brokerActor) {
-        ActorSystemCreate.brokerActor = brokerActor;
-    }
-
     public static ActorRef getStockActor() {
         return stockActor;
-    }
-
-    public static void setStockActor(ActorRef stockActor) {
-        ActorSystemCreate.stockActor = stockActor;
     }
 
     public static ActorRef getBankActor() {
         return bankActor;
     }
 
-    public static void setBankActor(ActorRef bankActor) {
-        ActorSystemCreate.bankActor = bankActor;
-    }
-
     public static ActorRef getAnalystActor() {
         return analystActor;
     }
 
-    public static void setAnalystActor(ActorRef analystActor) {
-        ActorSystemCreate.analystActor = analystActor;
-    }
-
-    public static ActorRef getServer() {
-        return server;
-    }
-
-    public static void setServer(ActorRef server) {
-        ActorSystemCreate.server = server;
+    public static ActorRef getGameActor() {
+        return gameActor;
     }
 }

@@ -57,6 +57,7 @@ export default function SignUp() {
   const [lastName, setLastName] = useState(false);
   const [Email, setEmail] = useState(false);
   const [password, setpassword] = useState(false);
+  const [username, setusername] = useState(false);
   const handleChangeFistName = (event) => {
     setFirstName(event.target.value)
   }
@@ -67,6 +68,9 @@ export default function SignUp() {
   
   const handleChangeEmail = (event) => {
     setEmail(event.target.value)
+  }
+  const handleChangeusername = (event) => {
+    setusername(event.target.value)
   }
   const handleChangepassword = (event) => {
     setpassword(event.target.value)
@@ -130,6 +134,23 @@ export default function SignUp() {
                 onChange={handleChangeEmail}
               />
               {lastName == "" && <FormHelperText  >Please enter your email</FormHelperText>}
+           </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+            <FormControl error={username === ""}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="username"
+                label="User Name"
+                name="username"
+                autoComplete="username"
+                type ="username"
+                autoFocus
+                onChange={handleChangeusername}
+              />
+              {username == "" && <FormHelperText  >Please enter your username</FormHelperText>}
            </FormControl>
             </Grid>
             <Grid item xs={12}>

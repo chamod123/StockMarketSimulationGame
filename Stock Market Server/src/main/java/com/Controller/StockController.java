@@ -5,6 +5,7 @@ import Messages.*;
 import Model.Player;
 import Model.Stock;
 import Model.Market;
+import Model.Event;
 import Model.Transaction;
 import Model.Bank;
 import Service.PlayerService;
@@ -13,6 +14,7 @@ import akka.http.javadsl.model.StatusCodes;
 import akka.pattern.Patterns;
 import com.ActorSystemCreate;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -54,10 +56,19 @@ public class StockController {
 
     //#GET - get a Player Data
     @GetMapping("/players/{id}")
-    public CompletionStage<Optional<Player>> getPlayer(@PathVariable("id") Long id) {
-        CompletionStage<Optional<Player>> maybeUser = Patterns
+    public CompletionStage<Player> getPlayer(@PathVariable("id") Long id) {
+        CompletionStage<Player> player = Patterns
                 .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetPlayerMessage(id), timeout)
-                .thenApply(Optional.class::cast);
+                .thenApply(Player.class::cast);
+        return player;
+    }
+
+    //#GET - login User
+    @GetMapping("/login/{userName}/{password}")
+    public CompletionStage<Integer> loginUser(@PathVariable("userName") String userName, @PathVariable("password") String password) {
+        CompletionStage<Integer> maybeUser = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.LoginPlayerMessage(userName, password), timeout)
+                .thenApply(obj -> (Integer) obj);
         return maybeUser;
     }
 
@@ -189,5 +200,65 @@ public class StockController {
         }
         return "not sucess";
     }
+
+    //#GET - get prediction
+    @GetMapping("/prediction")
+    public CompletionStage<ArrayList<String>> getPrediction() {
+        CompletionStage<ArrayList<String>> prediction = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.GetPredictionMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (ArrayList<String>) obj);
+        return prediction;
+    }
+
+    //#GET - get Current Turn
+    @GetMapping("/currentTurn")
+    public CompletionStage<Integer> currentTurn() {
+        CompletionStage<Integer> turn = Patterns.ask(actorSystemCreate.getStockActor(), new AnalystMessages.GetCurrentTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (Integer) obj);
+        return turn;
+    }
+
+//    //go to next turn after 45 seconds
+//    @Scheduled(fixedDelay = 45000)
+//    public String nextTurnS() throws Exception {
+//        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+//                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+//        if (nextTurn != null) {
+//            return "sucess";
+//        }
+//        return "not sucess";
+//    }
+
+    //get Current Event
+    @GetMapping("/currentEvents")
+    public CompletionStage<ArrayList<Event>> currentEvents() throws Exception {
+        CompletionStage<ArrayList<Event>> event = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.GetCurrentEventMessage(), timeout)
+                .thenApply(obj -> (ArrayList<Event>) obj);
+        return event;
+
+    }
+
+    //#POST - add player to game
+    @PostMapping("/addPlayer/{id}")
+    public CompletionStage<GameMessage.ActionPerformed> addPlayerToGame(@PathVariable("id") Long id) {
+        CompletionStage<GameMessage.ActionPerformed> playerCreated = Patterns
+                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id,actorSystemCreate.getPlayerActor(),actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(GameMessage.ActionPerformed.class::cast);
+        if (playerCreated != null) {
+            return playerCreated;
+        }
+        return playerCreated;
+    }
+
+
+
+//    //#GET - get a Player Data
+//    @GetMapping("/addPlayer/{id}")
+//    public CompletionStage<Player> addPlayerToGame(@PathVariable("id") Long id) {
+//        CompletionStage<Player> player = Patterns
+//                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id,actorSystemCreate.getPlayerActor(),actorSystemCreate.getBrokerActor()), timeout)
+//                .thenApply(Player.class::cast);
+//        return player;
+//    }
+
 
 }

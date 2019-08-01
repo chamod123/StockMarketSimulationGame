@@ -7,7 +7,6 @@ import akka.actor.AbstractActor;
 import akka.japi.pf.FI;
 
 public class BankActor extends AbstractActor {
-    private BankService bankService = new BankService();
 
 
     @Override
@@ -22,7 +21,7 @@ public class BankActor extends AbstractActor {
 
     private FI.UnitApply<BankMessages.CreateAccountMessage> createAccount() {
         return createAccountMessage -> {
-            bankService.CreateAccount(createAccountMessage.getAccount());
+            BankService.CreateAccount(createAccountMessage.getAccount());
             sender().tell(new BankMessages.ActionPerformed(String.format("Player %s Account created.", createAccountMessage.getAccount().getPlayerId()
             )), getSelf());
         };
@@ -30,10 +29,9 @@ public class BankActor extends AbstractActor {
 
     //Withdraw from player
     private FI.UnitApply<BankMessages.WithdrawMessage> withdraw() {
-        System.out.println("awa 7");
         return withdrawMessage -> {
             //Withdraw from player
-            bankService.Withdraw(withdrawMessage.getTransaction().getName(),withdrawMessage.getTransaction().getAmount());
+            BankService.Withdraw(withdrawMessage.getTransaction().getName(),withdrawMessage.getTransaction().getAmount());
             sender().tell(new BankMessages.ActionPerformed(String.format("Withdraw for %s .", withdrawMessage.getTransaction().getName()
             )), getSelf());
         };
@@ -41,10 +39,9 @@ public class BankActor extends AbstractActor {
 
     //Deposit from player
     private FI.UnitApply<BankMessages.DepositMessage> deposit() {
-        System.out.println("awa 7");
         return depositMessage -> {
             //Withdraw from player
-            bankService.Deposit(depositMessage.getTransaction().getName(),depositMessage.getTransaction().getAmount());
+            BankService.Deposit(depositMessage.getTransaction().getName(),depositMessage.getTransaction().getAmount());
             sender().tell(new BankMessages.ActionPerformed(String.format("Withdraw for %s .", depositMessage.getTransaction().getName()
             )), getSelf());
         };
@@ -53,7 +50,7 @@ public class BankActor extends AbstractActor {
     //get Bank Balance for a player
     private FI.UnitApply<BankMessages.GetBankBalanceMessage> getBankBalance() {
         return getBankBalanceMessage -> {
-            sender().tell(bankService.Balance(getBankBalanceMessage.getName()),getSelf());
+            sender().tell(BankService.Balance(getBankBalanceMessage.getName()),getSelf());
         };
     }
 
