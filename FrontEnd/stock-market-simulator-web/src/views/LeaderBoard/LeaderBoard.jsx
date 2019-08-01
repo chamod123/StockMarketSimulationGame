@@ -31,7 +31,8 @@ class LeaderBoard extends React.Component {
   handleChange = (event, value) => {
     this.setState({ value });
   };
-  componentDidMount() {
+  componentDidMount() 
+  {
     getLeaderBoard().then(response => {
       console.log(response)
       this.setState({ tableData: this.getTableData(response) })

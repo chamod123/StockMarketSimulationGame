@@ -19,21 +19,39 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import { getTransactioHistory } from "server/server";
 
 
 class TransactionHistory extends React.Component {
   state = {
-    value: 0
+    value: 0,
+    tableData:[]
   };
+  
   handleChange = (event, value) => {
     this.setState({ value });
   };
-
+  componentDidMount() 
+  {
+    getTransactioHistory().then(response => {
+      console.log(response)
+      this.setState({ tableData: this.getTableData(response) })
+    })
+  }
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
+  getTableData = (response) => {
+    var rowArray = []
+    response.forEach(function (element) {
+      rowArray.push([element.buyerseller, element.turn, element.type, element.stockname, element.quantity, element.transaction])
+    });
+    console.log(rowArray)
+    return rowArray;
+  }
   render() {
     const { classes } = this.props;
+    const { tableData } = this.state;
     return (
       <div>
        
@@ -45,23 +63,13 @@ class TransactionHistory extends React.Component {
                 <h4 className={classes.cardTitleWhite}>Transaction History</h4>
               </CardHeader>
               <CardBody>
+              {tableData.length>0?
                 <Table
                   tableHeaderColor="warning"
+                  // tableHead={["ID", "Name", "Won Prize"]}
                   tableHead={["Buyer/Seller", "Turn", "Type", "Stock Name","Quantity","Transaction"]}
-                  tableData={[
-                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
-                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
-                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
-                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
-                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
-                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
-                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
-                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
-                    ["Computer", "0", "Buy","Samsung","1","Transaction"],
-                    ["Computer", "0", "Buy","Samsung","1","Transaction"]
-                   
-                  ]}
-                />
+                  tableData={tableData}
+                />:null}
               </CardBody>
             </Card>
           </GridItem>

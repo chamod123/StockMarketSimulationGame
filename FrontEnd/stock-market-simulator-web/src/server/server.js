@@ -42,6 +42,8 @@ function getTransactioHistory() {
     console.log("called")
     return  new Promise((resolve, reject) => {
         fetch('https://api.myjson.com/bins/1cwg6l')
+        //fetch('https://api.myjson.com/bins/1h3uvl')
+        // fetch('http://localhost:8081/"allPlayers')
             .then(function (response) {
                 return response.json();
             })
