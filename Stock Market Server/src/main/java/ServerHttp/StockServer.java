@@ -27,6 +27,7 @@ import akka.stream.javadsl.Flow;
 
 import static akka.http.javadsl.server.PathMatchers.*;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,14 +73,14 @@ public class StockServer extends AllDirectives {
                 , path(segment("players").slash(longSegment()), id -> route(getPlayer(id)))//#GET - get a Player Data
                 , path(segment("stock").slash(longSegment()), id -> route(getStock(id)))// #GET - get a stock Data
                 , path("stock", this::postStock)// #POST - Create new stock
-                , path(segment("stockBySector").slash(longSegment()), sectorId -> route(getStockBySector(sectorId)))// #GET - get stocks Data by sector
+                , path(segment("stockBySector").slash(longSegment()), sectorId -> route(getStockBySector(sectorId.toString())))// #GET - get stocks Data by sector
                 , path(segment("brokers").slash(longSegment()), id -> route(getBroker(id))) //#GET - get a broker data
                 , path("brokers", this::postBroker) //#POST - Create Broker
                 , path("buyStock", this::buyStock) //#POST - buyStock
                 , path("sellStock", this::sellStock) //#POST - sellStock
                 , path(segment("allStock"), this::getAllStock)// #GET - get a stock Data
-                , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id)))// #GET - get total stock value for player
-                , path(segment("portofolio").slash(longSegment()), id -> route(getPortofolio(id)))// #GET - get getPortofolio
+                , path(segment("stockValue").slash(longSegment()), id -> route(stockValue(id.toString())))// #GET - get total stock value for player
+                , path(segment("portofolio").slash(longSegment()), id -> route(getPortofolio(id.toString())))// #GET - get getPortofolio
                 , path(segment("bankBalance").slash(longSegment()), id -> route(getBankBalance(id)))// #GET - get Bank Balance for a player
                 , path(segment("transactions"), this::getAllTransactions)// #GET - get all transaction Data
                 , path(segment("winner"), this::getWinner)// #GET - get winner
@@ -137,11 +138,11 @@ public class StockServer extends AllDirectives {
     // #GET - get all Players
     private Route getAllPlayers() {
         return get(() -> {
-            CompletionStage<Optional<Player>> transaction = Patterns.ask(brokerActor, new BrokerMessages.GetAllPlayerMessage(), timeout)
+            CompletionStage<Optional<Player>> allPlayer = Patterns.ask(brokerActor, new BrokerMessages.GetAllPlayerMessage(), timeout)
                     .thenApply(obj -> (Optional<Player>) obj);
-            return onSuccess(() -> transaction,
+            return onSuccess(() -> allPlayer,
                     performed -> {
-                        if (transaction != null)
+                        if (allPlayer != null)
                             return complete(StatusCodes.OK, performed, Jackson.marshaller());
                         else
                             return complete(StatusCodes.NOT_FOUND);
@@ -152,11 +153,11 @@ public class StockServer extends AllDirectives {
     // #GET - get winner
     private Route getWinner() {
         return get(() -> {
-            CompletionStage<Optional<Player>> transaction = Patterns.ask(brokerActor, new BrokerMessages.GetWinnerMessage(), timeout)
+            CompletionStage<Optional<Player>> winner = Patterns.ask(brokerActor, new BrokerMessages.GetWinnerMessage(), timeout)
                     .thenApply(obj -> (Optional<Player>) obj);
-            return onSuccess(() -> transaction,
+            return onSuccess(() -> winner,
                     performed -> {
-                        if (transaction != null)
+                        if (winner != null)
                             return complete(StatusCodes.OK, performed, Jackson.marshaller());
                         else
                             return complete(StatusCodes.NOT_FOUND);
@@ -182,12 +183,12 @@ public class StockServer extends AllDirectives {
     // #GET - get Bank Balance for a player
     private Route getBankBalance(Long id) {
         return get(() -> {
-            CompletionStage<Optional<Bank>> bank = Patterns.ask(bankActor, new BankMessages.GetBankBalanceMessage(id), timeout)
-                    .thenApply(obj -> (Optional<Bank>) obj);
+            CompletionStage<BigDecimal> bank = Patterns.ask(bankActor, new BankMessages.GetBankBalanceMessage(id.toString()), timeout)
+                    .thenApply(obj -> (BigDecimal) obj);
             return onSuccess(() -> bank,
                     performed -> {
-                        if (performed.isPresent())
-                            return complete(StatusCodes.OK, performed.get(), Jackson.marshaller());
+                        if (bank != null)
+                            return complete(StatusCodes.OK, performed, Jackson.marshaller());
                         else
                             return complete(StatusCodes.NOT_FOUND);
                     });
@@ -195,7 +196,7 @@ public class StockServer extends AllDirectives {
     }
 
     // #GET - get getPortofolio
-    private Route getPortofolio(Long id) {
+    private Route getPortofolio(String id) {
         return get(() -> {
             CompletionStage<HashMap<String, Integer>> player = Patterns.ask(brokerActor, new BrokerMessages.GetPortofolioMessage(id), timeout)
                     .thenApply(obj -> (HashMap<String, Integer>) obj);
@@ -211,7 +212,7 @@ public class StockServer extends AllDirectives {
 
 
     // #GET - get total stock value for player
-    private Route stockValue(Long id) {
+    private Route stockValue(String id) {
         return get(() -> {
             CompletionStage<Optional<Player>> player = Patterns.ask(brokerActor, new BrokerMessages.GetTotalStockValueMessage(id), timeout)
                     .thenApply(obj -> (Optional<Player>) obj);
@@ -306,7 +307,7 @@ public class StockServer extends AllDirectives {
     }
 
     // #GET - get stocks Data by sector
-    private Route getStockBySector(Long sector) {
+    private Route getStockBySector(String sector) {
         return get(() -> {
             CompletionStage<Optional<Stock>> stock = Patterns.ask(stockActor, new StockMessages.GetStockSectorMessage(sector), timeout)
                     .thenApply(obj -> (Optional<Stock>) obj);

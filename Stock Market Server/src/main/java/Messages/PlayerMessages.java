@@ -44,14 +44,53 @@ public interface PlayerMessages {
 
     class GetPlayerMessage implements Serializable {
         private static final long serialVersionUID = 1L;
-        private final Long playerrId;
+        private final Long playerId;
 
-        public GetPlayerMessage(Long playerrId) {
-            this.playerrId = playerrId;
+        public GetPlayerMessage(Long playerId) {
+            this.playerId = playerId;
         }
 
         public Long getPlayerId() {
-            return playerrId;
+            return playerId;
         }
     }
+
+    class LoginPlayerMessage implements Serializable {
+        private final String userName;
+        private final String password;
+
+        public LoginPlayerMessage(String userName,String password) {
+            this.userName = userName;
+            this.password=password;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+    }
+
+
+
+    class AddPlayerToGameMessage implements Serializable {
+        private final Long id;
+        private static ActorRef brokerActor;
+
+        public AddPlayerToGameMessage(Long id, ActorRef brokerActor) {
+            this.id = id;
+            this.brokerActor=brokerActor;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public static ActorRef getBrokerActor() {
+            return brokerActor;
+        }
+    }
+
 }

@@ -5,3 +5,134 @@ playerActor -> create player
 need to check broker service "BuyStock" - " Integer count = GetPlayer(name).getStocks().get(stock);"
 
 when login user need to all to marketServer
+
+http://localhost:8081/players/7
+
+{
+      "id": 7,
+      "name": "Chamod",
+      "secondName": "wijesena",
+      "email": "chamod@gmail.com",
+      "userName": "chamod",
+      "password": "1234",
+      "tpNumber": "1234567890",
+      "stocks": null
+
+}
+
+
+http://localhost:8081/players
+
+{
+    "name": "Chamod",
+    "secondName": "wijesena",
+    "email": "chamod@gmail.com",
+    "userName": "chamod",
+    "password": "1234",
+    "tpNumber": "1234567890"
+}
+
+
+if correct return id, else return 0
+http://localhost:8081/login/chamod/1234
+1
+
+
+not working correctly. need to recheck
+http://localhost:8081/stock/1
+{
+    "stockId": 1,
+    "stockPrice": 11,
+    "companyName": "Google18",
+    "sector": "Finance"
+}
+
+not working correctly. need to recheck
+http://localhost:8081/stock
+
+{
+    "stockPrice": 11,
+    "companyName": "Google18",
+    "sector": "Finance"
+}
+
+
+
+http://localhost:8081/stockBySector/Finance
+[
+    {
+        "stockId": 2,
+        "stockPrice": 11,
+        "companyName": "Google2",
+        "sector": "Finance"
+    },
+    {
+        "stockId": 3,
+        "stockPrice": 11,
+        "companyName": "Google3",
+        "sector": "Finance"
+    },
+    {
+        "stockId": 5,
+        "stockPrice": 11,
+        "companyName": "Google5",
+        "sector": "Finance"
+    }
+]
+
+
+http://localhost:8081/allStock
+[
+    {
+        "stockId": 0,
+        "stockPrice": 50,
+        "companyName": "Apple",
+        "sector": "Technology"
+    },
+    {
+        "stockId": 1,
+        "stockPrice": 44,
+        "companyName": "Microsoft",
+        "sector": "Technology"
+    },
+    {
+        "stockId": 2,
+        "stockPrice": 52,
+        "companyName": "Google",
+        "sector": "Technology"
+    }
+]
+
+######################################################################################################
+######################################################################################################
+######################################################################################################
+
+
+http://localhost:8081/sellStock
+
+{
+"username" : "Chamod",
+"stock":"Google",
+"quantity":3
+}
+
+
+http://localhost:8081/portofolio/Chamod
+
+http://localhost:8081/bankBalance/Kara
+1000
+
+http://localhost:8081/transactions
+
+http://localhost:8081/winner
+
+http://localhost:8081/allPlayers
+
+
+need to complete
+http://localhost:8081/start
+
+need to complete
+http://localhost:8081/nextTurn
+
+http://localhost:8081/Prediction

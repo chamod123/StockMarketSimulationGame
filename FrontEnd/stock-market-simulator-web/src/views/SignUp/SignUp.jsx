@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 function Create() {
   return (
@@ -51,7 +53,28 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const [firstName, setFirstName] = useState(false);
+  const [lastName, setLastName] = useState(false);
+  const [Email, setEmail] = useState(false);
+  const [password, setpassword] = useState(false);
+  const [username, setusername] = useState(false);
+  const handleChangeFistName = (event) => {
+    setFirstName(event.target.value)
+  }
 
+  const handleChangeLastName = (event) => {
+    setLastName(event.target.value)
+  }
+  
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value)
+  }
+  const handleChangeusername = (event) => {
+    setusername(event.target.value)
+  }
+  const handleChangepassword = (event) => {
+    setpassword(event.target.value)
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -65,40 +88,73 @@ export default function SignUp() {
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
+              <FormControl error={firstName === ""}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                  onChange={handleChangeFistName}
+                />
+                {firstName == "" && <FormHelperText  >Please enter your first name</FormHelperText>}
+              </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
+              <FormControl error={lastName === ""}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="lname"
+                  autoFocus
+                  onChange={handleChangeLastName}
+                />
+                {lastName == "" && <FormHelperText  >Please enter your last name</FormHelperText>}
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
+            <FormControl error={Email === ""}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
+                id="Email"
                 label="Email Address"
-                name="email"
+                name="Email"
                 autoComplete="email"
+                type ="email"
+                autoFocus
+                onChange={handleChangeEmail}
               />
+              {lastName == "" && <FormHelperText  >Please enter your email</FormHelperText>}
+           </FormControl>
             </Grid>
             <Grid item xs={12}>
+            <FormControl error={username === ""}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="username"
+                label="User Name"
+                name="username"
+                autoComplete="username"
+                type ="username"
+                autoFocus
+                onChange={handleChangeusername}
+              />
+              {username == "" && <FormHelperText  >Please enter your username</FormHelperText>}
+           </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+            <FormControl error={password === ""}>
               <TextField
                 variant="outlined"
                 required
@@ -108,13 +164,11 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                autoFocus
+                onChange={handleChangepassword}
               />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
+               {password == "" && <FormHelperText  >Please enter your password</FormHelperText>}
+           </FormControl>
             </Grid>
           </Grid>
           <Button
@@ -124,7 +178,7 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Add Bank Info
           </Button>
           <Grid container justify="flex-end">
             <Grid item>

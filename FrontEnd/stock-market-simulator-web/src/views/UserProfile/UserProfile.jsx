@@ -1,21 +1,4 @@
-/*!
-
-=========================================================
-* Material Dashboard React - v1.7.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/material-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React from "react";
+import React, { useState, useEffect } from 'react';
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -33,8 +16,11 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Primary from "components/Typography/Primary";
 import Danger from "components/Typography/Danger.jsx";
+import TextField from '@material-ui/core/TextField';
+
 
 import avatar from "assets/img/faces/marc.jpg";
+import { getPlayer } from 'server/server';
 
 
   
@@ -59,6 +45,49 @@ const styles = {
 
 function UserProfile(props) {
   const { classes } = props;
+  const [fname, setFname] = useState('');
+  const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+   getPlayer(1).then(response => {
+     console.log(response)
+      setFname(response.firstName)
+      setLname(response.lastName)
+      setEmail(response.email)
+      setUserName(response.userName)
+    })
+  });
+
+
+  const handleUpdateProfile=()=>{
+    let request={
+      firstName:{fname},
+      lastName:{lname},
+      email:{email},
+      username:{userName}
+    }
+    console.log(request)
+    //call post UpdateProfile(request) API
+  }
+
+  const handleNavigateToBank=()=>{
+    // props.history.push("/bank")
+  }
+  
+  const handleChangeFname=(event)=>{
+    setFname(event.target.value)
+  }
+  const handleChangeLname=(event)=>{
+    setLname(event.target.value)
+  }
+  const handleChangeEmail=(event)=>{
+    setEmail(event.target.value)
+  }
+
+
   return (
     <div>
       <GridContainer>
@@ -78,7 +107,11 @@ function UserProfile(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                  />
+                    inputProps={{
+                      value:fname,
+                      onChange: handleChangeFname
+                  }}                  
+                />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
@@ -88,7 +121,12 @@ function UserProfile(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
+                    inputProps={{
+                      value:lname,
+                      onChange: handleChangeLname
+                  }}
                   />
+                  
                 </GridItem>
               </GridContainer>
               <GridContainer>
@@ -100,6 +138,10 @@ function UserProfile(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
+                    inputProps={{
+                      value:email,
+                      onChange: handleChangeEmail
+                  }}
                   />
                 </GridItem>
               </GridContainer>
@@ -113,6 +155,7 @@ function UserProfile(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
+                    value={userName}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -123,12 +166,13 @@ function UserProfile(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
+                    value={password}
                   />
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="danger">Update Profile</Button>
+              <Button color="danger" onClick={handleUpdateProfile}>Update Profile</Button>
             </CardFooter>
           </Card>
         </GridItem>
@@ -141,10 +185,10 @@ function UserProfile(props) {
             </CardAvatar>
             <CardBody profile>
               <h6 className={classes.cardCategory}><Danger>GAME PLAYER</Danger></h6>
-              <h6 className={classes.cardTitle}><Primary>User Name: Alec</Primary></h6>
-              <h6 className={classes.cardTitle}><Primary>Full Name: Alec Thompson</Primary></h6>
-              <h6 className={classes.cardTitle}><Primary>Email: alecThompson@gmail.com</Primary></h6>
-              <Button color="primary" round>
+              <h6 className={classes.cardTitle}><Primary>User Name: {userName}</Primary></h6>
+              <h6 className={classes.cardTitle}><Primary>Full Name: {fname} {lname}</Primary></h6>
+              <h6 className={classes.cardTitle}><Primary>Email:{email}</Primary></h6>
+              <Button color="primary" round onClick={handleNavigateToBank}>
                 Bank Info
               </Button>
             </CardBody>

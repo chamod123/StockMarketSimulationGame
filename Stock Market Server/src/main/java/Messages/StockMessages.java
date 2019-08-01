@@ -49,13 +49,13 @@ public interface StockMessages {
     }
 
     class GetStockSectorMessage implements Serializable {
-        private final Long sector;
+        private final String sector;
 
-        public GetStockSectorMessage(Long sector) {
+        public GetStockSectorMessage(String sector) {
             this.sector = sector;
         }
 
-        public Long getSector() {
+        public String getSector() {
             return sector;
         }
 
@@ -69,6 +69,12 @@ public interface StockMessages {
 
     }
 
+    class GetCurrentEventMessage implements Serializable {
+
+        public GetCurrentEventMessage() {
+        }
+
+    }
 
 
 }

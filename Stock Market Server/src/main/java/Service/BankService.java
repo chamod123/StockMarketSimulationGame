@@ -9,10 +9,8 @@ import java.util.List;
 public class BankService {
     private final static List<Account> accountList = new ArrayList<>();
 
-    public void CreateAccount(Account Account1) {
-
-        System.out.println("Account added " + Account1.getPlayerId());
-        this.accountList.add(Account1);
+    public static void CreateAccount(Account Account1) {
+        accountList.add(Account1);
         for (Account account : accountList) {
             System.out.println("accountList  " + account.getName());
         }
@@ -30,7 +28,7 @@ public class BankService {
     }
 
     //withdraw from account
-    public Boolean Withdraw(String playerName, BigDecimal amount) throws Exception {
+    public static Boolean Withdraw(String playerName, BigDecimal amount) throws Exception {
         System.out.println("awa 8");
         for (Account account : accountList) {
             if (playerName.equals(account.getName())) {
@@ -48,7 +46,7 @@ public class BankService {
     }
 
     //deposit to an account
-    public Boolean Deposit(String name, BigDecimal amount) throws Exception {
+    public static Boolean Deposit(String name, BigDecimal amount) throws Exception {
         for (Account account : accountList) {
             if (name.equals(account.getName())) {
                 account.setBalance(account.getBalance().add(amount));
@@ -59,7 +57,7 @@ public class BankService {
     }
 
     //return balance for the user
-    public BigDecimal Balance(String name) throws Exception {
+    public static BigDecimal Balance(String name) throws Exception {
         for (Account account : accountList) {
             if (name.equals(account.getName())) {
                 return account.getBalance();

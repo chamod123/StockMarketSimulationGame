@@ -62,13 +62,13 @@ public interface BankMessages {
 
     //get Bank Balance for a player
     class GetBankBalanceMessage implements Serializable {
-        private final Long name;
+        private final String name;
 
-        public GetBankBalanceMessage(Long name) {
+        public GetBankBalanceMessage(String name) {
             this.name=name;
         }
 
-        public Long getName() {
+        public String getName() {
             return name;
         }
     }
