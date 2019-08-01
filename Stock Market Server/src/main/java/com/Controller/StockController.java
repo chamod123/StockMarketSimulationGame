@@ -42,6 +42,7 @@ public class StockController {
         return "Welcome to Stock market Simulator API.";
     }
 
+    //checked
     //#POST - Create new Player
     @PostMapping("/players")
     public String addPlayer(@RequestBody Player player) {
@@ -54,6 +55,7 @@ public class StockController {
         return "not sucess";
     }
 
+    //checked
     //#GET - get a Player Data
     @GetMapping("/players/{id}")
     public CompletionStage<Player> getPlayer(@PathVariable("id") Long id) {
@@ -63,6 +65,7 @@ public class StockController {
         return player;
     }
 
+    //checked
     //#GET - login User
     @GetMapping("/login/{userName}/{password}")
     public CompletionStage<Integer> loginUser(@PathVariable("userName") String userName, @PathVariable("password") String password) {
@@ -72,6 +75,7 @@ public class StockController {
         return maybeUser;
     }
 
+    //checked
     //#POST - Create new stock
     @PostMapping("/stock")
     public String postStock(@RequestBody Stock stock) {
@@ -83,6 +87,7 @@ public class StockController {
         return "not sucess";
     }
 
+    //checked
     //#GET - get a stock by id
     @GetMapping("/stock/{id}")
     public CompletionStage<Optional<Stock>> getStock(@PathVariable("id") Long id) {
@@ -91,6 +96,7 @@ public class StockController {
         return stock;
     }
 
+    //checked
     //#GET - get a stock by sector
     @GetMapping("/stockBySector/{sector}")
     public CompletionStage<List<Stock>> getStockBySector(@PathVariable("sector") String sector) {
@@ -99,6 +105,7 @@ public class StockController {
         return stock;
     }
 
+    //checked
     //#GET - get all stock
     @GetMapping("/allStock")
     public CompletionStage<ArrayList<Stock>> getAllStock() {

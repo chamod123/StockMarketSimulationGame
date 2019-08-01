@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class StockService {
-    private final static List<Stock> stocks = new ArrayList<>();
+    public static ArrayList<Stock> stocks = new ArrayList<>();
 
     public static Optional<Stock> getStock(Long id) {
         return stocks.stream()

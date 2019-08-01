@@ -24,7 +24,7 @@ import static java.lang.String.valueOf;
 //import au.com.bytecode.opencsv.CSVWriter;
 
 public class MarketService {
-    public static ArrayList<Stock> stocks;
+//    public static ArrayList<Stock> stocks; // get stock from StockService
     public static ArrayList<Stock> stocksHistory;
     public int turns = 20;
     public static HashMap<Sector, ArrayList<Integer>> sectorTrends;
@@ -43,31 +43,31 @@ public class MarketService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        stocks = new ArrayList<>();
+//        StockService.stocks = new ArrayList<>();
         eventList = new ArrayList<>();
         marketTrends = new ArrayList<>();
         sectorTrends = new HashMap<>();
         //add stocks
-        stocks.add(new Stock("Apple", Sector.Technology, new BigDecimal(50)));
-        stocks.add(new Stock("Microsoft", Sector.Technology, new BigDecimal(44.)));
-        stocks.add(new Stock("Google", Sector.Technology, new BigDecimal(52.)));
-
-        stocks.add(new Stock("Allianz", Sector.Finance, new BigDecimal(39.)));
-        stocks.add(new Stock("ICBC", Sector.Finance, new BigDecimal(45)));
-        stocks.add(new Stock("AXA", Sector.Finance, new BigDecimal(55)));
-
-        stocks.add(new Stock("SERV", Sector.ConsumerServices, new BigDecimal(33.5)));
-        stocks.add(new Stock("BID", Sector.ConsumerServices, new BigDecimal(36.5)));
-        stocks.add(new Stock("HRB", Sector.ConsumerServices, new BigDecimal(38)));
-
-        stocks.add(new Stock("Volkswagen", Sector.Manufacturing, new BigDecimal(55)));
-        stocks.add(new Stock("Samsung", Sector.Manufacturing, new BigDecimal(56)));
-        stocks.add(new Stock("Daimler", Sector.Manufacturing, new BigDecimal(34)));
+//        stocks.add(new Stock("Apple", Sector.Technology, new BigDecimal(50)));
+//        stocks.add(new Stock("Microsoft", Sector.Technology, new BigDecimal(44.)));
+//        stocks.add(new Stock("Google", Sector.Technology, new BigDecimal(52.)));
+//
+//        stocks.add(new Stock("Allianz", Sector.Finance, new BigDecimal(39.)));
+//        stocks.add(new Stock("ICBC", Sector.Finance, new BigDecimal(45)));
+//        stocks.add(new Stock("AXA", Sector.Finance, new BigDecimal(55)));
+//
+//        stocks.add(new Stock("SERV", Sector.ConsumerServices, new BigDecimal(33.5)));
+//        stocks.add(new Stock("BID", Sector.ConsumerServices, new BigDecimal(36.5)));
+//        stocks.add(new Stock("HRB", Sector.ConsumerServices, new BigDecimal(38)));
+//
+//        stocks.add(new Stock("Volkswagen", Sector.Manufacturing, new BigDecimal(55)));
+//        stocks.add(new Stock("Samsung", Sector.Manufacturing, new BigDecimal(56)));
+//        stocks.add(new Stock("Daimler", Sector.Manufacturing, new BigDecimal(34)));
 
         //will remove after the front end integration
 
-        for (int i = 0; i < stocks.size(); i++) {
-            String record = stocks.get(i).getStockPrice().toString();
+        for (int i = 0; i < StockService.stocks.size(); i++) {
+            String record = StockService.stocks.get(i).getStockPrice().toString();
             String [] record3 = {record};
             writer.writeNext(record3);
         }
@@ -91,7 +91,7 @@ public class MarketService {
 
     //get stock buy name
     public static Stock getStock(String name) throws Exception {
-        for (Stock c : stocks) {
+        for (Stock c : StockService.stocks) {
             if (name.equals(c.getCompanyName())) {
 
                 return c;
@@ -103,17 +103,20 @@ public class MarketService {
 
     //get all stocks
     public static ArrayList<Stock> getStocks() throws Exception {
-        return stocks;
+        for (Stock stock1 : StockService.stocks) {
+          System.out.println("all stock "+stock1.getCompanyName());
+        }
+        return StockService.stocks;
     }
 
     //get all stocks from csv  for graph
-    public ArrayList<String> getStocksPerGraph() throws Exception {
+    public List<String[]> getStocksPerGraph() throws Exception {
         //Build reader instance
         CSVReader reader = new CSVReader(new FileReader("data.csv"), ',', '"', 0);
 
         //Read all rows at once
         List<String[]> allRows = reader.readAll();
-        return (ArrayList<String>) allRows;
+        return allRows;
     }
 
 /*
@@ -131,10 +134,10 @@ public class MarketService {
 
     //return future array list
     public static ArrayList<Stock> GetPredictedStocks() {
-        ArrayList<Stock> temp = new ArrayList<Stock>(stocks);
+        ArrayList<Stock> temp = new ArrayList<Stock>(StockService.stocks);
         Random ran = new Random();
         int number = ran.nextInt(3) + currentTurn;
-        for (int i = 0; i < stocks.size(); i++) {
+        for (int i = 0; i < StockService.stocks.size(); i++) {
             //get market trend value for current turn
             int marketValue = marketTrends.get(number);
             //get sector trend value value for current turn
@@ -179,22 +182,22 @@ public class MarketService {
     //change stock value based on event market and sector trends
     public void ChangeStockValues() {
 
-        for (int i = 0; i < stocks.size(); i++) {
+        for (int i = 0; i < StockService.stocks.size(); i++) {
             //get market trend value for current turn
 
             int marketValue = marketTrends.get(currentTurn);
             //get sector trend value value for current turn
-            int sectorValue = sectorTrends.get(stocks.get(i).getSector()).get(currentTurn);
-            int eventValue = ChangeEventStockValue(stocks.get(i), currentTurn);
-            BigDecimal stockprice = stocks.get(i).getStockPrice();
-            stocks.get(i).setStockPrice(stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue)));
-            if (stocks.get(i).getStockPrice().compareTo(BigDecimal.ZERO) <= 0) {
-                stocks.get(i).setStockPrice(BigDecimal.valueOf(1));
+            int sectorValue = sectorTrends.get(StockService.stocks.get(i).getSector()).get(currentTurn);
+            int eventValue = ChangeEventStockValue(StockService.stocks.get(i), currentTurn);
+            BigDecimal stockprice = StockService.stocks.get(i).getStockPrice();
+            StockService.stocks.get(i).setStockPrice(stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue)));
+            if (StockService.stocks.get(i).getStockPrice().compareTo(BigDecimal.ZERO) <= 0) {
+                StockService.stocks.get(i).setStockPrice(BigDecimal.valueOf(1));
             }
         }
 
-        for (int i = 0; i < stocks.size(); i++) {
-            String record = stocks.get(i).getStockPrice().toString();
+        for (int i = 0; i < StockService.stocks.size(); i++) {
+            String record = StockService.stocks.get(i).getStockPrice().toString();
             String [] record3 = {record};
             writer.writeNext(record3);
         }
@@ -246,7 +249,7 @@ public class MarketService {
         for (int i = 0; i < this.turns; i++) {
             nextInt = random.nextInt(10);
             if (nextInt < probability) {
-                Event evnt = new Event(stocks, i);
+                Event evnt = new Event(StockService.stocks, i);
                 eventList.add(evnt);
                 probability = 0;
             }
