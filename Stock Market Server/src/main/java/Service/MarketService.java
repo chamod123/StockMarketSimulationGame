@@ -66,7 +66,7 @@ public class MarketService {
 
         //will remove after the front end integration
 
-        for (int i = 0; i < StockService.stocks.size(); i++) {
+/*        for (int i = 0; i < StockService.stocks.size(); i++) {
             String record = StockService.stocks.get(i).getStockPrice().toString();
             String [] record3 = {record};
             writer.writeNext(record3);
@@ -75,7 +75,7 @@ public class MarketService {
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
 //        setEvents();
@@ -105,7 +105,7 @@ public class MarketService {
     }
 
     //get all stocks from csv  for graph
-    public List<String[]> getStocksPerGraph() throws Exception {
+    public static List<String[]> getStocksPerGraph() throws Exception {
         //Build reader instance
         CSVReader reader = new CSVReader(new FileReader("data.csv"), ',', '"', 0);
 
@@ -167,7 +167,7 @@ public class MarketService {
 
 
     //go to next turn
-    public static int NextTurn() {
+    public static int NextTurn() throws IOException {
         currentTurn++;
         ChangeStockValues();
         return GetCurrentTurn();
@@ -175,7 +175,7 @@ public class MarketService {
 
 
     //change stock value based on event market and sector trends
-    public static void ChangeStockValues() {
+    public static void ChangeStockValues() throws IOException {
 
         for (int i = 0; i < StockService.stocks.size(); i++) {
             //get market trend value for current turn
@@ -189,16 +189,25 @@ public class MarketService {
             int eventValue = ChangeEventStockValue(StockService.stocks.get(i), currentTurn);
             BigDecimal stockprice = StockService.stocks.get(i).getStockPrice();
             StockService.stocks.get(i).setStockPrice(stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue)));
+            String csv = "data.csv";
+            CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
+
+            String record = StockService.stocks.get(i).getStockPrice().toString();
+            String [] record3 = {record};
+            writer.writeNext(record3);
+
+            writer.close();
+
             if (StockService.stocks.get(i).getStockPrice().compareTo(BigDecimal.ZERO) <= 0) {
                 StockService.stocks.get(i).setStockPrice(BigDecimal.valueOf(1));
             }
         }
 
-        for (int i = 0; i < StockService.stocks.size(); i++) {
+    /*    for (int i = 0; i < StockService.stocks.size(); i++) {
             String record = StockService.stocks.get(i).getStockPrice().toString();
             String [] record3 = {record};
             writer.writeNext(record3);
-        }
+        }*/
 //        try {
 //            writer.close();
 //        } catch (IOException e) {

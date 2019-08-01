@@ -266,5 +266,12 @@ public class StockController {
         return prediction;
     }
 
+    //#GET - get all stock for graph
+    @GetMapping("/graph")
+    public CompletionStage<ArrayList<String[]>> getAllStocksGrapgh() {
+        CompletionStage<ArrayList<String[]>> stock = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetAllStocksMessage(), timeout)
+                .thenApply(obj -> (ArrayList<String[]>) obj);
+        return stock;
+    }
 
 }

@@ -33,6 +33,7 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.GetPredictionMessage.class, Prediction())//Start game
                 .match(BrokerMessages.GetCurrentTurnMessage.class, currentTurn())//get current turn
                 .match(BrokerMessages.AddPlayerToGameMessage.class, addPlayerToGame())//add player to game
+                .match(BrokerMessages.GetAllStocksMessage.class, getAllStocksMessage())//get all transaction Data
                 .build();
     }
 
@@ -161,4 +162,10 @@ public class BrokerActor extends AbstractActor {
         };
     }
 
+    //get all Stocks for grapgh Data
+    private FI.UnitApply<BrokerMessages.GetAllStocksMessage> getAllStocksMessage() {
+        return getAllTransactionsMessage -> {
+            sender().tell(MarketService.getStocksPerGraph(), getSelf());
+        };
+    }
 }

@@ -130,6 +130,10 @@ public interface BrokerMessages {
         public GetAllTransactionsMessage() {
         }
     }
+    class GetAllStocksMessage implements Serializable {
+        public GetAllStocksMessage() {
+        }
+    }
 
     class GetWinnerMessage implements Serializable {
         public GetWinnerMessage() {

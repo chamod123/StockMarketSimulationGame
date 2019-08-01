@@ -1,7 +1,10 @@
 package Service;
 
 import Model.Stock;
+import com.opencsv.CSVWriter;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,11 +33,18 @@ public class StockService {
 //                .findAny();
     }
 
-    public static void createStock(Stock stock) {
+    public static void createStock(Stock stock) throws IOException {
+        String csv = "data.csv";
+        CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
         stock.setStockId(stocks.size()+1);
         stocks.add(stock);
+        String record =stock.getStockPrice().toString();
+        String [] record3 = {record};
+        writer.writeNext(record3);
+        writer.close();
         for (Stock stock1 : stocks) {
             System.out.println("accountList  " + stock1.getCompanyName() +"  " + stock1.getStockId()+"  " + stock1.getSector());
+
         }
     }
 }
