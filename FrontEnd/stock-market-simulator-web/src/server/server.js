@@ -71,7 +71,7 @@ function getPlayers() {
 function getPlayer(id) {
     return new Promise((resolve, reject) => {
         // fetch(`http://localhost:8081/players/${id}`)
-        fetch('https://api.myjson.com/bins/dfc99') //test myjson
+        fetch('https://api.myjson.com/bins/8ymrh') //test myjson
             .then(function (response) {
                 console.log(response)
                 return response.json();
@@ -101,6 +101,26 @@ function postPlayers(data) {
     })
 }
 
+//UpdateProfile(request) API
+{/*function UpdateProfile(request) {
+    var url = "http://localhost:8081/players"
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}*/
+}
 // GET - get a stock Data
 function getStockById(id) {
     console.log("called getPlayers")
@@ -225,4 +245,5 @@ export {
     getLeaderBoard,
 	postPlayers,
     getTransactioHistory
+ //   UpdateProfile
 }
