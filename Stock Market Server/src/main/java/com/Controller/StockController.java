@@ -32,7 +32,6 @@ import java.util.concurrent.CompletionStage;
 @CrossOrigin
 @RestController
 public class StockController {
-    private PlayerService playerService = new PlayerService();
     private ActorSystemCreate actorSystemCreate = new ActorSystemCreate();
     Duration timeout = Duration.ofSeconds(100);
 
@@ -150,17 +149,7 @@ public class StockController {
 
     }
 
-    //#POST - sell stock
-    @PostMapping("/sellStock")
-    public String sellStock(@RequestBody Market market) {
-        CompletionStage<BrokerMessages.ActionPerformed> stockSell = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.SellStockMessage(market, actorSystemCreate.getBankActor()), timeout)
-                .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
-        if (stockSell != null) {
-            return "sucess";
-        }
-        return "not sucess";
-    }
-
+    //checked
     //#POST - buy stock
     @PostMapping("/buyStock")
     public String buyStock(@RequestBody Market market) {
@@ -172,8 +161,20 @@ public class StockController {
         return "not sucess";
     }
 
+    //checked
+    //#POST - sell stock
+    @PostMapping("/sellStock")
+    public String sellStock(@RequestBody Market market) {
+        CompletionStage<BrokerMessages.ActionPerformed> stockSell = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.SellStockMessage(market, actorSystemCreate.getBankActor()), timeout)
+                .thenApply(obj -> (BrokerMessages.ActionPerformed) obj);
+        if (stockSell != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
     // #GET - get total stock value for player
-    @GetMapping("/stockValue")
+    @GetMapping("/stockValue/{name}")
     public CompletionStage<Optional<Player>> stockValue(@PathVariable("name") String name) {
         CompletionStage<Optional<Player>> player = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetTotalStockValueMessage(name), timeout)
                 .thenApply(obj -> (Optional<Player>) obj);
@@ -264,21 +265,6 @@ public class StockController {
                 .thenApply(obj -> (ArrayList<String>) obj);
         return prediction;
     }
-
-
-
-
-
-
-
-//    //#GET - get a Player Data
-//    @GetMapping("/addPlayer/{id}")
-//    public CompletionStage<Player> addPlayerToGame(@PathVariable("id") Long id) {
-//        CompletionStage<Player> player = Patterns
-//                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id,actorSystemCreate.getPlayerActor(),actorSystemCreate.getBrokerActor()), timeout)
-//                .thenApply(Player.class::cast);
-//        return player;
-//    }
 
 
 }
