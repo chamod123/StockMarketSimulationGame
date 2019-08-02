@@ -12,7 +12,6 @@ import org.apache.spark.*;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.Dataset;*/
 
-import javax.management.AttributeList;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -102,13 +101,125 @@ public class MarketService {
     }
 
     //get all stocks from csv  for graph
-    public static List<String[]> getStocksPerGraph() throws Exception {
-        //Build reader instance
+    public static ArrayList<String> getStocksPerGraph() throws Exception {
+      /*  //Build reader instance
         CSVReader reader = new CSVReader(new FileReader("data.csv"), ',', '"', 0);
 
         //Read all rows at once
         List<String[]> allRows = reader.readAll();
-        return allRows;
+        // Print Data.
+        for (String[] row : allRows) {
+            for (String cell : row) {
+                System.out.println(cell + "\t");
+                String column= cell.substring(0,1);
+                System.out.println("1st column " +column);
+
+            }
+            System.out.println();
+        }*/
+
+        List<String[]> allData = null;
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            List<String[]>  Data = null;
+            // Create an object of filereader
+            // class with CSV file as a parameter.
+            FileReader filereader = new FileReader("data.csv");
+
+            // create csvReader object passing
+            // file reader as a parameter
+            CSVReader csvReader = new CSVReader(filereader);
+            allData = csvReader.readAll();
+            List<String> turn = new ArrayList<>();
+            List<String> stockValue = new ArrayList<>();
+            // print Data
+            for (String[] row : allData) {
+
+                System.out.println("Turn  " + row[0]);
+                System.out.println("Stock value :" + row[1] );
+
+                turn.add(row[0]);
+                stockValue.add(row[1]);
+
+               /* for (String cell : row) {
+                    System.out.print(cell + "\t");
+                }*/
+                System.out.println();
+            }
+            System.out.println(turn);
+            System.out.println(stockValue);
+
+            // declaration and initialise String Array
+            String str[] = new String[turn.size()];
+            String str2[] = new String[stockValue.size()];
+
+            // ArrayList to Array Conversion
+            for (int j = 0; j < turn.size(); j++) {
+
+                // Assign each value to String array
+                str[j] = turn.get(j);
+                str2[j] = stockValue.get(j);
+            }
+
+
+
+
+
+        /*    String[] results1 = new String[turn.size()];
+            turn.toArray(results1);
+            System.out.println("Array results 1" + Arrays.toString(results1));
+            String[] results2 = new String[stockValue.size()];
+            stockValue.toArray(results2);
+            String[][] results3 = {results1,results2};
+            System.out.println(Arrays.toString(results3));
+            List<String> list = new ArrayList<String>();
+            for (String[] array : results3) {
+                list.add("[");
+                list.addAll(Arrays.asList(array));
+                list.add("]");
+            }
+
+            System.out.println("Print list :" + list );*/
+           /* List<String> wordList = (List<String>) Arrays.asList(results1,results2);
+            System.out.println(wordList);*/
+           /* for (int counter = 0; counter <= results1.length; counter++) {
+                String temp1=results1[counter];
+                String temp2= results2[counter];
+
+                List<String> data = Arrays.asList(new String[]{temp1, temp2});
+                List<String> wordList = Arrays.asList(temp1,temp2);
+                System.out.println(wordList);
+            }*/
+            String[] results1 = new String[turn.size()];
+            turn.toArray(results1);
+            String x=Arrays.toString(results1);
+            String[] results2 = new String[stockValue.size()];
+            stockValue.toArray(results2);
+            String y=Arrays.toString(results2);
+
+
+          //  ArrayList<String> list = new ArrayList<String>();
+            list.add(x);
+            list.add(y);
+
+            System.out.println("Latest : " + list);
+
+
+            // al = new String[][]{str, str2};
+            // System.out.println(al);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return list;
+
+
+        // List<String> data ={turn};
+
+        //return allData;
     }
 
 /*
