@@ -101,9 +101,8 @@ function postPlayers(data) {
     })
 }
 
-//UpdateProfile(request) API
-{/*function UpdateProfile(request) {
-    var url = "http://localhost:8081/players"
+function handleUpdateProfile(request) {
+    var url = 'https://api.myjson.com/bins'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -119,7 +118,58 @@ function postPlayers(data) {
                 resolve(myJson)
             })
     })
-}*/
+}
+// Get -payment infromation of a player
+function getPaymentInfo(id) {
+    return new Promise((resolve, reject) => {
+        fetch('https://api.myjson.com/bins/zg0it') //test myjson
+            .then(function (response) {
+                console.log(response)
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
+//post -Update Payment Information
+function handleUpdatePaymentInfo(request) {
+    var url = 'https://api.myjson.com/bins'
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
+//post -Update Bank Balance
+
+function handleUpdateBankBalance(request) {
+    var url = 'https://api.myjson.com/bins'
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
 }
 // GET - get a stock Data
 function getStockById(id) {
@@ -170,7 +220,8 @@ function getStocksBySector(id) {
 function getBankBalance(id) {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-        fetch(`http://localhost:8081/bankBalance${id}`)
+      //  fetch(`http://localhost:8081/bankBalance${id}`)
+      fetch('https://api.myjson.com/bins/kx92t')
             .then(function (response) {
                 return response.json();
             })
@@ -244,6 +295,10 @@ export {
     getPlayer,
     getLeaderBoard,
 	postPlayers,
-    getTransactioHistory
- //   UpdateProfile
+    getTransactioHistory,
+    handleUpdateProfile,
+    getPaymentInfo,
+    getBankBalance,
+    handleUpdatePaymentInfo,
+    handleUpdateBankBalance
 }
