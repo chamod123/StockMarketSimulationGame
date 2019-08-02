@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -16,11 +15,9 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Primary from "components/Typography/Primary";
 import Danger from "components/Typography/Danger.jsx";
-import TextField from '@material-ui/core/TextField';
-
-
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/img/faces/SMG_Web.png";
 import { getPlayer } from 'server/server';
+
 
 
   
@@ -198,7 +195,7 @@ function UserProfile(props) {
               </a>
             </CardAvatar>
             <CardBody profile>
-              <h6 className={classes.cardCategory}><Danger>GAME PLAYER</Danger></h6>
+              <h6 className={classes.cardCategory}><Danger>---GAME PLAYER---</Danger></h6>
               <h6 className={classes.cardTitle}><Primary>User Name: {userName}</Primary></h6>
               <h6 className={classes.cardTitle}><Primary>Full Name: {fname} {lname}</Primary></h6>
               <h6 className={classes.cardTitle}><Primary>Email:{email}</Primary></h6>
