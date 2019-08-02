@@ -164,7 +164,7 @@ public class BrokerActor extends AbstractActor {
 
     //get all Stocks for grapgh Data
     private FI.UnitApply<BrokerMessages.GetAllStocksMessage> getAllStocksMessage() {
-        return getAllTransactionsMessage -> {
+        return getAllStocksMessage -> {
             sender().tell(MarketService.getStocksPerGraph(), getSelf());
         };
     }

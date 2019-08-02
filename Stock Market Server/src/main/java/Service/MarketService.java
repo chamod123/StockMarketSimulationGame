@@ -185,6 +185,10 @@ public class MarketService {
             System.out.println("awa company " + StockService.stocks.get(i).getCompanyName());
             System.out.println("awa sector " + StockService.stocks.get(i).getCompanyName());
             System.out.println("awa sector " + sectorTrends.get(StockService.stocks.get(i).getSector()).get(currentTurn));
+            int turn = GetCurrentTurn();
+            String turnString = String.valueOf(turn);
+
+
             int sectorValue = sectorTrends.get(StockService.stocks.get(i).getSector()).get(currentTurn);
             int eventValue = ChangeEventStockValue(StockService.stocks.get(i), currentTurn);
             BigDecimal stockprice = StockService.stocks.get(i).getStockPrice();
@@ -193,7 +197,7 @@ public class MarketService {
             CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
 
             String record = StockService.stocks.get(i).getStockPrice().toString();
-            String [] record3 = {record};
+            String [] record3 = {turnString,record};
             writer.writeNext(record3);
 
             writer.close();
