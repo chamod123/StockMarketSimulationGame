@@ -56,6 +56,18 @@ export default function SignUp() {
   const [Email, setEmail] = useState(false);
   const [password, setpassword] = useState(false);
   const [username, setusername] = useState(false);
+
+  const handleSignUP=()=>{
+    let request={
+      FirstName:{firstName},
+      LastName:{lastName},
+      Email:{Email},
+      UserName:{username},
+      Password:{password}
+    }
+    console.log(request)
+   // call handleSignUP(request) API
+  }
   const handleChangeFistName = (event) => {
     setFirstName(event.target.value)
   }
@@ -98,7 +110,7 @@ export default function SignUp() {
                   autoFocus
                   onChange={handleChangeFistName}
                 />
-                {firstName == "" && <FormHelperText  >Please enter your first name</FormHelperText>}
+                {firstName === "" && <FormHelperText  >Please enter your first name</FormHelperText>}
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -114,7 +126,7 @@ export default function SignUp() {
                   autoFocus
                   onChange={handleChangeLastName}
                 />
-                {lastName == "" && <FormHelperText  >Please enter your last name</FormHelperText>}
+                {lastName === "" && <FormHelperText  >Please enter your last name</FormHelperText>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -131,7 +143,7 @@ export default function SignUp() {
                 autoFocus
                 onChange={handleChangeEmail}
               />
-              {lastName == "" && <FormHelperText  >Please enter your email</FormHelperText>}
+              {lastName === "" && <FormHelperText  >Please enter your email</FormHelperText>}
            </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -148,7 +160,7 @@ export default function SignUp() {
                 autoFocus
                 onChange={handleChangeusername}
               />
-              {username == "" && <FormHelperText  >Please enter your username</FormHelperText>}
+              {username === "" && <FormHelperText  >Please enter your username</FormHelperText>}
            </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -165,7 +177,7 @@ export default function SignUp() {
                 autoFocus
                 onChange={handleChangepassword}
               />
-               {password == "" && <FormHelperText  >Please enter your password</FormHelperText>}
+               {password === "" && <FormHelperText  >Please enter your password</FormHelperText>}
            </FormControl>
             </Grid>
           </Grid>
@@ -174,7 +186,7 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            onClick={handleSignUP}
           >
             Add Bank Info
           </Button>
