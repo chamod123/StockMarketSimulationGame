@@ -185,8 +185,6 @@ public class MarketService {
             System.out.println("awa company " + StockService.stocks.get(i).getCompanyName());
             System.out.println("awa sector " + StockService.stocks.get(i).getCompanyName());
             System.out.println("awa sector " + sectorTrends.get(StockService.stocks.get(i).getSector()).get(currentTurn));
-            int turn = GetCurrentTurn();
-            String turnString = String.valueOf(turn);
 
 
             int sectorValue = sectorTrends.get(StockService.stocks.get(i).getSector()).get(currentTurn);
@@ -195,7 +193,7 @@ public class MarketService {
             StockService.stocks.get(i).setStockPrice(stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue)));
             String csv = "data.csv";
             CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
-            String turn=String.valueOf(GetCurrentTurn());
+            String turnString=String.valueOf(GetCurrentTurn());
 
             String record = StockService.stocks.get(i).getStockPrice().toString();
             String [] record3 = {turnString,record};
