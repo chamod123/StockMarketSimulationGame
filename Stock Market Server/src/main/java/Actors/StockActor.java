@@ -16,6 +16,7 @@ public class StockActor extends AbstractActor {
                 .match(StockMessages.GetStockSectorMessage.class, handleGetStockBySector())
                 .match(StockMessages.GetAllStockMessage.class, handleGetAllStock())//get all stock
                 .match(StockMessages.GetCurrentEventMessage.class, currentEvents())//get current event
+                .match(StockMessages.UpdateStockMessage.class, updateStock())
                 .build();
     }
 
@@ -23,6 +24,14 @@ public class StockActor extends AbstractActor {
         return createStockMessage -> {
             StockService.createStock(createStockMessage.getStock());
             sender().tell(new StockMessages.ActionPerformed(String.format("Stock %s added.", createStockMessage.getStock()
+                    .getCompanyName())), getSelf());
+        };
+    }
+
+    private FI.UnitApply<StockMessages.UpdateStockMessage> updateStock() {
+        return updateStockMessage -> {
+            StockService.updateStock(updateStockMessage.getStock());
+            sender().tell(new StockMessages.ActionPerformed(String.format("Stock %s updated.", updateStockMessage.getStock()
                     .getCompanyName())), getSelf());
         };
     }

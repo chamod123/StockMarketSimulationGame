@@ -140,17 +140,24 @@ public class BrokerService {
 
     //computer play
     public static void ComputerPlay() throws Exception {
+
+        if(stockAccounts.size()==0){
+            CreateAccount(new Player("Computer"));
+            BankService.CreateAccount(new Account("Computer"));
+            System.out.println("Computer player created");
+        }
+
         ArrayList<String> predictions = Prediction();
         Random ran = new Random();
         int number = ran.nextInt(7 - 1 + 1) + 1;
         if (BankService.Balance("Computer").compareTo(MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(number))) > 0) {
-            BigDecimal totalvalue = MarketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf(number));
+            BigDecimal totalvalue = MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(number));
             buyStock("Computer", predictions.get(0), number, totalvalue);
         }
         Player p = GetPlayer("Computer");
 
         if (p.getStocks().get(predictions.get(1)) != null) {
-            BigDecimal totalvalue = MarketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf(p.getStocks().get(predictions.get(1))));
+            BigDecimal totalvalue = MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(p.getStocks().get(predictions.get(1))));
             selltock("Computer", predictions.get(1), p.getStocks().get(predictions.get(1)), totalvalue);
         } else if (BankService.Balance("Computer").compareTo(BigDecimal.valueOf(500)) < 0) {
 
@@ -158,7 +165,7 @@ public class BrokerService {
                 String key = entry.getKey();
                 int value = entry.getValue();
                 if (value > 0) {
-                    BigDecimal totalvalue1 = MarketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf(value));
+                    BigDecimal totalvalue1 = MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(value));
                     selltock("Computer", key, value, totalvalue1);
                     break;
                 }

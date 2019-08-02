@@ -11,9 +11,10 @@ public class BankService {
 
     public static void CreateAccount(Account Account1) {
         accountList.add(Account1);
-        for (Account account : accountList) {
-            System.out.println("accountList  " + account.getName());
-        }
+    }
+
+    public static List<Account> getAccountsDetails(){
+        return accountList;
     }
 
     //deposit to an account
@@ -32,7 +33,6 @@ public class BankService {
     public static Boolean Withdraw(String playerName, BigDecimal amount) throws Exception {
         for (Account account : accountList) {
             if (playerName.equals(account.getName())) {
-                System.out.println("playerName: " + playerName + " before balance: " + account.getBalance());
                 if (amount.compareTo(account.getBalance()) <= 0) {
                     account.setBalance(account.getBalance().subtract(amount));
                     System.out.println("playerName: " + playerName + " balance: " + account.getBalance());

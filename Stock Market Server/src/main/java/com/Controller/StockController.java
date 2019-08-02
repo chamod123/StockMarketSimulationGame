@@ -2,6 +2,7 @@ package com.Controller;
 
 import Actors.PlayerActor;
 import Messages.*;
+import Model.*;
 import Model.Player;
 import Model.Stock;
 import Model.Market;
@@ -55,12 +56,35 @@ public class StockController {
     }
 
     //checked
-    //#GET - get a Player Data
+    //#GET - get a Players Data
     @GetMapping("/players/{id}")
     public CompletionStage<Player> getPlayer(@PathVariable("id") Long id) {
         CompletionStage<Player> player = Patterns
                 .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetPlayerMessage(id), timeout)
                 .thenApply(Player.class::cast);
+        return player;
+    }
+
+    //checked
+    //#POST - update Player
+    @PostMapping("/updateplayers")
+    public String updatePlayer(@RequestBody Player player) {
+        CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.UpdatePlayerMessage(player), timeout)
+                .thenApply(PlayerMessages.ActionPerformed.class::cast);
+        if (playerCreated != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
+    //checked
+    //#GET - get all Player Data
+    @GetMapping("/players")
+    public CompletionStage<ArrayList<Player>> getallPlayers() {
+        CompletionStage<ArrayList<Player>> player = Patterns
+                .ask(actorSystemCreate.getGameActor(), new GameMessage.GetallPlayerMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (ArrayList<Player>) obj);
         return player;
     }
 
@@ -75,10 +99,36 @@ public class StockController {
     }
 
     //checked
+    //#POST - add player to game / start game
+    @PostMapping("/addPlayer/{id}")
+    public CompletionStage<GameMessage.ActionPerformed> addPlayerToGame(@PathVariable("id") Long id) {
+        CompletionStage<GameMessage.ActionPerformed> playerCreated = Patterns
+                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id, actorSystemCreate.getPlayerActor(), actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(GameMessage.ActionPerformed.class::cast);
+        if (playerCreated != null) {
+            return playerCreated;
+        }
+        return playerCreated;
+    }
+
+
+    //checked
     //#POST - Create new stock
     @PostMapping("/stock")
     public String postStock(@RequestBody Stock stock) {
         CompletionStage<StockMessages.ActionPerformed> stockCreated = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.CreateStockMessage(stock), timeout)
+                .thenApply(obj -> (StockMessages.ActionPerformed) obj);
+        if (stockCreated != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
+    //checked
+    //#POST - update stock
+    @PostMapping("/updatestock")
+    public String updateStock(@RequestBody Stock stock) {
+        CompletionStage<StockMessages.ActionPerformed> stockCreated = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.UpdateStockMessage(stock), timeout)
                 .thenApply(obj -> (StockMessages.ActionPerformed) obj);
         if (stockCreated != null) {
             return "sucess";
@@ -113,18 +163,6 @@ public class StockController {
         return stock;
     }
 
-    //checked
-    //#POST - add player to game
-    @PostMapping("/addPlayer/{id}")
-    public CompletionStage<GameMessage.ActionPerformed> addPlayerToGame(@PathVariable("id") Long id) {
-        CompletionStage<GameMessage.ActionPerformed> playerCreated = Patterns
-                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id,actorSystemCreate.getPlayerActor(),actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(GameMessage.ActionPerformed.class::cast);
-        if (playerCreated != null) {
-            return playerCreated;
-        }
-        return playerCreated;
-    }
 
     //checked
     //#GET - get Current Turn
@@ -202,6 +240,15 @@ public class StockController {
         return balance;
     }
 
+    //checked
+    //#GET - get all account details
+    @GetMapping("/accounts")
+    public CompletionStage<List<Account>> getAllAccount() {
+        CompletionStage<List<Account>> allAccount = Patterns.ask(actorSystemCreate.getBankActor(), new BankMessages.GetAllBankBalanceMessage(), timeout)
+                .thenApply(obj -> (List<Account>) obj);
+        return allAccount;
+    }
+
 
     //checked
     //#GET - get all transactions
@@ -229,23 +276,23 @@ public class StockController {
         return allPlayer;
     }
 
-    //#POST - start game
-    @PostMapping("/start")
-    public String StartGame() {
-        CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.StartGameMessage(actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
-        if (startGame != null) {
-            return "sucess";
-        }
-        return "not sucess";
-    }
+//    //#POST - start game
+//    @PostMapping("/start")
+//    public String StartGame() {
+//        CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.StartGameMessage(actorSystemCreate.getBrokerActor()), timeout)
+//                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+//        if (startGame != null) {
+//            return "sucess";
+//        }
+//        return "not sucess";
+//    }
 
     //checked
     //#POST - next turn
     @PostMapping("/nextTurn")
     public String NextTurn() {
-        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+        CompletionStage<ClockMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getClockActor(), new ClockMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (ClockMessages.ActionPerformed) obj);
         if (nextTurn != null) {
             return "sucess";
         }
@@ -256,14 +303,15 @@ public class StockController {
     //go to next turn after 45 seconds
     @Scheduled(fixedDelay = 45000)
     public String nextTurnS() throws Exception {
-        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+        CompletionStage<ClockMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getClockActor(), new ClockMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (ClockMessages.ActionPerformed) obj);
         if (nextTurn != null) {
             return "sucess";
         }
         return "not sucess";
     }
 
+    //checked
     //#GET - get prediction
     @GetMapping("/prediction")
     public CompletionStage<ArrayList<String>> getPrediction() {
@@ -279,5 +327,30 @@ public class StockController {
                 .thenApply(obj -> (ArrayList<String[]>) obj);
         return stock;
     }
+
+    //checked
+    //#POST - withdraw
+    @PostMapping("/withdraw")
+    public String withdraw(@RequestBody Transaction transaction) {//name and amount
+        CompletionStage<PlayerMessages.ActionPerformed> stockBuy = Patterns.ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.WithdrawMessage(transaction, actorSystemCreate.getBankActor()), timeout)
+                .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
+        if (stockBuy != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
+    //checked
+    //#POST - deposit
+    @PostMapping("/deposit")
+    public String deposit(@RequestBody Transaction transaction) {//name and amount
+        CompletionStage<PlayerMessages.ActionPerformed> stockBuy = Patterns.ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.DepoditMessage(transaction, actorSystemCreate.getBankActor()), timeout)
+                .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
+        if (stockBuy != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
 
 }
