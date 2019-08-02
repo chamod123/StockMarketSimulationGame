@@ -189,6 +189,44 @@ function handleUpdateBankBalance(request) {
             })
     })
 }
+//post -SignUP
+function  handleSignUP(request) {
+    var url = 'https://api.myjson.com/bins'
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
+//post -PaymentInfo
+function  handlePaymentInfo(request) {
+    var url = 'https://api.myjson.com/bins'
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
 // GET - get a stock Data
 function getStockById(id) {
     console.log("called getPlayers")
@@ -319,6 +357,8 @@ export {
     getBankBalance,
     handleUpdatePaymentInfo,
     handleUpdateBankBalance,
-    handlePostSignIn
+    handlePostSignIn,
+    handleSignUP,
+    handlePaymentInfo
     
 }

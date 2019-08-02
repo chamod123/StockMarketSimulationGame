@@ -45,17 +45,28 @@ const useStyles = makeStyles(theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+ // submit: {
+ //   margin: theme.spacing(3, 0, 2),
+ // },
 }));
 
 export default function SignIn() {
   const classes = useStyles();
-  const [holdername, setholdername] = useState(false);
-  const [cardnumber, setcardnumber] = useState(false);
-  const [expirydate, setexpirydate] = useState(false);
-  const [cvv, setcvv] = useState(false);
+  const [holdername, setholdername] = useState("");
+  const [cardnumber, setcardnumber] = useState("");
+  const [expirydate, setexpirydate] = useState("");
+  const [cvv, setcvv] = useState("");
+
+  const handlePaymentInfo=()=>{
+    let request={
+      HolderName:{holdername},
+      CardNumber:{cardnumber},
+      ExpiryDate:{expirydate},
+      CVV:{cvv}
+    }
+    console.log(request)
+   // call post handlePaymentInfo(request) API
+  }
   
   const handleChangeholdername = (event) => {
     setholdername(event.target.value)
@@ -85,7 +96,7 @@ export default function SignIn() {
           Payment Details
         </Typography>
         <form className={classes.form} noValidate>
-        <FormControl error={holdername==""}>
+        <FormControl error={holdername===""}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -99,9 +110,9 @@ export default function SignIn() {
             autoFocus
             onChange={handleChangeholdername}
           />
-          {holdername=="" && <FormHelperText>Please enter your card holder's name</FormHelperText>}
+          {holdername==="" && <FormHelperText>Please enter your card holder's name</FormHelperText>}
         </FormControl>
-        <FormControl error={cardnumber==""}>
+        <FormControl error={cardnumber===""}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -115,9 +126,9 @@ export default function SignIn() {
             autoFocus
             onChange={handleChangecardnumber}
           />
-          {cardnumber=="" && <FormHelperText>Please enter your card number</FormHelperText>}
+          {cardnumber==="" && <FormHelperText>Please enter your card number</FormHelperText>}
           </FormControl>
-          <FormControl error={expirydate==""}>
+          <FormControl error={expirydate===""}>
            <TextField
             variant="outlined"
             margin="normal"
@@ -131,9 +142,9 @@ export default function SignIn() {
             autoFocus
             onChange={handleChangeexpirydate}
           />
-          {expirydate=="" && <FormHelperText>Please enter your card expiry date</FormHelperText>}
+          {expirydate==="" && <FormHelperText>Please enter your card expiry date</FormHelperText>}
           </FormControl>
-          <FormControl error={cvv==""}>
+          <FormControl error={cvv===""}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -147,14 +158,15 @@ export default function SignIn() {
             autoFocus
             onChange={handleChangecvv}
           />
-          {cvv=="" && <FormHelperText>Please enter your card CVV</FormHelperText>}
+          {cvv==="" && <FormHelperText>Please enter your card CVV</FormHelperText>}
            </FormControl>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+           // className={classes.submit}
+           onClick={handlePaymentInfo}
           >
             Sign In
           </Button>
