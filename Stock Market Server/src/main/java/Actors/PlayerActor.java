@@ -21,6 +21,7 @@ public class PlayerActor extends AbstractActor {
                 .match(PlayerMessages.LoginPlayerMessage.class, loginPlayer())
                 .match(PlayerMessages.AddPlayerToGameMessage.class, addPlayerToGame())
                 .match(PlayerMessages.UpdatePlayerMessage.class, updatePlayer())
+                .match(PlayerMessages.GetallPlayerMessage.class, handleGetallPlayer())
                 .build();
     }
 
@@ -52,12 +53,20 @@ public class PlayerActor extends AbstractActor {
         };
     }
 
+    //get all player
+    private FI.UnitApply<PlayerMessages.GetallPlayerMessage> handleGetallPlayer() {
+        return getPlayerMessage -> {
+            sender().tell(BrokerService.GetAllPlayer(), getSelf());
+        };
+    }
+
     //login player
     private FI.UnitApply<PlayerMessages.LoginPlayerMessage> loginPlayer() {
         return loginPlayerMessage -> {
             sender().tell(PlayerService.loginPlayer(loginPlayerMessage.getUserName(),loginPlayerMessage.getPassword()), getSelf());
         };
     }
+
 
 
     //get player

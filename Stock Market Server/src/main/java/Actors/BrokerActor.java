@@ -140,7 +140,6 @@ public class BrokerActor extends AbstractActor {
     //get Prediction
     private FI.UnitApply<BrokerMessages.GetPredictionMessage> Prediction() {
         return getPredictionMessage -> {
-
             sender().tell(BrokerService.Prediction(), getSelf());
         };
     }

@@ -55,6 +55,16 @@ public class StockController {
     }
 
     //checked
+    //#GET - get a Players Data
+    @GetMapping("/players/{id}")
+    public CompletionStage<Player> getPlayer(@PathVariable("id") Long id) {
+        CompletionStage<Player> player = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetPlayerMessage(id), timeout)
+                .thenApply(Player.class::cast);
+        return player;
+    }
+
+    //checked
     //#POST - update Player
     @PostMapping("/updateplayers")
     public String updatePlayer(@RequestBody Player player) {
@@ -68,12 +78,12 @@ public class StockController {
     }
 
     //checked
-    //#GET - get a Player Data
-    @GetMapping("/players/{id}")
-    public CompletionStage<Player> getPlayer(@PathVariable("id") Long id) {
-        CompletionStage<Player> player = Patterns
-                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetPlayerMessage(id), timeout)
-                .thenApply(Player.class::cast);
+    //#GET - get all Player Data
+    @GetMapping("/players")
+    public CompletionStage<ArrayList<Player>> getallPlayers() {
+        CompletionStage<ArrayList<Player>> player = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetallPlayerMessage(), timeout)
+                 .thenApply(obj -> (ArrayList<Player>) obj);
         return player;
     }
 
