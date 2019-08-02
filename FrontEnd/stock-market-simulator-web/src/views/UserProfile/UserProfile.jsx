@@ -57,7 +57,8 @@ function UserProfile(props) {
       setFname(response.firstName)
       setLname(response.lastName)
       setEmail(response.email)
-      setUserName(response.userName)
+      setUserName(response.username)
+      setPassword(response.password)
     })
   });
 
@@ -67,14 +68,15 @@ function UserProfile(props) {
       firstName:{fname},
       lastName:{lname},
       email:{email},
-      username:{userName}
+      userName:{userName},
+      password:{password}
     }
     console.log(request)
-    //call post UpdateProfile(request) API
+   // call post UpdateProfile(request) API
   }
 
   const handleNavigateToBank=()=>{
-    // props.history.push("/bank")
+     props.history.push('/admin/bank')
   }
   
   const handleChangeFname=(event)=>{
@@ -85,6 +87,12 @@ function UserProfile(props) {
   }
   const handleChangeEmail=(event)=>{
     setEmail(event.target.value)
+  }
+  const handleChangeUname=(event)=>{
+    setUserName(event.target.value)
+  }
+  const handleChangePassword=(event)=>{
+    setPassword(event.target.value)
   }
 
 
@@ -155,7 +163,10 @@ function UserProfile(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    value={userName}
+                    inputProps={{
+                      value:userName,
+                      onChange : handleChangeUname
+                  }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -166,7 +177,10 @@ function UserProfile(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    value={password}
+                    inputProps={{
+                      value:password,
+                      onChange: handleChangePassword
+                  }}
                   />
                 </GridItem>
               </GridContainer>
