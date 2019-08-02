@@ -35,6 +35,21 @@ public class PlayerService {
         players.add(player);
     }
 
+    public static void updatePlayer(Player player) {
+        for (Player player1 : players) {
+            if(player.getId()==player1.getId()){
+//                player1.setName(player.getName());
+                player1.setSecondName(player.getSecondName());
+                player1.setEmail(player.getEmail());
+                player1.setUserName(player.getUserName());
+                player1.setPassword(player.getPassword());
+                player1.setTpNumber(player.getTpNumber());
+            }
+        }
+        player.setId(players.size()+1);
+        players.add(player);
+    }
+
     public List<Player> getPlayers(){
         return players;
     }

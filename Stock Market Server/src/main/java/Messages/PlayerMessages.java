@@ -93,4 +93,17 @@ public interface PlayerMessages {
         }
     }
 
+    class UpdatePlayerMessage implements Serializable {
+        private final Player player;
+
+        public UpdatePlayerMessage(Player player) {
+            this.player = player;
+        }
+
+        public Player getPlayer() {
+            return player;
+        }
+
+    }
+
 }

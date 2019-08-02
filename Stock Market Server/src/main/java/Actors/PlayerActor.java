@@ -20,6 +20,7 @@ public class PlayerActor extends AbstractActor {
                 .match(PlayerMessages.GetPlayerMessage.class, handleGetPlayer())
                 .match(PlayerMessages.LoginPlayerMessage.class, loginPlayer())
                 .match(PlayerMessages.AddPlayerToGameMessage.class, addPlayerToGame())
+                .match(PlayerMessages.UpdatePlayerMessage.class, updatePlayer())
                 .build();
     }
 
@@ -31,6 +32,15 @@ public class PlayerActor extends AbstractActor {
             createPlayerMessage.getBankActor().tell(new BankMessages.CreateAccountMessage(new Account(createPlayerMessage.getPlayer().getName())), getSelf());
 
             sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", createPlayerMessage.getPlayer()
+                    .getName())), getSelf());
+        };
+    }
+
+    private FI.UnitApply<PlayerMessages.UpdatePlayerMessage> updatePlayer() {
+        return updatePlayerMessage -> {
+            PlayerService.updatePlayer(updatePlayerMessage.getPlayer());
+
+            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", updatePlayerMessage.getPlayer()
                     .getName())), getSelf());
         };
     }

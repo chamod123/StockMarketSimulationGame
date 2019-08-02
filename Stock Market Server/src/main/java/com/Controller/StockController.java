@@ -55,6 +55,19 @@ public class StockController {
     }
 
     //checked
+    //#POST - update Player
+    @PostMapping("/updateplayers")
+    public String updatePlayer(@RequestBody Player player) {
+        CompletionStage<PlayerMessages.ActionPerformed> playerCreated = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.UpdatePlayerMessage(player), timeout)
+                .thenApply(PlayerMessages.ActionPerformed.class::cast);
+        if (playerCreated != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
+    //checked
     //#GET - get a Player Data
     @GetMapping("/players/{id}")
     public CompletionStage<Player> getPlayer(@PathVariable("id") Long id) {
