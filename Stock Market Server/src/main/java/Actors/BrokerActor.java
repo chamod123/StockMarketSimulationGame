@@ -16,8 +16,6 @@ public class BrokerActor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
-
-
         return receiveBuilder()
                 .match(BrokerMessages.CreateBrokerMessage.class, handleCreateBrocker())//create broker
                 .match(BrokerMessages.GetBrokerMessage.class, handleGetBroker())//get broker
@@ -30,7 +28,7 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.GetAllPlayerMessage.class, getAllPlayers())//get all Players
                 .match(BrokerMessages.StartGameMessage.class, startGame())//Start game
                 .match(BrokerMessages.NextTurnMessage.class, nextTurn())//Next turn
-                .match(BrokerMessages.GetPredictionMessage.class, Prediction())//Start game
+                .match(BrokerMessages.GetPredictionMessage.class, Prediction())//prediction
                 .match(BrokerMessages.GetCurrentTurnMessage.class, currentTurn())//get current turn
                 .match(BrokerMessages.AddPlayerToGameMessage.class, addPlayerToGame())//add player to game
                 .match(BrokerMessages.GetAllStocksMessage.class, getAllStocksMessage())//get all transaction Data
@@ -142,8 +140,7 @@ public class BrokerActor extends AbstractActor {
     //get Prediction
     private FI.UnitApply<BrokerMessages.GetPredictionMessage> Prediction() {
         return getPredictionMessage -> {
-            BrokerService.Prediction();
-            sender().tell(new BrokerMessages.ActionPerformed(String.format("get prediction")), getSelf());
+            sender().tell(BrokerService.Prediction(), getSelf());
         };
     }
 

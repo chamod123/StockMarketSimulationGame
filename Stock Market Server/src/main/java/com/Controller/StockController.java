@@ -55,6 +55,16 @@ public class StockController {
     }
 
     //checked
+    //#GET - get a Players Data
+    @GetMapping("/players/{id}")
+    public CompletionStage<Player> getPlayer(@PathVariable("id") Long id) {
+        CompletionStage<Player> player = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetPlayerMessage(id), timeout)
+                .thenApply(Player.class::cast);
+        return player;
+    }
+
+    //checked
     //#POST - update Player
     @PostMapping("/updateplayers")
     public String updatePlayer(@RequestBody Player player) {
@@ -68,12 +78,12 @@ public class StockController {
     }
 
     //checked
-    //#GET - get a Player Data
-    @GetMapping("/players/{id}")
-    public CompletionStage<Player> getPlayer(@PathVariable("id") Long id) {
-        CompletionStage<Player> player = Patterns
-                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetPlayerMessage(id), timeout)
-                .thenApply(Player.class::cast);
+    //#GET - get all Player Data
+    @GetMapping("/players")
+    public CompletionStage<ArrayList<Player>> getallPlayers() {
+        CompletionStage<ArrayList<Player>> player = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetallPlayerMessage(), timeout)
+                 .thenApply(obj -> (ArrayList<Player>) obj);
         return player;
     }
 
@@ -143,7 +153,7 @@ public class StockController {
     @PostMapping("/addPlayer/{id}")
     public CompletionStage<GameMessage.ActionPerformed> addPlayerToGame(@PathVariable("id") Long id) {
         CompletionStage<GameMessage.ActionPerformed> playerCreated = Patterns
-                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id,actorSystemCreate.getPlayerActor(),actorSystemCreate.getBrokerActor()), timeout)
+                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id, actorSystemCreate.getPlayerActor(), actorSystemCreate.getBrokerActor()), timeout)
                 .thenApply(GameMessage.ActionPerformed.class::cast);
         if (playerCreated != null) {
             return playerCreated;
@@ -269,8 +279,8 @@ public class StockController {
     //#POST - next turn
     @PostMapping("/nextTurn")
     public String NextTurn() {
-        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+        CompletionStage<ClockMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getClockActor(), new ClockMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (ClockMessages.ActionPerformed) obj);
         if (nextTurn != null) {
             return "sucess";
         }
@@ -281,8 +291,8 @@ public class StockController {
     //go to next turn after 45 seconds
     @Scheduled(fixedDelay = 45000)
     public String nextTurnS() throws Exception {
-        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+        CompletionStage<ClockMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getClockActor(), new ClockMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (ClockMessages.ActionPerformed) obj);
         if (nextTurn != null) {
             return "sucess";
         }

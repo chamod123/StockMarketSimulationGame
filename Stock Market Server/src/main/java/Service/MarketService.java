@@ -131,10 +131,18 @@ public class MarketService {
     public static ArrayList<Stock> GetPredictedStocks() {
         ArrayList<Stock> temp = StockService.stocks;
         Random ran = new Random();
+
         int number = ran.nextInt(3) + currentTurn;
+        System.out.println("number " +number);
+
+        System.out.println("stock size " + StockService.stocks.size());
+
         for (int i = 0; i < StockService.stocks.size(); i++) {
+
             //get market trend value for current turn
             int marketValue = marketTrends.get(number);
+            System.out.println("marketValue " +marketValue);
+
             //get sector trend value value for current turn
             int sectorValue = sectorTrends.get(temp.get(i).getSector()).get(number);
             int eventValue = ChangeEventStockValue(temp.get(i), number);

@@ -31,6 +31,10 @@ public class BrokerService {
 
     }
 
+    public static ArrayList<Player> GetAllPlayer() {
+        return stockAccounts;
+    }
+
 
     public static Optional<Broker> getBroker(Long id) {
         return brokers.stream()
@@ -178,10 +182,24 @@ public class BrokerService {
     //return min and max stock in future or current turn
     public static ArrayList<String> Prediction() {
         ArrayList<Stock> futureStocks = MarketService.GetPredictedStocks();
+
+        for (Stock stock : futureStocks) {
+            System.out.println("futureStocks id: " + stock.getStockId()+" name: "+stock.getCompanyName()+" price: " + stock.getStockPrice());
+        }
+
+
         String max = futureStocks.get(0).getCompanyName();
+        System.out.println("max " + max);
+
         BigDecimal valMax = futureStocks.get(0).getStockPrice();
+        System.out.println("valMax "+valMax);
+
         String min = futureStocks.get(0).getCompanyName();
+        System.out.println("min " + min);
+
         BigDecimal valMin = futureStocks.get(0).getStockPrice();
+        System.out.println("valMin "+ valMin);
+
         for (int i = 0; i < futureStocks.size(); i++) {
             if (futureStocks.get(i).getStockPrice().compareTo(valMax) > 0) {
                 max = futureStocks.get(i - 0).getCompanyName();
@@ -201,6 +219,8 @@ public class BrokerService {
         ArrayList<String> prediction = new ArrayList<>();
         prediction.add(max);
         prediction.add(min);
+        System.out.println("max " + max);
+        System.out.println("min " + min);
         return prediction;
 
     }

@@ -113,8 +113,8 @@ public class StockServer extends AllDirectives {
     private Route NextTurn() {
         return route(
                 post(() -> entity(Jackson.unmarshaller(Market.class), market -> {
-                    CompletionStage<AnalystMessages.ActionPerformed> startGame = Patterns.ask(analystActor, new AnalystMessages.NextTurnMessage(brokerActor), timeout)
-                            .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+                    CompletionStage<ClockMessages.ActionPerformed> startGame = Patterns.ask(analystActor, new ClockMessages.NextTurnMessage(brokerActor), timeout)
+                            .thenApply(obj -> (ClockMessages.ActionPerformed) obj);
 
                     return onSuccess(() -> startGame, performed -> {
                         return complete(StatusCodes.CREATED, performed, Jackson.marshaller());
