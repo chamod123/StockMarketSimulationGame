@@ -102,8 +102,8 @@ function getStocksBySector(name) {
 function getLeaderBoard() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-        // fetch('http://localhost:8081/"allPlayers')
-        fetch('https://api.myjson.com/bins/1cwg6l')
+         fetch('http://localhost:8081/"allPlayers')
+        //fetch('https://api.myjson.com/bins/1cwg6l')
             .then(function (response) {
                 return response.json();
             })
