@@ -1,16 +1,3 @@
-function getStocks() {
-    console.log("called  getStocks")// Remove when API is integrated
-    return  new Promise((resolve, reject) => { 
-        fetch('https://api.myjson.com/bins/vntih')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                resolve(myJson)
-            });
-    })
-}
-
 function getAllStocks() {
     console.log("called  get allStocks")// Remove when API is integrated
     return  new Promise((resolve, reject) => { 
@@ -24,15 +11,74 @@ function getAllStocks() {
     })
 }
 
-function getMyStocks() {
-    console.log("called")
+function getPortofolio(user) {
+    console.log("called portofolio")
     return  new Promise((resolve, reject) => { 
-        fetch('https://api.myjson.com/bins/103y91')
+        fetch(`http://localhost:8081/portofolio/${user}`)
             .then(function (response) {
                 return response.json();
             })
             .then(function (myJson) {
                 resolve(myJson)
+            });
+    })
+}
+
+function buyStock(user, stock, quantity) {
+    var request={
+        "username":user,
+        "stock": stock,
+        "quantity": quantity
+    }
+    var url = `http://localhost:8081/buyStock`
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(request)
+        })
+            .then(function (response) {
+                if (!response.ok) throw new Error(response.statusText);
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+            .catch(error => {
+                reject(error)
+            });
+    })
+}
+
+function sellStock(user, stock, quantity) {
+    var request={
+        "username":user,
+        "stock": stock,
+        "quantity": quantity
+    }
+    
+    var url = `http://localhost:8081/sellStock`
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(request)
+        })
+            .then(function (response) {
+                if (!response.ok) throw new Error(response.statusText);
+                return response.json();
+            })
+            .then(function (myJson) {
+                console.log(myJson)
+                resolve(myJson)
+            })
+            .catch(error => {
+                console.log('error', error);
+                reject(error)
             });
     })
 }
@@ -327,21 +373,6 @@ function getBankBalance(id) {
     })
 }
 
-// GET - get getPortofolio
-function getPortofolio(id) {
-    console.log("called")
-    return  new Promise((resolve, reject) => { 
-        fetch(`http://localhost:8081/portofolio${id}`)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                resolve(myJson)
-            });
-    })
-}
-
-
 // GET - nextTurn
 function nextTurn() {
     console.log("called nextTurn")
@@ -372,8 +403,7 @@ function winner() {
 	
 
 export {
-    getStocks,
-    getMyStocks,
+    getPortofolio,
     getPlayers,
     getPlayerByID,
     getLeaderBoard,
@@ -387,6 +417,8 @@ export {
     handlePostSignIn,
     addPlayer,
     getStocksBySector,
-    getAllStocks
+    getAllStocks,
+    buyStock,
+    sellStock
  //   UpdateProfile
 }
