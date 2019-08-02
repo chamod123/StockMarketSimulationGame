@@ -42,15 +42,4 @@ public interface GameMessage {
             return playerActor;
         }
     }
-
-    class GetallPlayerMessage implements Serializable {
-        private static ActorRef brokerActor;
-        public GetallPlayerMessage(ActorRef brokerActor ) {
-            this.brokerActor=brokerActor;
-        }
-
-        public static ActorRef getBrokerActor() {
-            return brokerActor;
-        }
-    }
 }

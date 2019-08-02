@@ -76,19 +76,5 @@ public interface StockMessages {
 
     }
 
-    class UpdateStockMessage implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-        private final Stock stock;
-
-        public UpdateStockMessage(Stock stock) {
-            this.stock = stock;
-        }
-
-        public Stock getStock() {
-            return stock;
-        }
-    }
-
 
 }

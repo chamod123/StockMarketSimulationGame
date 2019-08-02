@@ -180,10 +180,6 @@ public interface BrokerMessages {
         }
     }
 
-//    class GetallPlayerInGameMessage implements Serializable {
-//        public GetallPlayerInGameMessage( ) {
-//
-//        }
-//    }
+
 
 }

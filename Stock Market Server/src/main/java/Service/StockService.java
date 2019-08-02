@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class StockService {
-    public static MarketService marketservice = new MarketService();
     public static ArrayList<Stock> stocks = new ArrayList<>();
+    public static MarketService marketService=new MarketService();
 
     public static Optional<Stock> getStock(Long id) {
         return stocks.stream()
@@ -37,13 +37,11 @@ public class StockService {
     public static void createStock(Stock stock) throws IOException {
         String csv = "data.csv";
         CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
-        int turn = marketservice.GetCurrentTurn();
-        String turnString = String.valueOf(turn);
         stock.setStockId(stocks.size()+1);
         stocks.add(stock);
+        String turn=String.valueOf(marketService.GetCurrentTurn());
         String record =stock.getStockPrice().toString();
-
-        String [] record3 = {turnString,record};
+        String [] record3 = {turn,record};
         writer.writeNext(record3);
         writer.close();
         for (Stock stock1 : stocks) {

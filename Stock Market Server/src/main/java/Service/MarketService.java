@@ -195,6 +195,7 @@ public class MarketService {
             StockService.stocks.get(i).setStockPrice(stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue)));
             String csv = "data.csv";
             CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
+            String turn=String.valueOf(GetCurrentTurn());
 
             String record = StockService.stocks.get(i).getStockPrice().toString();
             String [] record3 = {turnString,record};

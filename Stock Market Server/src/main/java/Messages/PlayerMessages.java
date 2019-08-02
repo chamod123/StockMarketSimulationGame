@@ -1,8 +1,8 @@
 package Messages;
 
 
+
 import Model.Player;
-import Model.Transaction;
 import akka.actor.ActorRef;
 
 import java.io.Serializable;
@@ -59,9 +59,9 @@ public interface PlayerMessages {
         private final String userName;
         private final String password;
 
-        public LoginPlayerMessage(String userName, String password) {
+        public LoginPlayerMessage(String userName,String password) {
             this.userName = userName;
-            this.password = password;
+            this.password=password;
         }
 
         public String getUserName() {
@@ -74,13 +74,14 @@ public interface PlayerMessages {
     }
 
 
+
     class AddPlayerToGameMessage implements Serializable {
         private final Long id;
         private static ActorRef brokerActor;
 
         public AddPlayerToGameMessage(Long id, ActorRef brokerActor) {
             this.id = id;
-            this.brokerActor = brokerActor;
+            this.brokerActor=brokerActor;
         }
 
         public Long getId() {
@@ -91,55 +92,5 @@ public interface PlayerMessages {
             return brokerActor;
         }
     }
-
-    class UpdatePlayerMessage implements Serializable {
-        private final Player player;
-
-        public UpdatePlayerMessage(Player player) {
-            this.player = player;
-        }
-
-        public Player getPlayer() {
-            return player;
-        }
-
-    }
-
-    class WithdrawMessage implements Serializable {
-        private static ActorRef bankActor;
-        private final Transaction transaction;
-
-        public WithdrawMessage(Transaction transaction, ActorRef bankActor) {
-            this.transaction = transaction;
-            this.bankActor = bankActor;
-        }
-
-        public static ActorRef getBankActor() {
-            return bankActor;
-        }
-
-        public Transaction getTransaction() {
-            return transaction;
-        }
-    }
-
-    class DepoditMessage implements Serializable {
-        private static ActorRef bankActor;
-        private final Transaction transaction;
-
-        public DepoditMessage(Transaction transaction, ActorRef bankActor) {
-            this.transaction = transaction;
-            this.bankActor = bankActor;
-        }
-
-        public static ActorRef getBankActor() {
-            return bankActor;
-        }
-
-        public Transaction getTransaction() {
-            return transaction;
-        }
-    }
-
 
 }
