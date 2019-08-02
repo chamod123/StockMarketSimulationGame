@@ -51,7 +51,9 @@ class GameBoard extends React.Component {
 
   componentDidMount() {
     getAllStocks().then(response => {
-      this.setState({ stockArray: this.createUISectorArray(response) })
+      this.setState({ 
+        stockArray: this.createUISectorArray(response),
+        inProgress:false })
     })
   }
 
@@ -60,16 +62,28 @@ class GameBoard extends React.Component {
     var userName ="Chamod2"
     if(!isOnMyStocks){
       getPortofolio(userName).then(response => {
-        this.setState({ 
-          stockArray: this.createUISectorArray(response),
-          isOnMyStocks: true
-         })
+        // var response = {
+        //   "Google": 10,
+        //   "Apple": 20,
+        //   "BMW": 5
+        // }
+        this.setState({
+          stockArray: this.createUIPortfolioArray(response),
+          isOnMyStocks: true,
+          inProgress: false
+        }).catch(error=>{
+          console.log(error)
+        })
       })
     }else{
+      this.setState({
+        inProgress: true
+      })
       getAllStocks().then(response => {
         this.setState({ 
           stockArray: this.createUISectorArray(response),
-          isOnMyStocks: false
+          isOnMyStocks: false,
+          inProgress:false
          })
       })
     }
@@ -82,7 +96,7 @@ class GameBoard extends React.Component {
     },
     {
       "sector":"Technology",
-      "stocks":[]//response.filter(stock => stock.sector=="Technology"),
+      "stocks": response.filter(stock => stock.sector=="Technology"),
     },
     {
       "sector":"Manufacturing",
@@ -90,8 +104,19 @@ class GameBoard extends React.Component {
     },
     {
       "sector":"ConsumerServices",
-      "stocks":response.filter(stock => stock.sector=="ConsumerServices"),
+      "stocks":response.filter(stock => stock.sector=="Consumer Services"),
     }]   
+  }
+
+  createUIPortfolioArray = (response) => {
+    var rowArray = []
+    Object.keys(response).map(function (key, index) {
+      rowArray.push({ "companyName": key, "stockPrice": response[key] })
+    });
+    return [{
+      "sector": "Your Stocks",
+      "stocks": rowArray,
+    }]
   }
 
   handleBuyStock = () => {
@@ -104,7 +129,6 @@ class GameBoard extends React.Component {
   }
 
   handleSellStock = () => {
-    console.log("SellStock")
     const { selectedSectorIndex, selectedStock, stockArray } = this.state;
     var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
     const { quantity } = this.state;
@@ -152,6 +176,16 @@ class GameBoard extends React.Component {
     return rowArray;
   }
 
+  getPortFolioTableData = (array) => {
+    var rowArray = []
+    if(array.length>0){ 
+      array.forEach(function (element) {
+        rowArray.push([element.companyName, element.stockPrice.toString()])
+      });
+    }
+    return rowArray;
+  }
+
   getHeaderColor = () => {
     const { selectedSectorIndex } = this.state;
 
@@ -173,6 +207,7 @@ class GameBoard extends React.Component {
     const { selectedSectorIndex, selectedStock, stockArray } = this.state;
     var sector = stockArray[selectedSectorIndex].sector
     var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
+    console.log(stockArray)
     return sector + " : " + stock
   }
 
@@ -184,7 +219,7 @@ class GameBoard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { stockArray, chartData, isOnMyStocks, quantity, currentPlayers } = this.state;
+    const { stockArray, chartData, isOnMyStocks, quantity, currentPlayers, inProgress } = this.state;
     return (
       <div>
         <GridContainer>
@@ -238,11 +273,11 @@ class GameBoard extends React.Component {
         <GridContainer>
           <Card>
             <CardBody>
-              {stockArray.length === 4 ? <GridContainer>
+              {!inProgress ? <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
                   <Typography>{isOnMyStocks?"Portfolio":"Stocks"}</Typography>
-                  <CustomTabs
-                    headerColor="primary"
+                  {!isOnMyStocks?<CustomTabs
+                    headerColor="warning"
                     tabs={
                       [
                         {
@@ -308,7 +343,22 @@ class GameBoard extends React.Component {
                           )
                         }
                       ]}
-                  />
+                  />:
+                    <Card>
+                      <CardHeader color="warning">
+                        <h4 className={classes.cardTitleWhite}>Portfolio</h4>
+                      </CardHeader>
+                      <CardBody>
+                        <StockTable
+                          tableHeaderColor="warning"
+                          tableHead={["Company Name", "Stock Price"]}
+                          tableData={this.getPortFolioTableData(stockArray[0].stocks)}
+                          handleRowSelect={this.handleStockSelect}
+                          selectedSectorIndex={0}
+                          isMyStock={isOnMyStocks}
+                        />
+                      </CardBody>
+                    </Card>}
                 </GridItem>
                 <GridItem xs={12} sm={12} md={8}>
                   <Card>

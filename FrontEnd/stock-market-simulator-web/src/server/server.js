@@ -3,10 +3,14 @@ function getAllStocks() {
     return  new Promise((resolve, reject) => { 
         fetch("http://localhost:8081/allStock")
             .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
                 resolve(myJson)
+            })
+            .catch(error => {
+                reject(error)
             });
     })
 }
@@ -16,10 +20,14 @@ function getPortofolio(user) {
     return  new Promise((resolve, reject) => { 
         fetch(`http://localhost:8081/portofolio/${user}`)
             .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
                 resolve(myJson)
+            })
+            .catch(error => {
+                reject(error)
             });
     })
 }
@@ -40,7 +48,7 @@ function buyStock(user, stock, quantity) {
             body:JSON.stringify(request)
         })
             .then(function (response) {
-                if (!response.ok) throw new Error(response.statusText);
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
@@ -69,7 +77,7 @@ function sellStock(user, stock, quantity) {
             body:JSON.stringify(request)
         })
             .then(function (response) {
-                if (!response.ok) throw new Error(response.statusText);
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
@@ -89,7 +97,7 @@ function getStocksBySector(name) {
     return new Promise((resolve, reject) => {
         fetch(`http://localhost:8081/stockBySector/${name}`)
             .then(function (response) {
-                if (!response.ok) throw new Error(response.statusText);
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
@@ -102,7 +110,7 @@ function getStocksBySector(name) {
 function getLeaderBoard() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-         fetch('http://localhost:8081/"allPlayers')
+         fetch('http://localhost:8081/players')
         //fetch('https://api.myjson.com/bins/1cwg6l')
             .then(function (response) {
                 return response.json();
@@ -116,9 +124,8 @@ function getLeaderBoard() {
 function getTransactioHistory() {
     console.log("called")
     return  new Promise((resolve, reject) => {
-        fetch('https://api.myjson.com/bins/1cwg6l')
-        //fetch('https://api.myjson.com/bins/1h3uvl')
-        // fetch('http://localhost:8081/"allPlayers')
+        //fetch('https://api.myjson.com/bins/1cwg6l')
+        fetch('http://localhost:8081/"transactions')
             .then(function (response) {
                 return response.json();
             })
@@ -134,7 +141,7 @@ function getPlayers() {
         fetch('http://localhost:8081/players')
         // fetch('https://api.myjson.com/bins/1azzr5') //test myjson
             .then(function (response) {
-                if (!response.ok) throw new Error(response.statusText);
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
@@ -154,7 +161,7 @@ function addPlayer(id) {
             }
         })
             .then(function (response) {
-                if (!response.ok) throw new Error(response.statusText);
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
