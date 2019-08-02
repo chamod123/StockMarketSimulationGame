@@ -176,7 +176,19 @@ public class MarketService {
     //go to next turn
     public static int NextTurn() throws IOException {
         currentTurn++;
+
         ChangeStockValues();
+        for (int i = 0; i < StockService.stocks.size(); i++) {
+
+            String csv = "data.csv";
+            CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
+            String turnString = String.valueOf(GetCurrentTurn());
+            String record = StockService.stocks.get(i).getStockPrice().toString();
+            String[] record3 = {turnString,record};
+            writer.writeNext(record3);
+            writer.close();
+
+        }
         return GetCurrentTurn();
     }
 
@@ -193,16 +205,7 @@ public class MarketService {
             int eventValue = ChangeEventStockValue(StockService.stocks.get(i), currentTurn);
             BigDecimal stockprice = StockService.stocks.get(i).getStockPrice();
             StockService.stocks.get(i).setStockPrice(stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue)));
-            String csv = "data.csv";
-            CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
-
-            String record = StockService.stocks.get(i).getStockPrice().toString();
-            String[] record3 = {record};
-            writer.writeNext(record3);
-
-            writer.close();
-
-            if (StockService.stocks.get(i).getStockPrice().compareTo(BigDecimal.ZERO) <= 0) {
+         if (StockService.stocks.get(i).getStockPrice().compareTo(BigDecimal.ZERO) <= 0) {
                 StockService.stocks.get(i).setStockPrice(BigDecimal.valueOf(1));
             }
         }
