@@ -75,4 +75,13 @@ public interface BankMessages {
     }
 
 
+    //get Bank Balance for all player
+    class GetAllBankBalanceMessage implements Serializable {
+
+        public GetAllBankBalanceMessage() {
+        }
+
+    }
+
+
 }

@@ -13,6 +13,10 @@ public class BankService {
         accountList.add(Account1);
     }
 
+    public static List<Account> getAccountsDetails(){
+        return accountList;
+    }
+
     //deposit to an account
     public Boolean Deposit(int turn, Long playerId, String sender, BigDecimal amount) throws Exception {
         for (Account account : accountList) {

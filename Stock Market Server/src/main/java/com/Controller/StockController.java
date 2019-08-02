@@ -2,6 +2,7 @@ package com.Controller;
 
 import Actors.PlayerActor;
 import Messages.*;
+import Model.*;
 import Model.Player;
 import Model.Stock;
 import Model.Market;
@@ -239,6 +240,14 @@ public class StockController {
         return balance;
     }
 
+    //#GET - get all account details
+    @GetMapping("/accounts")
+    public CompletionStage<List<Account>> getAllAccount() {
+        CompletionStage<List<Account>> allPlayer = Patterns.ask(actorSystemCreate.getBankActor(), new BankMessages.GetAllBankBalanceMessage(), timeout)
+                .thenApply(obj -> (List<Account>) obj);
+        return allPlayer;
+    }
+
 
     //checked
     //#GET - get all transactions
@@ -340,5 +349,8 @@ public class StockController {
         }
         return "not sucess";
     }
+
+
+
 
 }
