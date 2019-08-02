@@ -15,7 +15,6 @@ public class AnalystActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(AnalystMessages.StartGameMessage.class, startGame())//start game
-                .match(AnalystMessages.NextTurnMessage.class, nextTurn())//next turn
                 .match(AnalystMessages.GetPredictionMessage.class, Prediction())//Prediction
 //                .match(AnalystMessages.GetCurrentTurnMessage.class, currentTurn())//get current turn
                 .build();
@@ -25,27 +24,8 @@ public class AnalystActor extends AbstractActor {
     private FI.UnitApply<AnalystMessages.StartGameMessage> startGame() {
         return startGameMessage -> {
             //call to brocker actor to start game
-            startGameMessage.getBrokerActor().tell(new BrokerMessages.StartGameMessage(),getSelf());
+            startGameMessage.getBrokerActor().tell(new BrokerMessages.StartGameMessage(), getSelf());
             sender().tell(new AnalystMessages.ActionPerformed(String.format("start game with turns "
-            )), getSelf());
-        };
-    }
-
-//    //next turn
-    private FI.UnitApply<AnalystMessages.NextTurnMessage> nextTurn() {
-        return nextTurnMessage -> {
-            System.out.println("GetCurrentTurn " + MarketService.GetCurrentTurn());
-            if(MarketService.GetCurrentTurn()==1){
-                MarketService.setEvents();
-                MarketService.setTrends();
-            }
-            if(MarketService.GetCurrentTurn()<MarketService.turns) {
-                //call broker actor to start game
-                nextTurnMessage.getBrokerActor().tell(new BrokerMessages.NextTurnMessage(),getSelf());
-                MarketService.NextTurn();
-            }
-            MarketService.GetCurrentTurn();
-            sender().tell(new AnalystMessages.ActionPerformed(String.format("go to next turn "
             )), getSelf());
         };
     }
@@ -54,9 +34,11 @@ public class AnalystActor extends AbstractActor {
     private FI.UnitApply<AnalystMessages.GetPredictionMessage> Prediction() {
         return getPredictionMessage -> {
             //call to broker actor to get Prediction
-            getPredictionMessage.getBrokerActor().tell(new BrokerMessages.GetPredictionMessage(),getSelf());
-            sender().tell(new AnalystMessages.ActionPerformed(String.format("get prediction "
-            )), getSelf());
+//            getPredictionMessage.getBrokerActor().tell(new BrokerMessages.GetPredictionMessage(), getSelf());
+            sender().tell(BrokerService.Prediction(), getSelf());
+
+//            sender().tell(new AnalystMessages.ActionPerformed(String.format("get prediction "
+//            )), getSelf());
         };
     }
 

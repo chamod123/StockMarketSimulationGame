@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -16,13 +15,10 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Primary from "components/Typography/Primary";
 import Danger from "components/Typography/Danger.jsx";
-import TextField from '@material-ui/core/TextField';
+import avatar from "assets/img/faces/SMG_Web.png";
+import { getPlayerByID } from 'server/server';
 
-
-import avatar from "assets/img/faces/marc.jpg";
-import { getPlayer } from 'server/server';
-
-
+ 
   
 const styles = {
   cardCategoryWhite: {
@@ -52,12 +48,13 @@ function UserProfile(props) {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-   getPlayer(1).then(response => {
+   getPlayerByID(1).then(response => {
      console.log(response)
       setFname(response.firstName)
       setLname(response.lastName)
       setEmail(response.email)
-      setUserName(response.userName)
+      setUserName(response.username)
+      setPassword(response.password)
     })
   });
 
@@ -67,14 +64,15 @@ function UserProfile(props) {
       firstName:{fname},
       lastName:{lname},
       email:{email},
-      username:{userName}
+      userName:{userName},
+      password:{password}
     }
     console.log(request)
-    //call post UpdateProfile(request) API
+   // call post UpdateProfile(request) API
   }
 
   const handleNavigateToBank=()=>{
-    // props.history.push("/bank")
+     props.history.push('/admin/bank')
   }
   
   const handleChangeFname=(event)=>{
@@ -85,6 +83,12 @@ function UserProfile(props) {
   }
   const handleChangeEmail=(event)=>{
     setEmail(event.target.value)
+  }
+  const handleChangeUname=(event)=>{
+    setUserName(event.target.value)
+  }
+  const handleChangePassword=(event)=>{
+    setPassword(event.target.value)
   }
 
 
@@ -155,7 +159,10 @@ function UserProfile(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    value={userName}
+                    inputProps={{
+                      value:userName,
+                      onChange : handleChangeUname
+                  }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -166,7 +173,10 @@ function UserProfile(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    value={password}
+                    inputProps={{
+                      value:password,
+                      onChange: handleChangePassword
+                  }}
                   />
                 </GridItem>
               </GridContainer>
@@ -184,7 +194,7 @@ function UserProfile(props) {
               </a>
             </CardAvatar>
             <CardBody profile>
-              <h6 className={classes.cardCategory}><Danger>GAME PLAYER</Danger></h6>
+              <h6 className={classes.cardCategory}><Danger>---GAME PLAYER---</Danger></h6>
               <h6 className={classes.cardTitle}><Primary>User Name: {userName}</Primary></h6>
               <h6 className={classes.cardTitle}><Primary>Full Name: {fname} {lname}</Primary></h6>
               <h6 className={classes.cardTitle}><Primary>Email:{email}</Primary></h6>

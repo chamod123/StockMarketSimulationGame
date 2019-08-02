@@ -24,11 +24,12 @@ public class BrokerService {
         if (player != null) {
             stockAccounts.add(player);
         }
-        for (Player playere : stockAccounts) {
-            System.out.println("Players in game :  " + playere.getName());
-        }
         return player;
 
+    }
+
+    public static ArrayList<Player> getAllPlayer() {
+        return stockAccounts;
     }
 
 
@@ -50,7 +51,6 @@ public class BrokerService {
     //checked
     //buy stock
     public static Boolean buyStock(String name, String stock, int quantity, BigDecimal totalvalue) throws Exception {
-        System.out.println("awa buyStock  value : " + totalvalue + " name: " + name + " Stock: " + stock);
         //user value need to grater than total value. then can buy stock
         if (BankService.Balance(name).compareTo(totalvalue) >= 0) {
             Integer count = null;
@@ -62,12 +62,7 @@ public class BrokerService {
             } else {// item has buy from that item
                 GetPlayer(name).getStocks().put(stock, count + quantity);
             }
-            System.out.println("Stocks of player : " + GetPlayer(name).getStocks());
             Transactions.add(new Transaction(name, MarketService.GetCurrentTurn(), "BUY", stock, quantity, totalvalue));
-//            //remove for loop
-//            for (Transaction c : Transactions) {
-//                System.out.println("name: " + c.getName() + " stock:" + c.getStock() + " Type: " + c.getType() + " amount: " + c.getAmount() + " id: " + c.getId() + " quantity" + c.getQuantity() + " total: " + c.getTotal() + " turn: " + c.getTurn());
-//            }
             return true;
         } else {
             return false;
@@ -82,10 +77,7 @@ public class BrokerService {
             GetPlayer(name).getStocks().put(stock, stockCount - quantity);
 //            BigDecimal totalvalue=market.getStock(stock).getStockPrice().multiply(BigDecimal.valueOf(quantity));
             Transactions.add(new Transaction(name, MarketService.GetCurrentTurn(), "SELL", stock, quantity, totalvalue));
-//            //remove for loop
-//            for (Transaction c : Transactions) {
-//                System.out.println("name: " + c.getName() + " stock:" + c.getStock() + " Type: " + c.getType() + " amount: " + c.getAmount() + " id: " + c.getId() + " quantity" + c.getQuantity() + " total: " + c.getTotal() + " turn: " + c.getTurn());
-//            }
+
             return true;
         } else
             return false;
@@ -96,7 +88,6 @@ public class BrokerService {
     //get player buy name
     public static Player GetPlayer(String name) throws Exception {
         for (Player c : stockAccounts) {
-            System.out.println("c.getName " + c.getName());
             if (name.equals(c.getName())) {
                 return c;
             }
@@ -178,15 +169,16 @@ public class BrokerService {
     //return min and max stock in future or current turn
     public static ArrayList<String> Prediction() {
         ArrayList<Stock> futureStocks = MarketService.GetPredictedStocks();
+
         String max = futureStocks.get(0).getCompanyName();
         BigDecimal valMax = futureStocks.get(0).getStockPrice();
         String min = futureStocks.get(0).getCompanyName();
         BigDecimal valMin = futureStocks.get(0).getStockPrice();
+
         for (int i = 0; i < futureStocks.size(); i++) {
             if (futureStocks.get(i).getStockPrice().compareTo(valMax) > 0) {
                 max = futureStocks.get(i - 0).getCompanyName();
                 valMax = futureStocks.get(i).getStockPrice();
-
             }
 
         }
@@ -201,6 +193,8 @@ public class BrokerService {
         ArrayList<String> prediction = new ArrayList<>();
         prediction.add(max);
         prediction.add(min);
+        System.out.println("max " + max);
+        System.out.println("min " + min);
         return prediction;
 
     }

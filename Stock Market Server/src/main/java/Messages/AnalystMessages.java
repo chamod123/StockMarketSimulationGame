@@ -32,18 +32,18 @@ public interface AnalystMessages {
         }
     }
 
-    //Next turn
-    class NextTurnMessage implements Serializable {
-        private static ActorRef brokerActor;
-
-        public NextTurnMessage(ActorRef brokerActor) {
-            this.brokerActor = brokerActor;
-        }
-
-        public static ActorRef getBrokerActor() {
-            return brokerActor;
-        }
-    }
+//    //Next turn
+//    class NextTurnMessage implements Serializable {
+//        private static ActorRef brokerActor;
+//
+//        public NextTurnMessage(ActorRef brokerActor) {
+//            this.brokerActor = brokerActor;
+//        }
+//
+//        public static ActorRef getBrokerActor() {
+//            return brokerActor;
+//        }
+//    }
 
     //get prediction
     class GetPredictionMessage implements Serializable {
