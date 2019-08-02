@@ -132,6 +132,25 @@ function getPaymentInfo(id) {
             })
     })
 }
+//post -Sign IN
+function  handlePostSignIn(request) {
+    var url = 'https://api.myjson.com/bins'
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
 //post -Update Payment Information
 function handleUpdatePaymentInfo(request) {
     var url = 'https://api.myjson.com/bins'
@@ -152,7 +171,6 @@ function handleUpdatePaymentInfo(request) {
     })
 }
 //post -Update Bank Balance
-
 function handleUpdateBankBalance(request) {
     var url = 'https://api.myjson.com/bins'
     return new Promise((resolve, reject) => {
@@ -300,5 +318,7 @@ export {
     getPaymentInfo,
     getBankBalance,
     handleUpdatePaymentInfo,
-    handleUpdateBankBalance
+    handleUpdateBankBalance,
+    handlePostSignIn
+    
 }

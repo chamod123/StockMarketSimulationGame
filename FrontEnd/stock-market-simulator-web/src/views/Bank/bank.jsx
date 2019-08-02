@@ -73,6 +73,13 @@ function bank(props) {
    // call post UpdatePaymentInfo(request) API
   }
 
+  const handleUpdateBankBalance=()=>{
+    let request={
+      bankBalance:{bankbalane},
+    }
+    console.log(request)
+   // call post UpdatePaymentInfo(request) API
+  }
 
    const handleChangeHname=(event)=>{
     setHname(event.target.value)
@@ -194,7 +201,7 @@ function bank(props) {
                 </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Transfer</Button>
+              <Button color="primary"onClick={handleUpdateBankBalance}>Transfer</Button>
              </CardFooter>
             </Card>  
       </GridItem>
