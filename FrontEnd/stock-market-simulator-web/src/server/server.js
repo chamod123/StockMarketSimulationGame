@@ -11,6 +11,19 @@ function getStocks() {
     })
 }
 
+function getAllStocks() {
+    console.log("called  get allStocks")// Remove when API is integrated
+    return  new Promise((resolve, reject) => { 
+        fetch("http://localhost:8081/allStock")
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            });
+    })
+}
+
 function getMyStocks() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
@@ -21,6 +34,22 @@ function getMyStocks() {
             .then(function (myJson) {
                 resolve(myJson)
             });
+    })
+}
+
+// GET - get stocks Data by sector
+function getStocksBySector(name) {
+    console.log("called getStocksBySector")
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:8081/stockBySector/${name}`)
+            .then(function (response) {
+                if (!response.ok) throw new Error(response.statusText);
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+            .catch(error=>console.log(error))
     })
 }
 
@@ -56,19 +85,44 @@ function getTransactioHistory() {
 function getPlayers() {
     console.log("called getPlayers")
     return new Promise((resolve, reject) => {
-        fetch('http://localhost:8081/players/1')
+        fetch('http://localhost:8081/players')
         // fetch('https://api.myjson.com/bins/1azzr5') //test myjson
             .then(function (response) {
-                console.log(response)
+                if (!response.ok) throw new Error(response.statusText);
                 return response.json();
             })
             .then(function (myJson) {
                 resolve(myJson)
             })
+            .catch(error=>console.log(error))
     })
 }
 
-function getPlayer(id) {
+function addPlayer(id) {
+    var url = `http://localhost:8081/addPlayer/${id}`
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(function (response) {
+                if (!response.ok) throw new Error(response.statusText);
+                return response.json();
+            })
+            .then(function (myJson) {
+                console.log(myJson)
+                resolve(myJson)
+            })
+            .catch(error => {
+                console.log('error', error);
+                reject(error)
+            });
+    })
+}
+
+function getPlayerByID(id) {
     return new Promise((resolve, reject) => {
         // fetch(`http://localhost:8081/players/${id}`)
         fetch('https://api.myjson.com/bins/8ymrh') //test myjson
@@ -242,20 +296,6 @@ function getStockById(id) {
     })
 }
 
-// GET - get stocks Data by sector
-function getStocksBySector(id) {
-    console.log("called getPlayers")
-    return new Promise((resolve, reject) => {
-        fetch(`http://localhost:8081/stockBySector/${id}`)
-            .then(function (response) {
-                console.log(response)
-                return response.json();
-            })
-            .then(function (myJson) {
-                resolve(myJson)
-            })
-    })
-}
 
 // GET - get all transaction Data
 {/*function getTransactionHistory() {
@@ -301,19 +341,6 @@ function getPortofolio(id) {
     })
 }
 
-// GET - start game
-function start() {
-    console.log("called start")
-    return  new Promise((resolve, reject) => { 
-        fetch(`http://localhost:8081/start`)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                resolve(myJson)
-            });
-    })
-}
 
 // GET - nextTurn
 function nextTurn() {
@@ -348,7 +375,7 @@ export {
     getStocks,
     getMyStocks,
     getPlayers,
-    getPlayer,
+    getPlayerByID,
     getLeaderBoard,
 	postPlayers,
     getTransactioHistory,
@@ -358,7 +385,8 @@ export {
     handleUpdatePaymentInfo,
     handleUpdateBankBalance,
     handlePostSignIn,
-    handleSignUP,
-    handlePaymentInfo
-    
+    addPlayer,
+    getStocksBySector,
+    getAllStocks
+ //   UpdateProfile
 }

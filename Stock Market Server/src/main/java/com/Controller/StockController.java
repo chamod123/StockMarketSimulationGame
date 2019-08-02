@@ -317,4 +317,28 @@ public class StockController {
         return stock;
     }
 
+    //checked
+    //#POST - withdraw
+    @PostMapping("/withdraw")
+    public String withdraw(@RequestBody Transaction transaction) {//name and amount
+        CompletionStage<PlayerMessages.ActionPerformed> stockBuy = Patterns.ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.WithdrawMessage(transaction, actorSystemCreate.getBankActor()), timeout)
+                .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
+        if (stockBuy != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
+    //checked
+    //#POST - deposit
+    @PostMapping("/deposit")
+    public String deposit(@RequestBody Transaction transaction) {//name and amount
+        CompletionStage<PlayerMessages.ActionPerformed> stockBuy = Patterns.ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.DepoditMessage(transaction, actorSystemCreate.getBankActor()), timeout)
+                .thenApply(obj -> (PlayerMessages.ActionPerformed) obj);
+        if (stockBuy != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
 }
