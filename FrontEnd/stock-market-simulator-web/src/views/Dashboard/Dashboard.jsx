@@ -168,9 +168,13 @@ class Dashboard extends React.Component {
             <CardBody>
               <h4 className={classes.cardTitle}>Testimonial</h4>
               <p className={classes.cardCategory}>
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining"
+                "You’re really doing the research. Even if you’re not actually buying the stock, you’re doing the work"
+                - Bhubinder
                 </p>
-                
+                <p className={classes.cardCategory}>
+                "Playing the Stock Market Game is different than learning in a class because you’re not learning in class anymore, you’re in the computer room, and suddenly it’s not the computer room anymore, it’s the Stock Market Game room."
+                - Parina, 5th grade
+                </p>
             </CardBody>
             </Card>
           </GridItem>
