@@ -186,7 +186,6 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             color="primary"
-       //     className={classes.submit}
             onClick={handleSignUP}
           >
             Add Bank Info
