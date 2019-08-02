@@ -140,11 +140,19 @@ public class BrokerService {
 
     //computer play
     public static void ComputerPlay() throws Exception {
+
+        if(stockAccounts.size()==0){
+            CreateAccount(new Player("Computer"));
+            BankService.CreateAccount(new Account("Computer"));
+//            System.out.println("stockAccounts  " + stockAccounts);
+//            System.out.println("stockAccounts size " +stockAccounts.size());
+        }
+
         ArrayList<String> predictions = Prediction();
         Random ran = new Random();
         int number = ran.nextInt(7 - 1 + 1) + 1;
         if (BankService.Balance("Computer").compareTo(MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(number))) > 0) {
-            BigDecimal totalvalue = MarketService.getStock("Computer").getStockPrice().multiply(BigDecimal.valueOf(number));
+            BigDecimal totalvalue = MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(number));
             buyStock("Computer", predictions.get(0), number, totalvalue);
         }
         Player p = GetPlayer("Computer");

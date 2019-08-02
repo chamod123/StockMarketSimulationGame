@@ -311,6 +311,7 @@ public class StockController {
         return "not sucess";
     }
 
+    //checked
     //#GET - get prediction
     @GetMapping("/prediction")
     public CompletionStage<ArrayList<String>> getPrediction() {
