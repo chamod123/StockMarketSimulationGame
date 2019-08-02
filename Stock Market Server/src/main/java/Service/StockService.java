@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public class StockService {
     public static ArrayList<Stock> stocks = new ArrayList<>();
+    public static MarketService marketService=new MarketService();
 
     static {
         stocks.add(new Stock("Apple", Sector.Technology, BigDecimal.valueOf(11.00)));
@@ -25,6 +26,26 @@ public class StockService {
         stocks.add(new Stock("Titan", Sector.Technology, BigDecimal.valueOf(10.00)));
         stocks.add(new Stock("AXE", Sector.ConsumerServices, BigDecimal.valueOf(25.00)));
         stocks.add(new Stock("Tesla", Sector.Technology, BigDecimal.valueOf(13.00)));
+        for (int i = 0; i < stocks.size(); i++) {
+
+            String csv = "data.csv";
+            CSVWriter writer = null;
+            try {
+                writer = new CSVWriter(new FileWriter(csv, true));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String turnString = String.valueOf(marketService.GetCurrentTurn());
+            String record = StockService.stocks.get(i).getStockPrice().toString();
+            String[] record3 = {turnString,record};
+            writer.writeNext(record3);
+            try {
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     public static Optional<Stock> getStock(Long id) {
@@ -53,6 +74,7 @@ public class StockService {
         CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
         stock.setStockId(stocks.size() + 1);
         stocks.add(stock);
+        String turnString = String.valueOf(marketService.GetCurrentTurn());
         String record = stock.getStockPrice().toString();
         String[] record3 = {record};
         writer.writeNext(record3);
