@@ -82,7 +82,7 @@ public class StockController {
     @GetMapping("/players")
     public CompletionStage<ArrayList<Player>> getallPlayers() {
         CompletionStage<ArrayList<Player>> player = Patterns
-                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.GetallPlayerMessage(), timeout)
+                .ask(actorSystemCreate.getGameActor(), new GameMessage.GetallPlayerMessage(actorSystemCreate.getBrokerActor()), timeout)
                  .thenApply(obj -> (ArrayList<Player>) obj);
         return player;
     }

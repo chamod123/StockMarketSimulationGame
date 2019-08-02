@@ -107,12 +107,6 @@ public interface PlayerMessages {
     }
 
 
-    class GetallPlayerMessage implements Serializable {
-        private static final long serialVersionUID = 1L;
 
-        public GetallPlayerMessage( ) {
-        }
-
-    }
 
 }

@@ -24,14 +24,11 @@ public class BrokerService {
         if (player != null) {
             stockAccounts.add(player);
         }
-        for (Player playere : stockAccounts) {
-            System.out.println("Players in game :  " + playere.getName());
-        }
         return player;
 
     }
 
-    public static ArrayList<Player> GetAllPlayer() {
+    public static ArrayList<Player> getAllPlayer() {
         return stockAccounts;
     }
 

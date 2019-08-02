@@ -2,6 +2,7 @@ package Actors;
 
 import Messages.BankMessages;
 import Messages.BrokerMessages;
+import Messages.GameMessage;
 import Messages.PlayerMessages;
 import Model.Transaction;
 import Service.BrokerService;
@@ -32,9 +33,17 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.GetCurrentTurnMessage.class, currentTurn())//get current turn
                 .match(BrokerMessages.AddPlayerToGameMessage.class, addPlayerToGame())//add player to game
                 .match(BrokerMessages.GetAllStocksMessage.class, getAllStocksMessage())//get all transaction Data
+//                .match(BrokerMessages.GetallPlayerInGameMessage.class, handleGetallPlayer())//get all player in game
                 .build();
     }
 
+
+//    //get all players in game
+//    private FI.UnitApply<BrokerMessages.GetallPlayerInGameMessage> handleGetallPlayer() {
+//        return getallPlayerMessage -> {
+//            sender().tell(BrokerService.getAllPlayer(), getSelf());
+//        };
+//    }
 
     private FI.UnitApply<BrokerMessages.CreateBrokerMessage> handleCreateBrocker() {
         return createBrokerMessage -> {
