@@ -34,7 +34,6 @@ class TransactionHistory extends React.Component {
   componentDidMount() 
   {
     getTransactioHistory().then(response => {
-      console.log(response)
       this.setState({ tableData: this.getTableData(response) })
     })
   }
@@ -46,7 +45,6 @@ class TransactionHistory extends React.Component {
     response.forEach(function (element) {
       rowArray.push([element.buyerseller, element.turn, element.type, element.stockname, element.quantity, element.transaction])
     });
-    console.log(rowArray)
     return rowArray;
   }
   render() {

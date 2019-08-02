@@ -23,6 +23,14 @@ public class Stock {
 		this.sector = sector;
 	}
 
+	public int getStockId() {
+		return stockId;
+	}
+
+	public void setStockId(int stockId) {
+		this.stockId = stockId;
+	}
+
 	public BigDecimal getStockPrice() {
 		return stockPrice;
 	}
@@ -47,11 +55,11 @@ public class Stock {
 		this.sector = sector;
 	}
 
-	public int getStockId() {
-		return stockId;
+	public static int getStockIdCounter() {
+		return stockIdCounter;
 	}
 
-	public void setStockId(int stockId) {
-		this.stockId = stockId;
+	public static void setStockIdCounter(int stockIdCounter) {
+		Stock.stockIdCounter = stockIdCounter;
 	}
 }

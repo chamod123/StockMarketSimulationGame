@@ -1,21 +1,3 @@
-/*!
-
-=========================================================
-* Material Dashboard React - v1.7.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/material-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-/*eslint-disable*/
 import React from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
@@ -44,6 +26,7 @@ import ChartistGraph from "react-chartist";
 import {
   dailySalesChart,
 } from "variables/charts.jsx";
+import { getAllStocks } from "server/server";
 
 
 const styles = {
@@ -76,70 +59,6 @@ const styles = {
   }
 };
 
-const response =[ {
-  "sector":"Finance",
-  "stocks": [{
-    "name": "google",
-    "no_f_shares": 123,
-    "rate": 1.7
-  },
-  {
-    "name": "facebook",
-    "no_f_shares": 123,
-    "rate": 1.7
-  },
-  {
-    "name": "amazon",
-    "no_f_shares": 123,
-    "rate": 1.7
-  }
-  ]
-  
-},
-{"sector":"Human Resources",
-  "stocks": [{
-    "name": "google",
-    "no_f_shares": 123,
-    "rate": 1.7
-  },{
-    "name": "google",
-    "no_f_shares": 123,
-    "rate": 1.7
-  },{
-    "name": "google",
-    "no_f_shares": 123,
-    "rate": 1.7
-  }]
-}
-,
-{"sector":"Sector 3",
-  "stocks": [{
-    "name": "google",
-    "no_f_shares": 123,
-    "rate": 1.7
-  },{
-    "name": "fb",
-    "no_f_shares": 123,
-    "rate": 1.7
-  },{
-    "name": "fb",
-    "no_f_shares": 123,
-    "rate": 1.7
-  },{
-    "name": "fb",
-    "no_f_shares": 123,
-    "rate": 1.7
-  },{
-    "name": "fb",
-    "no_f_shares": 123,
-    "rate": 1.7
-  },{
-    "name": "google",
-    "no_f_shares": 123,
-    "rate": 1.7
-  }]
-}
-]
 const chartData = {
   "labels": ["M", "T", "W", "T", "F", "S", "S"],
   "series": [[12, 17, 7, 17, 23, 18, 38]]
@@ -152,16 +71,39 @@ class Stocks extends React.Component {
       stockArray:[],
       selectedSectorIndex:0,
       selectedStock: 0,
-      chartData:chartData
+      chartData:chartData,
+      Finance:[],
+      Technology:[],
+      Manufacturing:[],
+      ConsumerServices:[]
     };
   }
 
   componentDidMount() {
-    this.setState(
-      {
-        stockArray:response
-      })
-    
+  getAllStocks()
+  .then((response) => {
+    console.log(response)
+      this.setState({stockArray:this.createUISectorArray(response)});
+    })
+ 
+  }
+  createUISectorArray = (response) => {
+    return [{
+      "sector":"Finance",
+      "stocks": response.filter(stock => stock.sector=="Finance"),
+    },
+    {
+      "sector":"Technology",
+      "stocks":response.filter(stock => stock.sector=="Technology"),
+    },
+    {
+      "sector":"Manufacturing",
+      "stocks":response.filter(stock => stock.sector=="Manufacturing")
+    },
+    {
+      "sector":"ConsumerServices",
+      "stocks":response.filter(stock => stock.sector=="ConsumerServices"),
+    }]   
   }
   
   // to stop the warning of calling setState of unmounted component
@@ -193,7 +135,7 @@ class Stocks extends React.Component {
   getTableData = (array) => {
     var rowArray=[]
     array.forEach(function (element) {
-      rowArray.push([element.name, element.no_f_shares.toString(), element.rate.toString()])
+      rowArray.push([element.stockId.toString(), element.companyName, element.stockPrice.toString()])
     });
     return rowArray;
   }
@@ -217,12 +159,15 @@ class Stocks extends React.Component {
     if (selectedSectorIndex == 2) {
       return "info"
     }
+    if (selectedSectorIndex == 3) {
+      return "danger"
+    }
   }
 
   getChartTitle = () => {
     const { selectedSectorIndex, selectedStock, stockArray } = this.state;
     var sector = stockArray[selectedSectorIndex].sector
-    var stock = stockArray[selectedSectorIndex].stocks[selectedStock].name
+    var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
     return sector+" : "+stock
   }
 
@@ -235,7 +180,7 @@ class Stocks extends React.Component {
           <h4 className={classes.cardTitleWhite}>Stocks</h4>
         </CardHeader>
         <CardBody>
-        {stockArray.length==3?<GridContainer>
+        {stockArray.length===4?<GridContainer>
            <GridItem xs={12} sm={12} md={6}>
               <h5>Sectors</h5>
               <br />
@@ -250,7 +195,7 @@ class Stocks extends React.Component {
                   tabContent:  (
                     <StockTable
                     tableHeaderColor="warning"
-                    tableHead={["Stock", "No of shares", "rate"]}
+                    tableHead={["Stock ID", "Company Name", "Stock Price"]}
                     tableData={this.getTableData(stockArray[0].stocks)}
                     handleRowSelect={this.handleStockSelect}
                     selectedSectorIndex={0}
@@ -263,7 +208,7 @@ class Stocks extends React.Component {
                   tabContent: (
                     <StockTable
                     tableHeaderColor="success"
-                    tableHead={["Stock", "No of shares", "rate"]}
+                    tableHead={["Stock ID", "Company Name", "Stock Price"]}
                     tableData={this.getTableData(stockArray[1].stocks)}
                     handleRowSelect={this.handleStockSelect}
                     selectedSectorIndex={1}
@@ -276,10 +221,23 @@ class Stocks extends React.Component {
                   tabContent: (
                     <StockTable
                     tableHeaderColor="info"
-                    tableHead={["Stock", "No of shares", "rate"]}
+                    tableHead={["Stock ID", "Company Name", "Stock Price"]}
                     tableData={this.getTableData(stockArray[2].stocks)}
                     handleRowSelect={this.handleStockSelect}
                     selectedSectorIndex={2}
+                  />
+                  )
+                },
+                {
+                  tabName: stockArray[3].sector,
+                  tabIcon: Cloud,
+                  tabContent: (
+                    <StockTable
+                    tableHeaderColor="info"
+                    tableHead={["Stock ID", "Company Name", "Stock Price"]}
+                    tableData={this.getTableData(stockArray[2].stocks)}
+                    handleRowSelect={this.handleStockSelect}
+                    selectedSectorIndex={3}
                   />
                   )
                 }
