@@ -144,7 +144,8 @@ public class BrokerService {
         if(stockAccounts.size()==0){
             CreateAccount(new Player("Computer"));
             BankService.CreateAccount(new Account("Computer"));
-            System.out.println("Computer player created");
+//            System.out.println("stockAccounts  " + stockAccounts);
+//            System.out.println("stockAccounts size " +stockAccounts.size());
         }
 
         ArrayList<String> predictions = Prediction();
