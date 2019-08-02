@@ -34,7 +34,6 @@ class LeaderBoard extends React.Component {
   componentDidMount() 
   {
     getLeaderBoard().then(response => {
-      console.log(response)
       this.setState({ tableData: this.getTableData(response) })
     })
   }
@@ -48,7 +47,6 @@ class LeaderBoard extends React.Component {
     response.forEach(function (element) {
       rowArray.push([element.id, element.name, element.price])
     });
-    console.log(rowArray)
     return rowArray;
   }
   render() {

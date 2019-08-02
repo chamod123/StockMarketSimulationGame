@@ -18,8 +18,7 @@ import Danger from "components/Typography/Danger.jsx";
 import avatar from "assets/img/faces/SMG_Web.png";
 import { getPlayerByID } from 'server/server';
 
-
-
+ 
   
 const styles = {
   cardCategoryWhite: {
