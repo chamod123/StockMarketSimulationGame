@@ -16,10 +16,9 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import Primary from "components/Typography/Primary";
 import Danger from "components/Typography/Danger.jsx";
 import avatar from "assets/img/faces/SMG_Web.png";
-import { getPlayer } from 'server/server';
+import { getPlayerByID } from 'server/server';
 
-
-
+ 
   
 const styles = {
   cardCategoryWhite: {
@@ -49,7 +48,7 @@ function UserProfile(props) {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-   getPlayer(1).then(response => {
+   getPlayerByID(1).then(response => {
      console.log(response)
       setFname(response.firstName)
       setLname(response.lastName)

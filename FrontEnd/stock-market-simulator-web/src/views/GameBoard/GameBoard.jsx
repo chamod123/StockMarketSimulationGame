@@ -31,6 +31,7 @@ import { Typography } from "@material-ui/core";
 import { getStocks } from "server/server.js";
 import { getMyStocks } from "server/server.js";
 import { getPlayers } from "server/server.js";
+import { addPlayer } from "server/server.js";
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -89,13 +90,14 @@ class GameBoard extends React.Component {
   }
 
   handlePressStartGame = () => {
-    getPlayers().then(response => { 
-      console.log(response)
-      this.setState({
-        currentPlayers:response
-      })
-     })
-    //Call Startgame
+    addPlayer("7").then(
+      getPlayers().then(response => {
+        console.log(response)
+        this.setState({
+          currentPlayers: response
+        })
+      })).catch(error => console.error(error)
+      )
   }
 
   getTableData = (array) => {
