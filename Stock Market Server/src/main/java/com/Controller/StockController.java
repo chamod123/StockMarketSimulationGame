@@ -143,7 +143,7 @@ public class StockController {
     @PostMapping("/addPlayer/{id}")
     public CompletionStage<GameMessage.ActionPerformed> addPlayerToGame(@PathVariable("id") Long id) {
         CompletionStage<GameMessage.ActionPerformed> playerCreated = Patterns
-                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id,actorSystemCreate.getPlayerActor(),actorSystemCreate.getBrokerActor()), timeout)
+                .ask(actorSystemCreate.getGameActor(), new GameMessage.AddPlayerToGameMessage(id, actorSystemCreate.getPlayerActor(), actorSystemCreate.getBrokerActor()), timeout)
                 .thenApply(GameMessage.ActionPerformed.class::cast);
         if (playerCreated != null) {
             return playerCreated;
@@ -269,8 +269,8 @@ public class StockController {
     //#POST - next turn
     @PostMapping("/nextTurn")
     public String NextTurn() {
-        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+        CompletionStage<ClockMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getClockActor(), new ClockMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (ClockMessages.ActionPerformed) obj);
         if (nextTurn != null) {
             return "sucess";
         }
@@ -281,8 +281,8 @@ public class StockController {
     //go to next turn after 45 seconds
     @Scheduled(fixedDelay = 45000)
     public String nextTurnS() throws Exception {
-        CompletionStage<AnalystMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getAnalystActor(), new AnalystMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
-                .thenApply(obj -> (AnalystMessages.ActionPerformed) obj);
+        CompletionStage<ClockMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getClockActor(), new ClockMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+                .thenApply(obj -> (ClockMessages.ActionPerformed) obj);
         if (nextTurn != null) {
             return "sucess";
         }
