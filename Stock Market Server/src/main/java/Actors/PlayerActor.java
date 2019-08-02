@@ -40,7 +40,7 @@ public class PlayerActor extends AbstractActor {
         return updatePlayerMessage -> {
             PlayerService.updatePlayer(updatePlayerMessage.getPlayer());
 
-            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", updatePlayerMessage.getPlayer()
+            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s updated.", updatePlayerMessage.getPlayer()
                     .getName())), getSelf());
         };
     }

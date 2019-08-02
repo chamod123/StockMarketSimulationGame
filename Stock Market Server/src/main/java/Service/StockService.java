@@ -33,8 +33,17 @@ public class StockService {
     public static void createStock(Stock stock) {
         stock.setStockId(stocks.size()+1);
         stocks.add(stock);
+//        for (Stock stock1 : stocks) {
+//            System.out.println("accountList  " + stock1.getCompanyName() +"  " + stock1.getStockId()+"  " + stock1.getSector());
+//        }
+    }
+
+    public static void updateStock(Stock stock) {
         for (Stock stock1 : stocks) {
-            System.out.println("accountList  " + stock1.getCompanyName() +"  " + stock1.getStockId()+"  " + stock1.getSector());
+            if(stock.getStockId()==stock1.getStockId()){
+                stock1.setStockPrice(stock.getStockPrice());
+                stock1.setSector(stock.getSector());
+            }
         }
     }
 }

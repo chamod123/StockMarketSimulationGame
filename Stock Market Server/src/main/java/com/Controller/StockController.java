@@ -100,6 +100,18 @@ public class StockController {
     }
 
     //checked
+    //#POST - update stock
+    @PostMapping("/updatestock")
+    public String updateStock(@RequestBody Stock stock) {
+        CompletionStage<StockMessages.ActionPerformed> stockCreated = Patterns.ask(actorSystemCreate.getStockActor(), new StockMessages.UpdateStockMessage(stock), timeout)
+                .thenApply(obj -> (StockMessages.ActionPerformed) obj);
+        if (stockCreated != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
+    //checked
     //#GET - get a stock by id
     @GetMapping("/stock/{id}")
     public CompletionStage<Optional<Stock>> getStock(@PathVariable("id") Long id) {

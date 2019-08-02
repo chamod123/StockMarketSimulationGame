@@ -46,8 +46,6 @@ public class PlayerService {
                 player1.setTpNumber(player.getTpNumber());
             }
         }
-        player.setId(players.size()+1);
-        players.add(player);
     }
 
     public List<Player> getPlayers(){
