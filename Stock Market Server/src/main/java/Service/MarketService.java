@@ -126,7 +126,8 @@ public class MarketService {
 
     //return future array list
     public static ArrayList<Stock> GetPredictedStocks() {
-        ArrayList<Stock> temp = StockService.stocks;
+        ArrayList<Stock> temp = new ArrayList<>();
+                temp = StockService.stocks;
         Random ran = new Random();
 
         int number = ran.nextInt(3) + currentTurn;
@@ -150,6 +151,7 @@ public class MarketService {
             temp.add(new Stock(sName + "Temp", sec, stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue))));
 
         }
+        System.out.println("temp " + temp);
         return temp;
     }
 
