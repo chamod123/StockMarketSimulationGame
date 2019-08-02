@@ -24,12 +24,12 @@ import static java.lang.String.valueOf;
 //import au.com.bytecode.opencsv.CSVWriter;
 
 public class MarketService {
-//    public static ArrayList<Stock> stocks; // get stock from StockService
+    //    public static ArrayList<Stock> stocks; // get stock from StockService
     public static ArrayList<Stock> stocksHistory;
     public static int turns = 40;
     public static HashMap<Sector, ArrayList<Integer>> sectorTrends = new HashMap<>();
-    public static ArrayList<Integer> marketTrends= new ArrayList<>();
-    public static ArrayList<Event> eventList= new ArrayList<>();
+    public static ArrayList<Integer> marketTrends = new ArrayList<>();
+    public static ArrayList<Event> eventList = new ArrayList<>();
     private static int currentTurn = 1;
     static Random random = new Random();
     static Random randomvalue = new Random();
@@ -98,9 +98,6 @@ public class MarketService {
 
     //get all stocks
     public static ArrayList<Stock> getStocks() throws Exception {
-        for (Stock stock1 : StockService.stocks) {
-          System.out.println("all stock "+stock1.getCompanyName());
-        }
         return StockService.stocks;
     }
 
@@ -133,7 +130,7 @@ public class MarketService {
         Random ran = new Random();
 
         int number = ran.nextInt(3) + currentTurn;
-        System.out.println("number " +number);
+        System.out.println("number " + number);
 
         System.out.println("stock size " + StockService.stocks.size());
 
@@ -141,7 +138,7 @@ public class MarketService {
 
             //get market trend value for current turn
             int marketValue = marketTrends.get(number);
-            System.out.println("marketValue " +marketValue);
+            System.out.println("marketValue " + marketValue);
 
             //get sector trend value value for current turn
             int sectorValue = sectorTrends.get(temp.get(i).getSector()).get(number);
@@ -190,9 +187,6 @@ public class MarketService {
 
             int marketValue = marketTrends.get(currentTurn);
             //get sector trend value value for current turn
-            System.out.println("awa company " + StockService.stocks.get(i).getCompanyName());
-            System.out.println("awa sector " + StockService.stocks.get(i).getCompanyName());
-            System.out.println("awa sector " + sectorTrends.get(StockService.stocks.get(i).getSector()).get(currentTurn));
             int sectorValue = sectorTrends.get(StockService.stocks.get(i).getSector()).get(currentTurn);
             int eventValue = ChangeEventStockValue(StockService.stocks.get(i), currentTurn);
             BigDecimal stockprice = StockService.stocks.get(i).getStockPrice();
@@ -201,7 +195,7 @@ public class MarketService {
             CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
 
             String record = StockService.stocks.get(i).getStockPrice().toString();
-            String [] record3 = {record};
+            String[] record3 = {record};
             writer.writeNext(record3);
 
             writer.close();
@@ -228,7 +222,6 @@ public class MarketService {
     public static ArrayList<Event> GetCurrentEvents() {
         ArrayList<Event> eList = new ArrayList<>();
         for (int i = 0; i < eventList.size(); i++) {
-            System.out.println("eventList end: " + eventList.get(i).getEndTurn() + " Start :" + eventList.get(i).getStartTurn());
             if (currentTurn >= eventList.get(i).getStartTurn() && currentTurn <= eventList.get(i).getEndTurn()) {
                 eList.add(eventList.get(i));
             }
@@ -240,16 +233,17 @@ public class MarketService {
         //set market Trends
 
         int nextInt;
-        for(int i=0;i<turns;i++) {
+        for (int i = 0; i < turns; i++) {
             nextInt = random.nextInt(100);
             if (nextInt < 50) {
                 if (nextInt > 25) {
-                    marketTrends.add(randomvalue.nextInt(4) - 5);;
-                }else {
-                    marketTrends.add(randomvalue.nextInt(4)+1);
+                    marketTrends.add(randomvalue.nextInt(4) - 5);
+                    ;
+                } else {
+                    marketTrends.add(randomvalue.nextInt(4) + 1);
                 }
 
-            }else {
+            } else {
                 marketTrends.add(0);
             }
 
@@ -258,24 +252,20 @@ public class MarketService {
 
         //set sector trends
         for (Sector d : Sector.values()) {
-            ArrayList<Integer> trends=new ArrayList();
-            for(int i=0;i<turns;i++) {
+            ArrayList<Integer> trends = new ArrayList();
+            for (int i = 0; i < turns; i++) {
                 nextInt = random.nextInt(100);
                 if (nextInt < 50) {
                     if (nextInt > 25) {
                         trends.add(randomvalue.nextInt(4) - 5);
-                    }else {
-                        trends.add(randomvalue.nextInt(4)+1);
+                    } else {
+                        trends.add(randomvalue.nextInt(4) + 1);
                     }
-
-                }else {
+                } else {
                     trends.add(0);
                 }
-
             }
             sectorTrends.put(d, trends);
-
-
         }
 
     }
