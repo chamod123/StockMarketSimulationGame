@@ -84,7 +84,7 @@ public class StockController {
     public CompletionStage<ArrayList<Player>> getallPlayers() {
         CompletionStage<ArrayList<Player>> player = Patterns
                 .ask(actorSystemCreate.getGameActor(), new GameMessage.GetallPlayerMessage(actorSystemCreate.getBrokerActor()), timeout)
-                 .thenApply(obj -> (ArrayList<Player>) obj);
+                .thenApply(obj -> (ArrayList<Player>) obj);
         return player;
     }
 
@@ -240,12 +240,13 @@ public class StockController {
         return balance;
     }
 
+    //checked
     //#GET - get all account details
     @GetMapping("/accounts")
     public CompletionStage<List<Account>> getAllAccount() {
-        CompletionStage<List<Account>> allPlayer = Patterns.ask(actorSystemCreate.getBankActor(), new BankMessages.GetAllBankBalanceMessage(), timeout)
+        CompletionStage<List<Account>> allAccount = Patterns.ask(actorSystemCreate.getBankActor(), new BankMessages.GetAllBankBalanceMessage(), timeout)
                 .thenApply(obj -> (List<Account>) obj);
-        return allPlayer;
+        return allAccount;
     }
 
 
@@ -349,8 +350,6 @@ public class StockController {
         }
         return "not sucess";
     }
-
-
 
 
 }

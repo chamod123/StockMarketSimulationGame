@@ -132,9 +132,9 @@ public class MarketService {
         int number = ran.nextInt(3) + currentTurn;
         System.out.println("number " + number);
 
-        System.out.println("stock size " + StockService.stocks.size());
+        int size = StockService.stocks.size();
 
-        for (int i = 0; i < StockService.stocks.size(); i++) {
+        for (int i = 0; i < size; i++) {
 
             //get market trend value for current turn
             int marketValue = marketTrends.get(number);

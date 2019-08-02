@@ -34,7 +34,9 @@ public class AnalystActor extends AbstractActor {
     private FI.UnitApply<AnalystMessages.GetPredictionMessage> Prediction() {
         return getPredictionMessage -> {
             //call to broker actor to get Prediction
-            getPredictionMessage.getBrokerActor().tell(new BrokerMessages.GetPredictionMessage(), getSelf());
+//            getPredictionMessage.getBrokerActor().tell(new BrokerMessages.GetPredictionMessage(), getSelf());
+            sender().tell(BrokerService.Prediction(), getSelf());
+
 //            sender().tell(new AnalystMessages.ActionPerformed(String.format("get prediction "
 //            )), getSelf());
         };

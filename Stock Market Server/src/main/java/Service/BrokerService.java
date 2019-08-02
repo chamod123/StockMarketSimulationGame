@@ -170,28 +170,15 @@ public class BrokerService {
     public static ArrayList<String> Prediction() {
         ArrayList<Stock> futureStocks = MarketService.GetPredictedStocks();
 
-        for (Stock stock : futureStocks) {
-            System.out.println("futureStocks id: " + stock.getStockId()+" name: "+stock.getCompanyName()+" price: " + stock.getStockPrice());
-        }
-
-
         String max = futureStocks.get(0).getCompanyName();
-        System.out.println("max " + max);
-
         BigDecimal valMax = futureStocks.get(0).getStockPrice();
-        System.out.println("valMax "+valMax);
-
         String min = futureStocks.get(0).getCompanyName();
-        System.out.println("min " + min);
-
         BigDecimal valMin = futureStocks.get(0).getStockPrice();
-        System.out.println("valMin "+ valMin);
 
         for (int i = 0; i < futureStocks.size(); i++) {
             if (futureStocks.get(i).getStockPrice().compareTo(valMax) > 0) {
                 max = futureStocks.get(i - 0).getCompanyName();
                 valMax = futureStocks.get(i).getStockPrice();
-
             }
 
         }
