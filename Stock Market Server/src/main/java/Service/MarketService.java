@@ -264,7 +264,7 @@ public static List<String[]> getStocksPerGraph() throws Exception {
 
         //Read all rows at once
         List<String[]> allRows = reader.readAll();
-        allRows.remove(2);
+
 
         List<String[]> selectedRows = new ArrayList<>();
         List<String> turn = new ArrayList<>();
@@ -275,7 +275,7 @@ public static List<String[]> getStocksPerGraph() throws Exception {
                 return account.getBalance();
             }
         }*/
-        ArrayList<String> list = null;
+       // ArrayList<String> list = null;
         for (String[] row : allRows) {
             if (companyname.equals(row[2])) {
 
@@ -296,7 +296,7 @@ public static List<String[]> getStocksPerGraph() throws Exception {
             //list.add(x);
             //list.add(y);
 
-            System.out.println("Latest : " + list);
+         //   System.out.println("Latest : " + list);
 
 
             //selectedRows.add(turns);
