@@ -100,9 +100,11 @@ public class MarketService {
         return StockService.stocks;
     }
 
+/*
     //get all stocks from csv  for graph
     public static ArrayList<String> getStocksPerGraph() throws Exception {
-      /*  //Build reader instance
+      */
+/*  //Build reader instance
         CSVReader reader = new CSVReader(new FileReader("data.csv"), ',', '"', 0);
 
         //Read all rows at once
@@ -116,7 +118,8 @@ public class MarketService {
 
             }
             System.out.println();
-        }*/
+        }*//*
+
 
         List<String[]> allData = null;
         ArrayList<String> list = new ArrayList<String>();
@@ -132,24 +135,31 @@ public class MarketService {
             allData = csvReader.readAll();
             List<String> turn = new ArrayList<>();
             List<String> stockValue = new ArrayList<>();
+            List<String> stockname = new ArrayList<>();
             // print Data
             for (String[] row : allData) {
 
                 System.out.println("Turn  " + row[0]);
                 System.out.println("Stock value :" + row[1] );
+                System.out.println("Stock value :" + row[2] );
 
                 turn.add(row[0]);
                 stockValue.add(row[1]);
+                stockname.add(row[2]);
 
-               /* for (String cell : row) {
+               */
+/* for (String cell : row) {
                     System.out.print(cell + "\t");
-                }*/
+                }*//*
+
                 System.out.println();
             }
             System.out.println(turn);
             System.out.println(stockValue);
+            System.out.println(stockname);
 
-            // declaration and initialise String Array
+      */
+/*      // declaration and initialise String Array
             String str[] = new String[turn.size()];
             String str2[] = new String[stockValue.size()];
 
@@ -159,13 +169,15 @@ public class MarketService {
                 // Assign each value to String array
                 str[j] = turn.get(j);
                 str2[j] = stockValue.get(j);
-            }
+            }*//*
 
 
 
 
 
-        /*    String[] results1 = new String[turn.size()];
+
+        */
+/*    String[] results1 = new String[turn.size()];
             turn.toArray(results1);
             System.out.println("Array results 1" + Arrays.toString(results1));
             String[] results2 = new String[stockValue.size()];
@@ -179,28 +191,38 @@ public class MarketService {
                 list.add("]");
             }
 
-            System.out.println("Print list :" + list );*/
-           /* List<String> wordList = (List<String>) Arrays.asList(results1,results2);
-            System.out.println(wordList);*/
-           /* for (int counter = 0; counter <= results1.length; counter++) {
+            System.out.println("Print list :" + list );*//*
+
+           */
+/* List<String> wordList = (List<String>) Arrays.asList(results1,results2);
+            System.out.println(wordList);*//*
+
+           */
+/* for (int counter = 0; counter <= results1.length; counter++) {
                 String temp1=results1[counter];
                 String temp2= results2[counter];
 
                 List<String> data = Arrays.asList(new String[]{temp1, temp2});
                 List<String> wordList = Arrays.asList(temp1,temp2);
                 System.out.println(wordList);
-            }*/
+            }*//*
+
             String[] results1 = new String[turn.size()];
             turn.toArray(results1);
             String x=Arrays.toString(results1);
             String[] results2 = new String[stockValue.size()];
             stockValue.toArray(results2);
             String y=Arrays.toString(results2);
+            String[] results3 = new String[stockname.size()];
+            stockname.toArray(results3);
+            String z=Arrays.toString(results3);
+
 
 
           //  ArrayList<String> list = new ArrayList<String>();
             list.add(x);
             list.add(y);
+            list.add(z);
 
             System.out.println("Latest : " + list);
 
@@ -221,6 +243,17 @@ public class MarketService {
 
         //return allData;
     }
+*/
+//get all stocks from csv  for graph
+public static List<String[]> getStocksPerGraph() throws Exception {
+
+ //Build reader instance
+        CSVReader reader = new CSVReader(new FileReader("data.csv"), ',', '"', 0);
+
+        //Read all rows at once
+        List<String[]> allRows = reader.readAll();
+        return allRows;
+        }
 
 /*
     //get all stocks for charts
@@ -295,7 +328,8 @@ public class MarketService {
             CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
             String turnString = String.valueOf(GetCurrentTurn());
             String record = StockService.stocks.get(i).getStockPrice().toString();
-            String[] record3 = {turnString,record};
+            String name = StockService.stocks.get(i).getCompanyName().toString();
+            String[] record3 = {turnString,record,name};
             writer.writeNext(record3);
             writer.close();
 
