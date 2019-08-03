@@ -34,7 +34,9 @@ class Dashboard extends React.Component {
   handleChange = (event, value) => {
     this.setState({ value });
   };
-
+  handleNavigateToGame=()=>{
+    this.props.history.push('/admin/game')
+ }
   componentDidMount() {
     getLeaderBoard().then(response => {
       var sortedData=this.sortData(response)
@@ -63,6 +65,7 @@ class Dashboard extends React.Component {
     });
     return rowArray;
   }
+
 
   render() {
     const { classes } = this.props;
@@ -155,7 +158,8 @@ class Dashboard extends React.Component {
 
               
               <CardFooter>
-              <Button color="primary">Let's Start</Button>
+              <Button color="primary" onClick={this.handleNavigateToGame}>
+              Let's Start</Button>
               </CardFooter>
             </Card>
           </GridItem>
