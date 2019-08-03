@@ -54,15 +54,15 @@ export default function PaymentForm() {
   const [expirydate, setexpirydate] = useState("");
   const [cvv, setcvv] = useState("");
 
-  const handlePaymentInfo=()=>{
+  const PaymentInfo=()=>{
     let request={
-      HolderName:{holdername},
-      CardNumber:{cardnumber},
-      ExpiryDate:{expirydate},
-      CVV:{cvv}
+      name:{holdername},
+      cardNo:{cardnumber},
+      expierDate:{expirydate},
+      cvv:{cvv}
     }
     console.log(request)
-   // call post handlePaymentInfo(request) API
+   // call post PaymentInfo(request) API
   }
   
   const handleChangeholdername = (event) => {
@@ -92,7 +92,7 @@ export default function PaymentForm() {
         <Typography component="h1" variant="h5">
           Payment Details
         </Typography>
-        <form className={classes.form} noValidate>
+
         <FormControl error={holdername===""}>
           <TextField
             variant="outlined"
@@ -163,7 +163,7 @@ export default function PaymentForm() {
             variant="contained"
             color="primary"
            // className={classes.submit}
-           onClick={handlePaymentInfo}
+           onClick={PaymentInfo}
           >
             Sign In
           </Button>
@@ -174,7 +174,6 @@ export default function PaymentForm() {
               </Link>
             </Grid>
           </Grid>
-        </form>
       </div>
       <Box mt={5}>
         <Create />

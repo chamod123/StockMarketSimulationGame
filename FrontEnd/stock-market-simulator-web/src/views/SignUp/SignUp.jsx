@@ -57,16 +57,16 @@ export default function SignUp() {
   const [password, setpassword] = useState(false);
   const [username, setusername] = useState(false);
 
-  const handleSignUP=()=>{
+  const SignUP=()=>{
     let request={
-      FirstName:{firstName},
-      LastName:{lastName},
-      Email:{Email},
-      UserName:{username},
-      Password:{password}
+      name:{firstName},
+      secondName:{lastName},
+      email:{Email},
+      userName:{username},
+      password:{password}
     }
     console.log(request)
-   // call handleSignUP(request) API
+   // call SignUP(request) API
   }
   const handleChangeFistName = (event) => {
     setFirstName(event.target.value)
@@ -181,12 +181,13 @@ export default function SignUp() {
            </FormControl>
             </Grid>
           </Grid>
+          <br/>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            onClick={handleSignUP}
+            onClick={SignUP}
           >
             Add Bank Info
           </Button>

@@ -175,8 +175,8 @@ function addPlayer(id) {
 
 function getPlayerByID(id) {
     return new Promise((resolve, reject) => {
-        // fetch(`http://localhost:8081/players/${id}`)
-        fetch('https://api.myjson.com/bins/8ymrh') //test myjson
+         fetch(`http://localhost:8081/players/${id}`)
+      //  fetch('https://api.myjson.com/bins/8ymrh') //test myjson
             .then(function (response) {
                 console.log(response)
                 return response.json();
@@ -206,8 +206,8 @@ function postPlayers(data) {
     })
 }
 
-function handleUpdateProfile(request) {
-    var url = 'https://api.myjson.com/bins'
+function UpdateProfile(request) {
+    var url = 'http://localhost:8081/updateplayers'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -227,7 +227,8 @@ function handleUpdateProfile(request) {
 // Get -payment infromation of a player
 function getPaymentInfo(id) {
     return new Promise((resolve, reject) => {
-        fetch('https://api.myjson.com/bins/zg0it') //test myjson
+     //   fetch('https://api.myjson.com/bins/zg0it') //test myjson
+         fetch('http://localhost:8081/accounts/${id}')
             .then(function (response) {
                 console.log(response)
                 return response.json();
@@ -237,7 +238,6 @@ function getPaymentInfo(id) {
             })
     })
 }
-
 function  signIn(username, password) {
     console.log(username)
     console.log(password)
@@ -256,8 +256,8 @@ function  signIn(username, password) {
     })
 }
 //post -Update Payment Information
-function handleUpdatePaymentInfo(request) {
-    var url = 'https://api.myjson.com/bins'
+function UpdatePaymentInfo(request) {
+    var url = 'http://localhost:8081/accountupdate'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -275,8 +275,8 @@ function handleUpdatePaymentInfo(request) {
     })
 }
 //post -Update Bank Balance
-function handleUpdateBankBalance(request) {
-    var url = 'https://api.myjson.com/bins'
+function UpdateBankBalance(request) {
+    var url = 'http://localhost:8081/deposit'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -294,8 +294,8 @@ function handleUpdateBankBalance(request) {
     })
 }
 //post -SignUP
-function  handleSignUP(request) {
-    var url = 'https://api.myjson.com/bins'
+function  SignUP(request) {
+    var url = 'http://localhost:8081/players'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -313,8 +313,8 @@ function  handleSignUP(request) {
     })
 }
 //post -PaymentInfo
-function  handlePaymentInfo(request) {
-    var url = 'https://api.myjson.com/bins'
+function  PaymentInfo(request) {
+    var url = 'http://localhost:8081/accountupdate'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -366,8 +366,8 @@ function getStockById(id) {
 function getBankBalance(id) {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-      //  fetch(`http://localhost:8081/bankBalance${id}`)
-      fetch('https://api.myjson.com/bins/kx92t')
+        fetch(`http://localhost:8081/bankBalance${id}`)
+   //   fetch('https://api.myjson.com/bins/kx92t')
             .then(function (response) {
                 return response.json();
             })
@@ -413,16 +413,19 @@ export {
     getLeaderBoard,
 	postPlayers,
     getTransactioHistory,
-    handleUpdateProfile,
+    UpdateProfile,
     getPaymentInfo,
     getBankBalance,
-    handleUpdatePaymentInfo,
-    handleUpdateBankBalance,
+    UpdatePaymentInfo,
+    UpdateBankBalance,
     signIn,
     addPlayer,
     getStocksBySector,
     getAllStocks,
     buyStock,
-    sellStock
+    sellStock,
+    PaymentInfo,
+    UpdatePaymentInfo,
+    SignUP
  //   UpdateProfile
 }
