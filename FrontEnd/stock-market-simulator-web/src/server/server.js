@@ -1,8 +1,6 @@
-//require('dotenv').config();
-
 function getAllStocks() {
     return  new Promise((resolve, reject) => { 
-        fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/allStock`)
+        fetch("http://localhost:8081/allStock")
             .then(function (response) {
                 if (!response.ok) throw new Error(response.status);
                 return response.json();
@@ -20,7 +18,7 @@ function getPortofolio(user) {
     console.log("called portofolio")
     console.log(user)
     return  new Promise((resolve, reject) => { 
-        fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/portofolio/${user}`)
+        fetch(`http://localhost:8081/portofolio/${user}`)
             .then(function (response) {
                 if (!response.ok) throw new Error(response.json());
                 return response.json();
@@ -42,7 +40,7 @@ function buyStock(user, stock, quantity) {
         "quantity": quantity
     }
     console.log(request)
-    var url = `http://${process.env.Server_Ip}:${process.env.Server_Port}/buyStock`
+    var url = `http://localhost:8081/buyStock`
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST',
@@ -71,7 +69,7 @@ function sellStock(user, stock, quantity) {
         "quantity": quantity
     }
     
-    var url = `http://${process.env.Server_Ip}:${process.env.Server_Port}/sellStock`
+    var url = `http://localhost:8081/sellStock`
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST',
@@ -97,7 +95,7 @@ function sellStock(user, stock, quantity) {
 function getStocksBySector(name) {
     console.log("called getStocksBySector")
     return new Promise((resolve, reject) => {
-        fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/stockBySector/${name}`)
+        fetch(`http://localhost:8081/stockBySector/${name}`)
             .then(function (response) {
                 if (!response.ok) throw new Error(response.status);
                 return response.json();
@@ -112,7 +110,20 @@ function getStocksBySector(name) {
 function getLeaderBoard() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-         fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/accounts `)
+         fetch('http://localhost:8081/accounts')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            });
+    })
+}
+
+function getPrediction() {
+    console.log("called getPrediction")
+    return  new Promise((resolve, reject) => { 
+         fetch('http://localhost:8081/prediction')
             .then(function (response) {
                 return response.json();
             })
@@ -125,7 +136,7 @@ function getLeaderBoard() {
 function getTransactioHistory() {
     console.log("called")
     return  new Promise((resolve, reject) => {
-        fetch(` http://${process.env.Server_Ip}:${process.env.Server_Port}/transactions `)
+        fetch('http://localhost:8081/"transactions')
             .then(function (response) {
                 return response.json();
             })
@@ -138,8 +149,8 @@ function getTransactioHistory() {
 function getPlayers() {
     console.log("called getPlayers")
     return new Promise((resolve, reject) => {
-        fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/players `)
-        // fetch(`https://api.myjson.com/bins/1azzr5') //test myjson
+        fetch('http://localhost:8081/players')
+        // fetch('https://api.myjson.com/bins/1azzr5') //test myjson
             .then(function (response) {
                 if (!response.ok) throw new Error(response.status);
                 return response.json();
@@ -152,7 +163,7 @@ function getPlayers() {
 }
 
 function addPlayer(id) {
-    var url = `http://${process.env.Server_Ip}:${process.env.Server_Port}/addPlayer/${id}`
+    var url = `http://localhost:8081/addPlayer/${id}`
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST',
@@ -177,8 +188,8 @@ function addPlayer(id) {
 
 function getPlayerByID(id) {
     return new Promise((resolve, reject) => {
-         fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/players/${id}`)
-      //  fetch(`https://api.myjson.com/bins/8ymrh') //test myjson
+         fetch(`http://localhost:8081/players/${id}`)
+      //  fetch('https://api.myjson.com/bins/8ymrh') //test myjson
             .then(function (response) {
                 console.log(response)
                 return response.json();
@@ -190,7 +201,7 @@ function getPlayerByID(id) {
 }
 
 function postPlayers(data) {
-    var url = "http://${process.env.Server_Ip}:${process.env.Server_Port}/players"
+    var url = "http://localhost:8081/players"
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -209,7 +220,7 @@ function postPlayers(data) {
 }
 
 function UpdateProfile(request) {
-    var url = 'http://${process.env.Server_Ip}:${process.env.Server_Port}/updateplayers'
+    var url = 'http://localhost:8081/updateplayers'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -229,8 +240,8 @@ function UpdateProfile(request) {
 // Get -payment infromation of a player
 function getPaymentInfo(id) {
     return new Promise((resolve, reject) => {
-     //   fetch(`https://api.myjson.com/bins/zg0it') //test myjson
-         fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/accounts/${id}`)
+     //   fetch('https://api.myjson.com/bins/zg0it') //test myjson
+         fetch('http://localhost:8081/accounts/${id}')
             .then(function (response) {
                 console.log(response)
                 return response.json();
@@ -244,7 +255,7 @@ function  signIn(username, password) {
     console.log(username)
     console.log(password)
     return  new Promise((resolve, reject) => { 
-        fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/login/${username}/${password}`)
+        fetch(`http://localhost:8081/login/${username}/${password}`)
             .then(function (response) {
                 if (!response.ok) throw new Error(response.status);
                 return response.json();
@@ -259,7 +270,7 @@ function  signIn(username, password) {
 }
 //post -Update Payment Information
 function UpdatePaymentInfo(request) {
-    var url = 'http://${process.env.Server_Ip}:${process.env.Server_Port}/accountupdate'
+    var url = 'http://localhost:8081/accountupdate'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -278,7 +289,7 @@ function UpdatePaymentInfo(request) {
 }
 //post -Update Bank Balance
 function UpdateBankBalance(request) {
-    var url = 'http://${process.env.Server_Ip}:${process.env.Server_Port}/deposit'
+    var url = 'http://localhost:8081/deposit'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -297,7 +308,7 @@ function UpdateBankBalance(request) {
 }
 //post -SignUP
 function  SignUP(request) {
-    var url = 'http://${process.env.Server_Ip}:${process.env.Server_Port}/players'
+    var url = 'http://localhost:8081/players'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -316,7 +327,7 @@ function  SignUP(request) {
 }
 //post -PaymentInfo
 function  PaymentInfo(request) {
-    var url = 'http://${process.env.Server_Ip}:${process.env.Server_Port}/accountupdate'
+    var url = 'http://localhost:8081/accountupdate'
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST', 
@@ -337,7 +348,7 @@ function  PaymentInfo(request) {
 function getStockById(id) {
     console.log("called getPlayers")
     return new Promise((resolve, reject) => {
-        fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/stock/${id}`)
+        fetch(`http://localhost:8081/stock/${id}`)
             .then(function (response) {
                 console.log(response)
                 return response.json();
@@ -353,7 +364,7 @@ function getStockById(id) {
 {/*function getTransactionHistory() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-        fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/transactions')
+        fetch('http://localhost:8081/transactions')
             .then(function (response) {
                 return response.json();
             })
@@ -368,8 +379,8 @@ function getStockById(id) {
 function getBankBalance(id) {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-        fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/bankBalance${id}`)
-   //   fetch(`https://api.myjson.com/bins/kx92t')
+        fetch(`http://localhost:8081/bankBalance${id}`)
+   //   fetch('https://api.myjson.com/bins/kx92t')
             .then(function (response) {
                 return response.json();
             })
@@ -383,7 +394,7 @@ function getBankBalance(id) {
 function nextTurn() {
     console.log("called nextTurn")
     return  new Promise((resolve, reject) => { 
-        fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/nextTurn`)
+        fetch(`http://localhost:8081/nextTurn`)
             .then(function (response) {
                 return response.json();
             })
@@ -397,7 +408,7 @@ function nextTurn() {
 function winner() {
     console.log("called winner")
     return  new Promise((resolve, reject) => { 
-        fetch(`http://${process.env.Server_Ip}:${process.env.Server_Port}/winner`)
+        fetch(`http://localhost:8081/winner`)
             .then(function (response) {
                 return response.json();
             })
@@ -427,6 +438,7 @@ export {
     sellStock,
     PaymentInfo,
     UpdatePaymentInfo,
-    SignUP
+    SignUP,
+    getPrediction
  //   UpdateProfile
 }
