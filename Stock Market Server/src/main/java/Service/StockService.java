@@ -26,6 +26,7 @@ public class StockService {
         stocks.add(new Stock("Titan", Sector.Technology, BigDecimal.valueOf(31.00)));
         stocks.add(new Stock("AXE", Sector.ConsumerServices, BigDecimal.valueOf(25.00)));
         stocks.add(new Stock("Tesla", Sector.Technology, BigDecimal.valueOf(13.00)));
+
         for (int i = 0; i < stocks.size(); i++) {
 
             String csv = "data.csv";
@@ -36,8 +37,9 @@ public class StockService {
                 e.printStackTrace();
             }
             String turnString = String.valueOf(marketService.GetCurrentTurn());
-            String record = StockService.stocks.get(i).getStockPrice().toString();
-            String[] record3 = {turnString,record};
+            String record = stocks.get(i).getStockPrice().toString();
+            String name = stocks.get(i).getCompanyName().toString();
+            String[] record3 = {turnString,record,name};
             writer.writeNext(record3);
             try {
                 writer.close();
@@ -76,7 +78,8 @@ public class StockService {
         stocks.add(stock);
         String turnString = String.valueOf(marketService.GetCurrentTurn());
         String record = stock.getStockPrice().toString();
-        String[] record3 = {record};
+        String name = stock.getCompanyName().toString();
+        String[] record3 = {turnString,record,name};
         writer.writeNext(record3);
         writer.close();
 //        for (Stock stock1 : stocks) {
