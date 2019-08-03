@@ -219,7 +219,7 @@ class GameBoard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { stockArray, chartData, isOnMyStocks, quantity, currentPlayers, inProgress } = this.state;
+    const { stockArray, chartData, isOnMyStocks, quantity, currentPlayers, inProgress, selectedSectorIndex, selectedStock  } = this.state;
     return (
       <div>
         <GridContainer>
@@ -371,7 +371,7 @@ class GameBoard extends React.Component {
                   <Card chart>
                     <CardHeader color={this.getHeaderColor()}>
                       <Chart startChartData={chartData}
-                        //send data of selected stock n sector to call getChartData from API 
+                        stockname={stockArray[selectedSectorIndex].stocks[selectedStock].companyName}
                       ></Chart>
                     </CardHeader>
                     <CardBody>
@@ -401,7 +401,8 @@ class GameBoard extends React.Component {
                   </Card>
                   <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks?"Buy New shares":"View your portfolio"}</Button>
                 </GridItem>
-              </GridContainer> : <LinearProgressBar></LinearProgressBar>}
+              </GridContainer> 
+              : <LinearProgressBar></LinearProgressBar>}
               <br />
               <br />
 
