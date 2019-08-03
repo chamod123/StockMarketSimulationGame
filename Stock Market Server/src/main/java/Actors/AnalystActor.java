@@ -16,7 +16,6 @@ public class AnalystActor extends AbstractActor {
         return receiveBuilder()
                 .match(AnalystMessages.StartGameMessage.class, startGame())//start game
                 .match(AnalystMessages.GetPredictionMessage.class, Prediction())//Prediction
-//                .match(AnalystMessages.GetCurrentTurnMessage.class, currentTurn())//get current turn
                 .build();
     }
 

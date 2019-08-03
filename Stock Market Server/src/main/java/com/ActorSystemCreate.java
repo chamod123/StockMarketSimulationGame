@@ -15,6 +15,7 @@ public class ActorSystemCreate {
     public static ActorRef analystActor;
     public static ActorRef gameActor;
     public static ActorRef clockActor;
+    public static ActorRef playerAIActor;
 
     public ActorSystemCreate() {
         ActorSystem system = ActorSystem.create("ServerHttp");
@@ -26,6 +27,7 @@ public class ActorSystemCreate {
         analystActor = system.actorOf(Props.create(AnalystActor.class), "analystActor");
         gameActor = system.actorOf(Props.create(GameActor.class), "gameActor");
         clockActor = system.actorOf(Props.create(ClockActor.class), "clockActor");
+        playerAIActor = system.actorOf(Props.create(PlayerAIActor.class), "playerAIActor");
     }
 
     public static ActorRef getServer() {
@@ -58,5 +60,9 @@ public class ActorSystemCreate {
 
     public static ActorRef getClockActor() {
         return clockActor;
+    }
+
+    public static ActorRef getPlayerAIActor() {
+        return playerAIActor;
     }
 }

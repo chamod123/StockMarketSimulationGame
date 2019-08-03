@@ -22,13 +22,19 @@ public interface ClockMessages {
     //Next turn
     class NextTurnMessage implements Serializable {
         private static ActorRef brokerActor;
+        private static ActorRef playerAIActor;
 
-        public NextTurnMessage(ActorRef brokerActor) {
+        public NextTurnMessage(ActorRef brokerActor,ActorRef playerAIActor) {
+            this.playerAIActor=playerAIActor;
             this.brokerActor = brokerActor;
         }
 
         public static ActorRef getBrokerActor() {
             return brokerActor;
+        }
+
+        public static ActorRef getPlayerAIActor() {
+            return playerAIActor;
         }
     }
 }

@@ -254,7 +254,6 @@ public class StockController {
     //#POST - update account
     @PostMapping("/accountupdate")
     public String updateAccount(@RequestBody Account account) {
-        System.out.println("AWAAAAAAAAAAA" + account.getName());
         CompletionStage<PlayerMessages.ActionPerformed> accountUpdate = Patterns
                 .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.UpdateAccountMessage(account,actorSystemCreate.getBankActor()), timeout)
                 .thenApply(PlayerMessages.ActionPerformed.class::cast);
@@ -306,7 +305,7 @@ public class StockController {
     //#POST - next turn
     @PostMapping("/nextTurn")
     public String NextTurn() {
-        CompletionStage<ClockMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getClockActor(), new ClockMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+        CompletionStage<ClockMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getClockActor(), new ClockMessages.NextTurnMessage(actorSystemCreate.getBrokerActor(),actorSystemCreate.getPlayerAIActor()), timeout)
                 .thenApply(obj -> (ClockMessages.ActionPerformed) obj);
         if (nextTurn != null) {
             return "sucess";
@@ -318,7 +317,7 @@ public class StockController {
     //go to next turn after 45 seconds
     @Scheduled(fixedDelay = 45000)
     public String nextTurnS() throws Exception {
-        CompletionStage<ClockMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getClockActor(), new ClockMessages.NextTurnMessage(actorSystemCreate.getBrokerActor()), timeout)
+        CompletionStage<ClockMessages.ActionPerformed> nextTurn = Patterns.ask(actorSystemCreate.getClockActor(), new ClockMessages.NextTurnMessage(actorSystemCreate.getBrokerActor(),actorSystemCreate.getPlayerAIActor()), timeout)
                 .thenApply(obj -> (ClockMessages.ActionPerformed) obj);
         if (nextTurn != null) {
             return "sucess";
