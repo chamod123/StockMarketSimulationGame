@@ -145,8 +145,8 @@ public class BrokerActor extends AbstractActor {
     //next Turn
     private FI.UnitApply<BrokerMessages.NextTurnMessage> nextTurn() {
         return nextTurnMessage -> {
-//            BrokerService.ComputerPlay();
-            System.out.println("Computer Player need to complete");
+            BrokerService.ComputerPlay();
+//            System.out.println("Computer Player need to complete");
             sender().tell(new BrokerMessages.ActionPerformed(String.format("Computer Player created")), getSelf());
         };
     }
