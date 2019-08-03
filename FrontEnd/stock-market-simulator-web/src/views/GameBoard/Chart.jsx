@@ -1,4 +1,3 @@
-require('dotenv').config();
 import React, { useState, useEffect } from 'react';
 import ChartistGraph from "react-chartist";
 import {
@@ -13,7 +12,7 @@ export default function Chart(props) {
     const interval = setInterval(() => {
       //use the props passed as url parrams for API
       // fetch('https://api.myjson.com/bins/1b82ht'
-      fetch(`http://${process.env.Server_Ip}:${Server_Port}/graph/${props.stockname}`
+      fetch(`http://localhost:8081/graph/${props.stockname}`
         // fetch('
         , {
           method: 'get'
