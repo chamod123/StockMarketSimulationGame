@@ -27,7 +27,7 @@ public class MarketTest {
 	}
 
 	@Test
-	public void createPlayer() {
+	public void createMarket() {
 		try {
 			log.debug("Creating New Market");
 			market = new Market("Test User", "Test Stock", 2);
@@ -39,14 +39,14 @@ public class MarketTest {
 	}
 
 	@Test
-	public void updatePlayerName() {
+	public void updateMarketName() {
 		log.debug("Updating Market User Name: \"" + market.getUsername() + "\" to \"Test User Revised\"");
 		market.setUsername("Test User Revised");
 		log.debug("Market User Name Successfully Updated");
 	}
 
 	@Test
-	public void verifyUpdatedPlayerName() {
+	public void verifyUpdatedMarketName() {
 		log.debug("Verifying Market Name");
 		assertEquals(market.getUsername().toString(), "Test User Revised");
 		log.debug("Market Name Successfully Verified");
