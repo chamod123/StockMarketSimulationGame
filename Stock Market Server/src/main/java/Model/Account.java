@@ -9,14 +9,14 @@ public class Account {
     private int accountId;
     private BigDecimal balance;
     private Long playerId;
-    private String cvs;
+    private String cvv;
     private String cardNo;
     private String expierDate;
 
 
-    public Account(String name, String cvs, String cardNo ,String expierDate) {
+    public Account(String name, String cvv, String cardNo ,String expierDate) {
         this.name = name;
-        this.cvs=cvs;
+        this.cvv=cvv;
         this.cardNo=cardNo;
         this.expierDate=expierDate;
 
@@ -62,11 +62,11 @@ public class Account {
     }
 
     public String getCvs() {
-        return cvs;
+        return cvv;
     }
 
-    public void setCvs(String cvs) {
-        this.cvs = cvs;
+    public void setCvs(String cvv) {
+        this.cvv = cvv;
     }
 
     public String getCardNo() {
