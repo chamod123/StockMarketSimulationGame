@@ -25,7 +25,7 @@ import static java.lang.String.valueOf;
 public class MarketService {
     //    public static ArrayList<Stock> stocks; // get stock from StockService
     public static ArrayList<Stock> stocksHistory;
-    public static int turns = 40;
+    public static int turns = 4000;
     public static HashMap<Sector, ArrayList<Integer>> sectorTrends = new HashMap<>();
     public static ArrayList<Integer> marketTrends = new ArrayList<>();
     public static ArrayList<Event> eventList = new ArrayList<>();

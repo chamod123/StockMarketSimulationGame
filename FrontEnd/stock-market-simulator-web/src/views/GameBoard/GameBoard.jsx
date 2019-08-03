@@ -50,6 +50,7 @@ class GameBoard extends React.Component {
   }
 
   componentDidMount() {
+    const { userName } = this.props.location.state;
     getAllStocks().then(response => {
       this.setState({ 
         stockArray: this.createUISectorArray(response),
@@ -59,7 +60,7 @@ class GameBoard extends React.Component {
 
   loadStockDataFromAPI = () => {
     const {isOnMyStocks} = this.state
-    var userName ="Chamod2"
+    const { userName } = this.props.location.state;
     if(!isOnMyStocks){
       getPortofolio(userName).then(response => {
         // var response = {
@@ -71,9 +72,10 @@ class GameBoard extends React.Component {
           stockArray: this.createUIPortfolioArray(response),
           isOnMyStocks: true,
           inProgress: false
-        }).catch(error=>{
-          console.log(error)
         })
+      })
+      .catch(error=>{
+        console.log(error)
       })
     }else{
       this.setState({
@@ -123,7 +125,7 @@ class GameBoard extends React.Component {
     const { selectedSectorIndex, selectedStock, stockArray } = this.state;
     var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
     const { quantity } = this.state;
-    let userName = "Chamod2"
+    const { userName } = this.props.location.state;
 
     buyStock(userName, stock, quantity).then(response => console.log(response))
   }
@@ -132,7 +134,7 @@ class GameBoard extends React.Component {
     const { selectedSectorIndex, selectedStock, stockArray } = this.state;
     var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
     const { quantity } = this.state;
-    let userName = "Chamod2"
+    const { userName } = this.props.location.state;
 
     sellStock(userName, stock, quantity).then(response => console.log(response))
   }
@@ -156,7 +158,8 @@ class GameBoard extends React.Component {
   }
 
   handlePressStartGame = () => {
-    addPlayer("7").then(
+    const { playerID } = this.props.location.state;
+    addPlayer(playerID).then(
       getPlayers().then(response => {
         console.log(response)
         this.setState({

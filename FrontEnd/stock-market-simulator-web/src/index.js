@@ -37,6 +37,7 @@ ReactDOM.render(
       <Route path="/signUp" component={SignUp} />
       <Route path="/admin" component={Admin} />
       <Route path="/paymentinfo" component={PaymentForm} />
+      <Route path="/admin/game" component={Admin} />
       <Redirect from="/" to="/signIn" />
     </Switch>
   </Router>,
