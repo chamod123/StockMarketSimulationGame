@@ -81,10 +81,9 @@ export default function SignIn(props) {
   }
 
   const handlePostSignIn = () => {
-    // call post  handlePostSignIn(request) API
     signIn(userName, password).then(response => {
-      if(response===1){
-        props.history.push({pathname:'/admin', state: { userName: 'userName' }})
+      if(response!==0){
+        props.history.push({pathname:'/admin/game', state: { userName: userName, playerID:response }})
       }else{
         setInvalid(true)
       }
