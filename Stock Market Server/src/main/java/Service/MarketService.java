@@ -238,11 +238,16 @@ public class MarketService {
     //return future array list
     public static ArrayList<Stock> GetPredictedStocks() {
         ArrayList<Stock> temp = new ArrayList<>();
-                temp = StockService.stocks;
+        ArrayList<Stock> temp2 = new ArrayList<>();
+//                temp = StockService.stocks;
+            for (Stock stock : StockService.stocks) {
+                temp.add(stock);
+            }
+
         Random ran = new Random();
 
         int number = ran.nextInt(3) + currentTurn;
-        System.out.println("number " + number);
+//        System.out.println("number " + number);
 
         int size = StockService.stocks.size();
 
@@ -250,7 +255,7 @@ public class MarketService {
 
             //get market trend value for current turn
             int marketValue = marketTrends.get(number);
-            System.out.println("marketValue " + marketValue);
+//            System.out.println("marketValue " + marketValue);
 
             //get sector trend value value for current turn
             int sectorValue = sectorTrends.get(temp.get(i).getSector()).get(number);
@@ -259,11 +264,11 @@ public class MarketService {
             BigDecimal stockprice = temp.get(i).getStockPrice();
             Sector sec = temp.get(i).getSector();
 //            need to complet
-            temp.add(new Stock(sName + "Temp", sec, stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue))));
+            temp2.add(new Stock(sName , sec, stockprice.add(BigDecimal.valueOf(eventValue + sectorValue + marketValue))));
 
         }
-        System.out.println("temp " + temp);
-        return temp;
+//        System.out.println("temp " + temp2);
+        return temp2;
     }
 
 

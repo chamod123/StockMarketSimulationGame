@@ -35,7 +35,7 @@ public class BankService {
             if (playerName.equals(account.getName())) {
                 if (amount.compareTo(account.getBalance()) <= 0) {
                     account.setBalance(account.getBalance().subtract(amount));
-                    System.out.println("playerName: " + playerName + " balance: " + account.getBalance());
+//                    System.out.println("playerName: " + playerName + " balance: " + account.getBalance());
                     return true;
                 } else {
                     return false;
@@ -50,7 +50,7 @@ public class BankService {
         for (Account account : accountList) {
             if (playerName.equals(account.getName())) {
                 account.setBalance(account.getBalance().add(amount));
-                System.out.println("playerName: " + playerName + " balance: " + account.getBalance());
+//                System.out.println("playerName: " + playerName + " balance: " + account.getBalance());
                 return true;
             }
         }
