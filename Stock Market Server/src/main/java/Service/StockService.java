@@ -26,6 +26,7 @@ public class StockService {
         stocks.add(new Stock("Titan", Sector.Technology, BigDecimal.valueOf(10.00)));
         stocks.add(new Stock("AXE", Sector.ConsumerServices, BigDecimal.valueOf(25.00)));
         stocks.add(new Stock("Tesla", Sector.Technology, BigDecimal.valueOf(13.00)));
+
         for (int i = 0; i < stocks.size(); i++) {
 
             String csv = "data.csv";
