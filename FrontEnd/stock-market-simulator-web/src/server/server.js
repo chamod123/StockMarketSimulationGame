@@ -1,34 +1,129 @@
-function getStocks() {
-    console.log("called  getStocks")// Remove when API is integrated
+function getAllStocks() {
     return  new Promise((resolve, reject) => { 
-        fetch('https://api.myjson.com/bins/vntih')
+        fetch("http://localhost:8081/allStock")
             .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
                 resolve(myJson)
+            })
+            .catch(error => {
+                reject(error)
             });
     })
 }
 
-function getMyStocks() {
-    console.log("called")
+function getPortofolio(user) {
+    console.log("called portofolio")
+    console.log(user)
     return  new Promise((resolve, reject) => { 
-        fetch('https://api.myjson.com/bins/103y91')
+        fetch(`http://localhost:8081/portofolio/${user}`)
             .then(function (response) {
+                if (!response.ok) throw new Error(response.json());
                 return response.json();
             })
             .then(function (myJson) {
                 resolve(myJson)
+            })
+            .catch(error => {
+                reject(error)
             });
+    })
+}
+
+function buyStock(user, stock, quantity) {
+    console.log("buyStock")
+    var request={
+        "username":user,
+        "stock": stock,
+        "quantity": quantity
+    }
+    console.log(request)
+    var url = `http://localhost:8081/buyStock`
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(request)
+        })
+            .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+            .catch(error => {
+                reject(error)
+            });
+    })
+}
+
+function sellStock(user, stock, quantity) {
+    var request={
+        "username":user,
+        "stock": stock,
+        "quantity": quantity
+    }
+    
+    var url = `http://localhost:8081/sellStock`
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(request)
+        })
+            .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+            .catch(error => {
+                reject(error)
+            });
+    })
+}
+
+// GET - get stocks Data by sector
+function getStocksBySector(name) {
+    console.log("called getStocksBySector")
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:8081/stockBySector/${name}`)
+            .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+            .catch(error=>console.log(error))
     })
 }
 
 function getLeaderBoard() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-        // fetch('http://localhost:8081/"allPlayers')
-        fetch('https://api.myjson.com/bins/1cwg6l')
+         fetch('http://localhost:8081/accounts')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            });
+    })
+}
+
+function getPrediction() {
+    console.log("called getPrediction")
+    return  new Promise((resolve, reject) => { 
+         fetch('http://localhost:8081/prediction')
             .then(function (response) {
                 return response.json();
             })
@@ -41,9 +136,7 @@ function getLeaderBoard() {
 function getTransactioHistory() {
     console.log("called")
     return  new Promise((resolve, reject) => {
-        fetch('https://api.myjson.com/bins/1cwg6l')
-        //fetch('https://api.myjson.com/bins/1h3uvl')
-        // fetch('http://localhost:8081/"allPlayers')
+        fetch('http://localhost:8081/"transactions')
             .then(function (response) {
                 return response.json();
             })
@@ -56,22 +149,47 @@ function getTransactioHistory() {
 function getPlayers() {
     console.log("called getPlayers")
     return new Promise((resolve, reject) => {
-        fetch('http://localhost:8081/players/1')
+        fetch('http://localhost:8081/players')
         // fetch('https://api.myjson.com/bins/1azzr5') //test myjson
             .then(function (response) {
-                console.log(response)
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
                 resolve(myJson)
             })
+            .catch(error=>console.log(error))
     })
 }
 
-function getPlayer(id) {
+function addPlayer(id) {
+    var url = `http://localhost:8081/addPlayer/${id}`
     return new Promise((resolve, reject) => {
-        // fetch(`http://localhost:8081/players/${id}`)
-        fetch('https://api.myjson.com/bins/dfc99') //test myjson
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
+                return response.json();
+            })
+            .then(function (myJson) {
+                console.log(myJson)
+                resolve(myJson)
+            })
+            .catch(error => {
+                console.log('error', error);
+                reject(error)
+            });
+    })
+}
+
+function getPlayerByID(id) {
+    return new Promise((resolve, reject) => {
+         fetch(`http://localhost:8081/players/${id}`)
+      //  fetch('https://api.myjson.com/bins/8ymrh') //test myjson
             .then(function (response) {
                 console.log(response)
                 return response.json();
@@ -101,6 +219,131 @@ function postPlayers(data) {
     })
 }
 
+function UpdateProfile(request) {
+    var url = 'http://localhost:8081/updateplayers'
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
+// Get -payment infromation of a player
+function getPaymentInfo(id) {
+    return new Promise((resolve, reject) => {
+     //   fetch('https://api.myjson.com/bins/zg0it') //test myjson
+         fetch('http://localhost:8081/accounts/${id}')
+            .then(function (response) {
+                console.log(response)
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
+function  signIn(username, password) {
+    console.log(username)
+    console.log(password)
+    return  new Promise((resolve, reject) => { 
+        fetch(`http://localhost:8081/login/${username}/${password}`)
+            .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+            .catch(error => {
+                reject(error)
+            });
+    })
+}
+//post -Update Payment Information
+function UpdatePaymentInfo(request) {
+    var url = 'http://localhost:8081/accountupdate'
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
+//post -Update Bank Balance
+function UpdateBankBalance(request) {
+    var url = 'http://localhost:8081/deposit'
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
+//post -SignUP
+function  SignUP(request) {
+    var url = 'http://localhost:8081/players'
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
+//post -PaymentInfo
+function  PaymentInfo(request) {
+    var url = 'http://localhost:8081/accountupdate'
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            })
+    })
+}
 // GET - get a stock Data
 function getStockById(id) {
     console.log("called getPlayers")
@@ -116,20 +359,6 @@ function getStockById(id) {
     })
 }
 
-// GET - get stocks Data by sector
-function getStocksBySector(id) {
-    console.log("called getPlayers")
-    return new Promise((resolve, reject) => {
-        fetch(`http://localhost:8081/stockBySector/${id}`)
-            .then(function (response) {
-                console.log(response)
-                return response.json();
-            })
-            .then(function (myJson) {
-                resolve(myJson)
-            })
-    })
-}
 
 // GET - get all transaction Data
 {/*function getTransactionHistory() {
@@ -151,34 +380,7 @@ function getBankBalance(id) {
     console.log("called")
     return  new Promise((resolve, reject) => { 
         fetch(`http://localhost:8081/bankBalance${id}`)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                resolve(myJson)
-            });
-    })
-}
-
-// GET - get getPortofolio
-function getPortofolio(id) {
-    console.log("called")
-    return  new Promise((resolve, reject) => { 
-        fetch(`http://localhost:8081/portofolio${id}`)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                resolve(myJson)
-            });
-    })
-}
-
-// GET - start game
-function start() {
-    console.log("called start")
-    return  new Promise((resolve, reject) => { 
-        fetch(`http://localhost:8081/start`)
+   //   fetch('https://api.myjson.com/bins/kx92t')
             .then(function (response) {
                 return response.json();
             })
@@ -218,11 +420,25 @@ function winner() {
 	
 
 export {
-    getStocks,
-    getMyStocks,
+    getPortofolio,
     getPlayers,
-    getPlayer,
+    getPlayerByID,
     getLeaderBoard,
 	postPlayers,
-    getTransactioHistory
+    getTransactioHistory,
+    UpdateProfile,
+    getPaymentInfo,
+    getBankBalance,
+    UpdateBankBalance,
+    signIn,
+    addPlayer,
+    getStocksBySector,
+    getAllStocks,
+    buyStock,
+    sellStock,
+    PaymentInfo,
+    UpdatePaymentInfo,
+    SignUP,
+    getPrediction
+ //   UpdateProfile
 }

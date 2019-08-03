@@ -31,24 +31,30 @@ class LeaderBoard extends React.Component {
   handleChange = (event, value) => {
     this.setState({ value });
   };
-  componentDidMount() 
-  {
+  componentDidMount() {
     getLeaderBoard().then(response => {
-      console.log(response)
-      this.setState({ tableData: this.getTableData(response) })
+      var sortedData=this.sortData(response)
+      console.log(response);
+      this.setState({ tableData: this.getTableData(sortedData) })
     })
+    
   }
 
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
+  sortData=(data)=>
+  {
+    return data.sort((a, b) => (a.balance > b.balance) ? 1 : -1)
+
+  }
+
 
   getTableData = (response) => {
     var rowArray = []
     response.forEach(function (element) {
-      rowArray.push([element.id, element.name, element.price])
+      rowArray.push([element.accountId, element.name, element.balance])
     });
-    console.log(rowArray)
     return rowArray;
   }
   render() {

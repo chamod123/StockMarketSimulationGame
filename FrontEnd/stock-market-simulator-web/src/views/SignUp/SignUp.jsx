@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -30,6 +28,10 @@ const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
       backgroundColor: theme.palette.common.white,
+       backgroundImage:"url("+"https://t3.ftcdn.net/jpg/01/83/04/80/500_F_183048068_bbktrsuhkLhGPLoijDQTt24hDQyHVFpx.jpg"+")",
+       backgroundPosition: 'center',
+       backgroundSize: 'cover',
+       backgroundRepeat: 'no-repeat'
     },
   },
   paper: {
@@ -58,6 +60,18 @@ export default function SignUp() {
   const [Email, setEmail] = useState(false);
   const [password, setpassword] = useState(false);
   const [username, setusername] = useState(false);
+
+  const SignUP=()=>{
+    let request={
+      name:{firstName},
+      secondName:{lastName},
+      email:{Email},
+      userName:{username},
+      password:{password}
+    }
+    console.log(request)
+   // call SignUP(request) API
+  }
   const handleChangeFistName = (event) => {
     setFirstName(event.target.value)
   }
@@ -100,7 +114,7 @@ export default function SignUp() {
                   autoFocus
                   onChange={handleChangeFistName}
                 />
-                {firstName == "" && <FormHelperText  >Please enter your first name</FormHelperText>}
+                {firstName === "" && <FormHelperText  >Please enter your first name</FormHelperText>}
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -116,7 +130,7 @@ export default function SignUp() {
                   autoFocus
                   onChange={handleChangeLastName}
                 />
-                {lastName == "" && <FormHelperText  >Please enter your last name</FormHelperText>}
+                {lastName === "" && <FormHelperText  >Please enter your last name</FormHelperText>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -133,7 +147,7 @@ export default function SignUp() {
                 autoFocus
                 onChange={handleChangeEmail}
               />
-              {lastName == "" && <FormHelperText  >Please enter your email</FormHelperText>}
+              {lastName === "" && <FormHelperText  >Please enter your email</FormHelperText>}
            </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -150,7 +164,7 @@ export default function SignUp() {
                 autoFocus
                 onChange={handleChangeusername}
               />
-              {username == "" && <FormHelperText  >Please enter your username</FormHelperText>}
+              {username === "" && <FormHelperText  >Please enter your username</FormHelperText>}
            </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -167,16 +181,17 @@ export default function SignUp() {
                 autoFocus
                 onChange={handleChangepassword}
               />
-               {password == "" && <FormHelperText  >Please enter your password</FormHelperText>}
+               {password === "" && <FormHelperText  >Please enter your password</FormHelperText>}
            </FormControl>
             </Grid>
           </Grid>
+          <br/>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            onClick={SignUP}
           >
             Add Bank Info
           </Button>

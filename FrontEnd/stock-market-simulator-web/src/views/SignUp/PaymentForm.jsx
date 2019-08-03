@@ -3,19 +3,17 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-//import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useState } from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-//import CustomInput from "components/CustomInput/CustomInput.jsx";
+import { Card } from '@material-ui/core';
+import CardBody from 'components/Card/CardBody';
 
 function Create() {
   return (
@@ -33,6 +31,10 @@ const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
       backgroundColor: theme.palette.common.white,
+       backgroundImage:"url("+"https://t3.ftcdn.net/jpg/01/83/04/80/500_F_183048068_bbktrsuhkLhGPLoijDQTt24hDQyHVFpx.jpg"+")",
+       backgroundPosition: 'center',
+       backgroundSize: 'cover',
+       backgroundRepeat: 'no-repeat'
     },
   },
   paper: {
@@ -49,17 +51,25 @@ const useStyles = makeStyles(theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
 }));
 
-export default function SignIn() {
+export default function PaymentForm() {
   const classes = useStyles();
-  const [holdername, setholdername] = useState(false);
-  const [cardnumber, setcardnumber] = useState(false);
-  const [expirydate, setexpirydate] = useState(false);
-  const [cvv, setcvv] = useState(false);
+  const [holdername, setholdername] = useState("");
+  const [cardnumber, setcardnumber] = useState("");
+  const [expirydate, setexpirydate] = useState("");
+  const [cvv, setcvv] = useState("");
+
+  const PaymentInfo=()=>{
+    let request={
+      name:{holdername},
+      cardNo:{cardnumber},
+      expierDate:{expirydate},
+      cvv:{cvv}
+    }
+    console.log(request)
+   // call post PaymentInfo(request) API
+  }
   
   const handleChangeholdername = (event) => {
     setholdername(event.target.value)
@@ -80,6 +90,8 @@ export default function SignIn() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Card>
+        <CardBody>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
        {//   <LockOutlinedIcon />
@@ -88,8 +100,8 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Payment Details
         </Typography>
-        <form className={classes.form} noValidate>
-        <FormControl error={holdername==""}>
+
+        <FormControl error={holdername===""}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -103,9 +115,9 @@ export default function SignIn() {
             autoFocus
             onChange={handleChangeholdername}
           />
-          {holdername=="" && <FormHelperText>Please enter your card holder's name</FormHelperText>}
+          {holdername==="" && <FormHelperText>Please enter your card holder's name</FormHelperText>}
         </FormControl>
-        <FormControl error={cardnumber==""}>
+        <FormControl error={cardnumber===""}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -119,25 +131,24 @@ export default function SignIn() {
             autoFocus
             onChange={handleChangecardnumber}
           />
-          {cardnumber=="" && <FormHelperText>Please enter your card number</FormHelperText>}
+          {cardnumber==="" && <FormHelperText>Please enter your card number</FormHelperText>}
           </FormControl>
-          <FormControl error={expirydate==""}>
+          <FormControl error={expirydate===""}>
            <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
             name="expirydate"
-            label="Expiry Date"
+            // label="Expiry Date"
             type="date"
             id="expirydate"
-            autoComplete="expirydate"
             autoFocus
             onChange={handleChangeexpirydate}
           />
-          {expirydate=="" && <FormHelperText>Please enter your card expiry date</FormHelperText>}
+          {expirydate==="" && <FormHelperText>Please enter your card expiry date</FormHelperText>}
           </FormControl>
-          <FormControl error={cvv==""}>
+          <FormControl error={cvv===""}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -151,14 +162,15 @@ export default function SignIn() {
             autoFocus
             onChange={handleChangecvv}
           />
-          {cvv=="" && <FormHelperText>Please enter your card CVV</FormHelperText>}
+          {cvv==="" && <FormHelperText>Please enter your card CVV</FormHelperText>}
            </FormControl>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+           // className={classes.submit}
+           onClick={PaymentInfo}
           >
             Sign In
           </Button>
@@ -169,10 +181,12 @@ export default function SignIn() {
               </Link>
             </Grid>
           </Grid>
-        </form>
       </div>
+      </CardBody>
+      </Card>
       <Box mt={5}>
         <Create />
+        
       </Box>
     </Container>
   );

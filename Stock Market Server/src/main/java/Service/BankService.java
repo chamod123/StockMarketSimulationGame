@@ -11,9 +11,10 @@ public class BankService {
 
     public static void CreateAccount(Account Account1) {
         accountList.add(Account1);
-        for (Account account : accountList) {
-            System.out.println("accountList  " + account.getName());
-        }
+    }
+
+    public static List<Account> getAccountsDetails(){
+        return accountList;
     }
 
     //deposit to an account
@@ -27,17 +28,15 @@ public class BankService {
         throw new Exception("account with " + playerId + " does not  exists");
     }
 
+    //checked
     //withdraw from account
     public static Boolean Withdraw(String playerName, BigDecimal amount) throws Exception {
-        System.out.println("awa 8");
         for (Account account : accountList) {
             if (playerName.equals(account.getName())) {
                 if (amount.compareTo(account.getBalance()) <= 0) {
                     account.setBalance(account.getBalance().subtract(amount));
-                    System.out.println("awa 9-1");
                     return true;
                 } else {
-                    System.out.println("awa 9-2");
                     return false;
                 }
             }
@@ -46,14 +45,14 @@ public class BankService {
     }
 
     //deposit to an account
-    public static Boolean Deposit(String name, BigDecimal amount) throws Exception {
+    public static Boolean Deposit(String playerName, BigDecimal amount) throws Exception {
         for (Account account : accountList) {
-            if (name.equals(account.getName())) {
+            if (playerName.equals(account.getName())) {
                 account.setBalance(account.getBalance().add(amount));
                 return true;
             }
         }
-        throw new Exception("account with " + name + " does not  exists");
+        throw new Exception("account with " + playerName + " does not  exists");
     }
 
     //return balance for the user
@@ -64,6 +63,18 @@ public class BankService {
             }
         }
         throw new Exception("account with " + name + " does not  exists");
+    }
+
+    public static void updateAccount(Account account) {
+
+
+        for (Account account1 : accountList) {
+            if(account.getName().equals(account1.getName())){
+                account1.setCardNo(account.getCardNo());
+                account1.setCvs(account.getCvs());
+                account1.setExpierDate(account.getExpierDate());
+            }
+        }
     }
 
 }

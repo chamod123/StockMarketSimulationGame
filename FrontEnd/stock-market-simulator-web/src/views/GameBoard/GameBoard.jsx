@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Icon from "@material-ui/core/Icon";
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 
 // @material-ui/icons
 import People from "@material-ui/icons/People";
@@ -28,9 +31,13 @@ import Timer from "./Timer.jsx"
 import Chart from './Chart.jsx'
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Typography } from "@material-ui/core";
-import { getStocks } from "server/server.js";
-import { getMyStocks } from "server/server.js";
+import { getAllStocks } from "server/server.js";
+import { getPortofolio } from "server/server.js";
 import { getPlayers } from "server/server.js";
+import { addPlayer } from "server/server.js";
+import { buyStock } from "server/server.js";
+import { sellStock } from "server/server.js";
+import { getPrediction } from "server/server.js";
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -40,41 +47,122 @@ class GameBoard extends React.Component {
       selectedSectorIndex: 0,
       selectedStock: 0,
       isOnMyStocks: false,
-      noOfSharesToBuy: 0,
-      currentPlayers:[]
+      quantity: 0,
+      currentPlayers:[],
+      inProgress: true,
+      open:false,
+      prediction:[]
     };
   }
 
   componentDidMount() {
-    getStocks().then(response => {
-      this.setState({ stockArray: response })
+    const { userName } = this.props.location.state;
+    getAllStocks().then(response => {
+      this.setState({ 
+        stockArray: this.createUISectorArray(response),
+        inProgress:false })
     })
   }
 
   loadStockDataFromAPI = () => {
     const {isOnMyStocks} = this.state
+    const { userName } = this.props.location.state;
     if(!isOnMyStocks){
-      getMyStocks().then(response => {
-        this.setState({ 
-          stockArray: response,
-          isOnMyStocks: true
-         })
+      getPortofolio(userName).then(response => {
+        // var response = {
+        //   "Google": 10,
+        //   "Apple": 20,
+        //   "BMW": 5
+        // }
+        this.setState({
+          stockArray: this.createUIPortfolioArray(response),
+          isOnMyStocks: true,
+          inProgress: false
+        })
+      })
+      .catch(error=>{
+        console.log(error)
       })
     }else{
-      getStocks().then(response => {
+      this.setState({
+        inProgress: true
+      })
+      getAllStocks().then(response => {
         this.setState({ 
-          stockArray: response,
-          isOnMyStocks: false
+          stockArray: this.createUISectorArray(response),
+          isOnMyStocks: false,
+          inProgress:false
          })
       })
     }
+  }
+
+  handleClickOpen = () => {
+    getPrediction().then(response=>{
+      this.setState({
+        open: true,
+        prediction:response
+      });
+    })
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  createUISectorArray = (response) => {
+    return [{
+      "sector":"Finance",
+      "stocks": response.filter(stock => stock.sector=="Finance"),
+    },
+    {
+      "sector":"Technology",
+      "stocks": response.filter(stock => stock.sector=="Technology"),
+    },
+    {
+      "sector":"Manufacturing",
+      "stocks":response.filter(stock => stock.sector=="Manufacturing")
+    },
+    {
+      "sector":"ConsumerServices",
+      "stocks":response.filter(stock => stock.sector=="Consumer Services"),
+    }]   
+  }
+
+  createUIPortfolioArray = (response) => {
+    var rowArray = []
+    Object.keys(response).map(function (key, index) {
+      rowArray.push({ "companyName": key, "stockPrice": response[key] })
+    });
+    return [{
+      "sector": "Your Stocks",
+      "stocks": rowArray,
+    }]
+  }
+
+  handleBuyStock = () => {
+    const { selectedSectorIndex, selectedStock, stockArray } = this.state;
+    var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
+    const { quantity } = this.state;
+    const { userName } = this.props.location.state;
+
+    buyStock(userName, stock, quantity).then(response => console.log(response))
+  }
+
+  handleSellStock = () => {
+    const { selectedSectorIndex, selectedStock, stockArray } = this.state;
+    var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
+    const { quantity } = this.state;
+    const { userName } = this.props.location.state;
+
+    sellStock(userName, stock, quantity).then(response => console.log(response))
   }
 
   handleStockSelect = (selectedstockIndex, selectedSectorIndex) => {
     this.setState({
       selectedStock: selectedstockIndex,
       selectedSectorIndex: selectedSectorIndex,
-      noOfSharesToBuy:0
+      quantity:0
     })
   }
 
@@ -84,25 +172,39 @@ class GameBoard extends React.Component {
 
   handleChangeNoOfSharesToBuy = (event) => {
     this.setState({
-      noOfSharesToBuy:event.target.value
+      quantity:event.target.value
     })
   }
 
   handlePressStartGame = () => {
-    getPlayers().then(response => { 
-      console.log(response)
-      this.setState({
-        currentPlayers:response
-      })
-     })
-    //Call Startgame
+    const { playerID } = this.props.location.state;
+    addPlayer(playerID).then(
+      getPlayers().then(response => {
+        console.log(response)
+        this.setState({
+          currentPlayers: response
+        })
+      })).catch(error => console.error(error)
+      )
   }
 
   getTableData = (array) => {
     var rowArray = []
-    array.forEach(function (element) {
-      rowArray.push([element.companyName, element.stockPrice.toString(), element.rate.toString()])
-    });
+    if(array.length>0){ 
+      array.forEach(function (element) {
+        rowArray.push([element.stockId.toString(), element.companyName, element.stockPrice.toString()])
+      });
+    }
+    return rowArray;
+  }
+
+  getPortFolioTableData = (array) => {
+    var rowArray = []
+    if(array.length>0){ 
+      array.forEach(function (element) {
+        rowArray.push([element.companyName, element.stockPrice.toString()])
+      });
+    }
     return rowArray;
   }
 
@@ -118,24 +220,28 @@ class GameBoard extends React.Component {
     if (selectedSectorIndex === 2) {
       return "warning"
     }
+    if (selectedSectorIndex === 3) {
+      return "danger"
+    }
   }
 
   getChartTitle = () => {
     const { selectedSectorIndex, selectedStock, stockArray } = this.state;
     var sector = stockArray[selectedSectorIndex].sector
     var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
+    console.log(stockArray)
     return sector + " : " + stock
   }
 
   getShareValueToBeBought = () => {
-    const { selectedSectorIndex, selectedStock, stockArray, noOfSharesToBuy } = this.state;
+    const { selectedSectorIndex, selectedStock, stockArray, quantity } = this.state;
     var stockPrice = stockArray[selectedSectorIndex].stocks[selectedStock].stockPrice
-    return stockPrice*noOfSharesToBuy
+    return stockPrice*quantity
   }
 
   render() {
     const { classes } = this.props;
-    const { stockArray, chartData, isOnMyStocks, noOfSharesToBuy, currentPlayers } = this.state;
+    const { stockArray, chartData, isOnMyStocks, quantity, currentPlayers, inProgress, selectedSectorIndex, selectedStock  } = this.state;
     return (
       <div>
         <GridContainer>
@@ -189,57 +295,92 @@ class GameBoard extends React.Component {
         <GridContainer>
           <Card>
             <CardBody>
-              {stockArray.length === 3 ? <GridContainer>
+              {!inProgress ? <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
                   <Typography>{isOnMyStocks?"Portfolio":"Stocks"}</Typography>
-                  <CustomTabs
-                    headerColor="primary"
+                  {!isOnMyStocks?<CustomTabs
+                    headerColor="warning"
                     tabs={
                       [
                         {
                           tabName: stockArray[0].sector,
                           tabIcon: Money,
-                          tabContent: (
+                          tabContent: (stockArray[0].stocks.length>0?
                             <StockTable
                               tableHeaderColor="warning"
-                              tableHead={["Company Name", "Stock Price", "rate"]}
+                              tableHead={["Stock Id", "Company Name", "Stock Price"]}
                               tableData={this.getTableData(stockArray[0].stocks)}
                               handleRowSelect={this.handleStockSelect}
                               selectedSectorIndex={0}
                               isMyStock={isOnMyStocks}
-                            />
+                            />:<Typography>You have no stocks bought under {stockArray[0].sector} section</Typography>
                           )
                         },
                         {
                           tabName: stockArray[1].sector,
                           tabIcon: People,
                           tabContent: (
+                            stockArray[1].stocks.length>0?
                             <StockTable
                               tableHeaderColor="success"
-                              tableHead={["Company Name", "Stock Price", "rate"]}
+                              tableHead={["Stock Id", "Company Name", "Stock Price"]}
                               tableData={this.getTableData(stockArray[1].stocks)}
                               handleRowSelect={this.handleStockSelect}
                               selectedSectorIndex={1}
                               isMyStock={isOnMyStocks}
-                            />
+                            />:
+                            <Typography>You have no stocks bought under {stockArray[1].sector} section</Typography>
                           )
                         },
                         {
                           tabName: stockArray[2].sector,
                           tabIcon: Cloud,
                           tabContent: (
+                            stockArray[2].stocks.length>0?
                             <StockTable
                               tableHeaderColor="info"
-                              tableHead={["Company Name", "Stock Price", "rate"]}
+                              tableHead={["Stock Id", "Company Name", "Stock Price"]}
                               tableData={this.getTableData(stockArray[2].stocks)}
                               handleRowSelect={this.handleStockSelect}
                               selectedSectorIndex={2}
                               isMyStock={isOnMyStocks}
-                            />
+                            />:
+                            <Typography>You have no stocks bought under {stockArray[2].sector} section</Typography>
+                          )
+                        },
+                        {
+                          tabName: stockArray[3].sector,
+                          tabIcon: Cloud,
+                          tabContent: (
+                            stockArray[3].stocks.length>0?
+                            <StockTable
+                              tableHeaderColor="info"
+                              tableHead={["Stock Id", "Company Name", "Stock Price"]}
+                              tableData={this.getTableData(stockArray[3].stocks)}
+                              handleRowSelect={this.handleStockSelect}
+                              selectedSectorIndex={3}
+                              isMyStock={isOnMyStocks}
+                            />:
+                            <Typography>You have no stocks bought under {stockArray[3].sector} section</Typography>
                           )
                         }
                       ]}
-                  />
+                  />:
+                    <Card>
+                      <CardHeader color="warning">
+                        <h4 className={classes.cardTitleWhite}>Portfolio</h4>
+                      </CardHeader>
+                      <CardBody>
+                        <StockTable
+                          tableHeaderColor="warning"
+                          tableHead={["Company Name", "Stock Price"]}
+                          tableData={this.getPortFolioTableData(stockArray[0].stocks)}
+                          handleRowSelect={this.handleStockSelect}
+                          selectedSectorIndex={0}
+                          isMyStock={isOnMyStocks}
+                        />
+                      </CardBody>
+                    </Card>}
                 </GridItem>
                 <GridItem xs={12} sm={12} md={8}>
                   <Card>
@@ -252,7 +393,7 @@ class GameBoard extends React.Component {
                   <Card chart>
                     <CardHeader color={this.getHeaderColor()}>
                       <Chart startChartData={chartData}
-                        //send data of selected stock n sector to call getChartData from API 
+                        stockname={stockArray[selectedSectorIndex].stocks[selectedStock].companyName}
                       ></Chart>
                     </CardHeader>
                     <CardBody>
@@ -266,27 +407,63 @@ class GameBoard extends React.Component {
                             label="shares"
                             type="number"
                             inputProps={{ min: "0", max: "100", step: "1" }}
-                            value={noOfSharesToBuy}
+                            value={quantity}
                             onChange={this.handleChangeNoOfSharesToBuy}
                           />
                         </GridItem>
-                        {noOfSharesToBuy > 0 ? <GridItem style={{ "align-self": 'center' }}><Typography>$ {this.getShareValueToBeBought()}</Typography></GridItem> : null}
-                        <GridItem><Button disabled={noOfSharesToBuy === 0} color="primary"> {isOnMyStocks ? "Sell" : "Buy"}</Button></GridItem>
+                        {quantity > 0 ? <GridItem style={{ "align-self": 'center' }}><Typography>$ {this.getShareValueToBeBought()}</Typography></GridItem> : null}
+                        <GridItem>
+                          <Button disabled={quantity === 0} color="primary" onClick={isOnMyStocks ? this.handleSellStock : this.handleBuyStock}>
+                            {isOnMyStocks ? "Sell" : "Buy"}</Button>
+                        </GridItem>
                       </GridContainer>
                     </CardBody>
                     <CardFooter chart>
                     </CardFooter>
                   </Card>
-                  <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks?"Buy New shares":"View your portfolio"}</Button>
+                  <GridContainer>
+                  <GridItem>
+                    <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks ? "Buy New shares" : "View your portfolio"}</Button>
+                  </GridItem>
+                  <GridItem>
+                    <Button  color="primary"onClick={this.handleClickOpen} >Get Prediction</Button>
+                  </GridItem>
+                  </GridContainer>
                 </GridItem>
-              </GridContainer> : <LinearProgressBar></LinearProgressBar>}
+              </GridContainer> 
+              : <LinearProgressBar></LinearProgressBar>}
               <br />
               <br />
 
             </CardBody>
           </Card>
         </GridContainer>
-      </div>
+        <Dialog
+          onClose={this.handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.open}
+        >
+          <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
+            Recomondation
+          </DialogTitle>
+          <DialogContent dividers>
+            <Typography gutterBottom>
+              Best stock to buy 
+            </Typography>
+            <Typography gutterBottom>
+              {this.state.prediction[0]}
+            </Typography>
+            <Typography gutterBottom>
+              Best stock to sell
+            </Typography>
+            <Typography gutterBottom>
+              {this.state.prediction[1]}
+            </Typography>
+            <Typography gutterBottom>
+            </Typography>
+          </DialogContent>
+        </Dialog>
+        </div> 
     );
   }
 }

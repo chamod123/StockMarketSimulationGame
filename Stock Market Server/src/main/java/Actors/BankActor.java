@@ -16,6 +16,8 @@ public class BankActor extends AbstractActor {
                 .match(BankMessages.WithdrawMessage.class, withdraw())//Withdraw from player
                 .match(BankMessages.DepositMessage.class, deposit())//Deposit from player
                 .match(BankMessages.GetBankBalanceMessage.class, getBankBalance())//get Bank Balance for a player
+                .match(BankMessages.GetAllBankBalanceMessage.class, getAllAccount())//get Bank Balance for a player
+                .match(BankMessages.UpdateAccountMessage.class, updateAccount())//update Account
                 .build();
     }
 
@@ -30,8 +32,9 @@ public class BankActor extends AbstractActor {
     //Withdraw from player
     private FI.UnitApply<BankMessages.WithdrawMessage> withdraw() {
         return withdrawMessage -> {
+            //checked
             //Withdraw from player
-            BankService.Withdraw(withdrawMessage.getTransaction().getName(),withdrawMessage.getTransaction().getAmount());
+            BankService.Withdraw(withdrawMessage.getTransaction().getName(), withdrawMessage.getTransaction().getAmount());
             sender().tell(new BankMessages.ActionPerformed(String.format("Withdraw for %s .", withdrawMessage.getTransaction().getName()
             )), getSelf());
         };
@@ -41,7 +44,7 @@ public class BankActor extends AbstractActor {
     private FI.UnitApply<BankMessages.DepositMessage> deposit() {
         return depositMessage -> {
             //Withdraw from player
-            BankService.Deposit(depositMessage.getTransaction().getName(),depositMessage.getTransaction().getAmount());
+            BankService.Deposit(depositMessage.getTransaction().getName(), depositMessage.getTransaction().getAmount());
             sender().tell(new BankMessages.ActionPerformed(String.format("Withdraw for %s .", depositMessage.getTransaction().getName()
             )), getSelf());
         };
@@ -50,9 +53,24 @@ public class BankActor extends AbstractActor {
     //get Bank Balance for a player
     private FI.UnitApply<BankMessages.GetBankBalanceMessage> getBankBalance() {
         return getBankBalanceMessage -> {
-            sender().tell(BankService.Balance(getBankBalanceMessage.getName()),getSelf());
+            sender().tell(BankService.Balance(getBankBalanceMessage.getName()), getSelf());
         };
     }
 
+    //get Bank Balance for a player
+    private FI.UnitApply<BankMessages.GetAllBankBalanceMessage> getAllAccount() {
+        return getBankBalanceMessage -> {
+            sender().tell(BankService.getAccountsDetails(), getSelf());
+        };
+    }
+
+    //update account
+    private FI.UnitApply<BankMessages.UpdateAccountMessage> updateAccount() {
+        return updateAccountMessage -> {
+//            sender().tell(BankService.updateAccount(updateAccountMessage.getAccount()), getSelf());
+
+            BankService.updateAccount(updateAccountMessage.getAccount());
+        };
+    }
 
 }

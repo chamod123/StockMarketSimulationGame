@@ -2,6 +2,7 @@ package Messages;
 
 import Model.Account;
 import Model.Transaction;
+import akka.actor.ActorRef;
 
 import java.io.Serializable;
 
@@ -65,11 +66,33 @@ public interface BankMessages {
         private final String name;
 
         public GetBankBalanceMessage(String name) {
-            this.name=name;
+            this.name = name;
         }
 
         public String getName() {
             return name;
+        }
+    }
+
+
+    //get Bank Balance for all player
+    class GetAllBankBalanceMessage implements Serializable {
+
+        public GetAllBankBalanceMessage() {
+        }
+
+    }
+
+    //update Account
+    class UpdateAccountMessage implements Serializable {
+        private final Account account;
+
+        public UpdateAccountMessage(Account account) {
+            this.account = account;
+        }
+
+        public Account getAccount() {
+            return account;
         }
     }
 

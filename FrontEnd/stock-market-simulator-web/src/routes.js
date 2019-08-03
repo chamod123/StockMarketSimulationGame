@@ -15,9 +15,6 @@ import TransactionHistory from "views/TransactionHistory/TransactionHistory.jsx"
 import LeaderBoard from "views/LeaderBoard/LeaderBoard.jsx";
 import Bank from "views/Bank/bank";
 import StocksPage from "views/Stocks/Stocks.jsx";
-import SignIn from "views/SignIn/SignIn.jsx";
-import SignUp from "views/SignUp/SignUp.jsx";
-import Payment from "views/SignUp/PaymentForm.jsx";
 
 const dashboardRoutes = [
   {

@@ -11,17 +11,31 @@ export default function Chart(props) {
   useEffect(() => {
     const interval = setInterval(() => {
       //use the props passed as url parrams for API
-      fetch('https://api.myjson.com/bins/1b82ht'
+      // fetch('https://api.myjson.com/bins/1b82ht'
+      fetch(`http://localhost:8081/graph/${props.stockname}`
+        // fetch('
         , {
           method: 'get'
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
-          setChartData(data.data)
+          setChartData(SortChartData(data))
         });
-    }, 1000);
+    }, 2000);
     return () => clearInterval(interval);
   });
+
+  const SortChartData=(data)=>{
+    var sortedArray ={"lablels":[], "series":[[]]}
+    data.forEach(element => {
+      //if(props.stockname===element[2]){
+        sortedArray.lablels.push(element[0])
+        sortedArray.series[0].push(element[1])
+    //  }
+    })
+    console.log(sortedArray)
+    return sortedArray
+  }
   
 
   return (

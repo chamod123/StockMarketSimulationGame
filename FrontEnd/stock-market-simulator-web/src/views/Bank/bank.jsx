@@ -1,6 +1,5 @@
-
 /*eslint-disable*/
-import React, { Component } from "react";
+import React, { useState, useEffect } from 'react';
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -14,9 +13,10 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-
-import iconsStyle from "assets/jss/material-dashboard-react/views/iconsStyle.jsx";
+import bankStyle from "assets/jss/material-dashboard-react/views/bankStyle.jsx";
 import Danger from "components/Typography/Danger";
+import { getPaymentInfo } from 'server/server';
+import { getBankBalance } from 'server/server';
 
 
 const styles = {
@@ -38,8 +38,62 @@ const styles = {
   }
 };
 
-function Icons(props) {
+function bank(props) {
   const { classes } = props;
+  const [hname, setHname] = useState('');
+  const [cnumber, setCnumber] = useState("");
+  const [edate, setEdate] = useState("");
+  const [cvv, setCvv] = useState("");
+  const[bankbalane,setBbalance] =useState("");
+
+  useEffect(() => { 
+    if(hname===''&&cnumber==='')
+      getPaymentInfo(1).then(response => {
+      console.log(response)
+       setHname(response.name)
+       setCnumber(response.cardNo)
+       setEdate(response.expierDate)
+       setCvv(response.cvv)
+     })
+    getBankBalance(1).then(response => {
+      console.log(response)
+      setBbalance(response.balance)
+     })
+   });
+
+   const UpdatePaymentInfo=()=>{
+    let request={
+      name:{hname},
+      cardNo:{cnumber},
+      expierDate:{edate},
+      cvv:{cvv},
+    }
+    console.log(request)
+   // call post UpdatePaymentInfo(request) API
+  }
+
+  const UpdateBankBalance=()=>{
+    let request={
+   //   name:{bankbalane},
+        amount:{bankbalane},
+    }
+    console.log(request)
+   // call post UpdatePaymentInfo(request) API
+  }
+
+   const handleChangeHname=(event)=>{
+    setHname(event.target.value)
+  }
+  const handleChangeCnumber=(event)=>{
+    setCnumber(event.target.value)
+  }
+  const handleChangeEdate=(event)=>{
+    setEdate(event.target.value)
+  }
+  const handleChangeCvv=(event)=>{
+    setCvv(event.target.value)
+  }
+  
   return (
     <div>
       
@@ -55,10 +109,14 @@ function Icons(props) {
                   <CustomInput
                     labelText="Holder's Name"
                     id="holder_name"
-                    type=""
+                    type="text"
                     formControlProps={{
                       fullWidth: true
                     }}
+                    inputProps={{
+                      value:hname,
+                      onChange: handleChangeHname
+                  }}      
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
@@ -69,6 +127,10 @@ function Icons(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
+                    inputProps={{
+                      value:cnumber,
+                      onChange: handleChangeCnumber
+                  }}   
                   />
                 </GridItem>
               </GridContainer>
@@ -77,10 +139,14 @@ function Icons(props) {
                   <CustomInput
                     labelText="Expiry Date"
                     id="expiry_date"
-               //     type="date/time"
+                    type="date"
                     formControlProps={{
                       fullWidth: true
                     }}
+                    inputProps={{
+                      value:edate,
+                      onChange: handleChangeEdate
+                  }}   
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
@@ -91,12 +157,16 @@ function Icons(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
+                    inputProps={{
+                      value:cvv,
+                      onChange: handleChangeCvv
+                  }}   
                   />
                 </GridItem>
               </GridContainer>
               </CardBody>
               <CardFooter>
-              <Button color="success">Update Credit Card Info</Button>
+              <Button color="success" onClick={UpdatePaymentInfo}>Update Credit Card Info</Button>
              </CardFooter>
            </Card>      
         </GridItem>
@@ -108,7 +178,7 @@ function Icons(props) {
               <h5 className={classes.cardTitleWhite}>Current Account Balance</h5>
             </CardHeader>
             <GridContainer>
-            <h4 className={classes.cardCategory}><Danger>$200</Danger></h4>
+            <h4 className={classes.cardCategory}><Danger>{bankbalane}</Danger></h4>
          </GridContainer>
             </CardBody>
         </Card>   
@@ -131,7 +201,7 @@ function Icons(props) {
                 </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Transfer</Button>
+              <Button color="primary"onClick={UpdateBankBalance}>Transfer</Button>
              </CardFooter>
             </Card>  
       </GridItem>
@@ -142,8 +212,8 @@ function Icons(props) {
   );
 }
 
-Icons.propTypes = {
+bank.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(iconsStyle)(Icons);
+export default withStyles(bankStyle)(bank);

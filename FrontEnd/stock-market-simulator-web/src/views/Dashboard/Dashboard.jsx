@@ -25,6 +25,7 @@ import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardS
 import { Button } from "@material-ui/core";
 import { getLeaderBoard } from "server/server";
 
+
 class Dashboard extends React.Component {
   state = {
     value: 0,
@@ -33,24 +34,38 @@ class Dashboard extends React.Component {
   handleChange = (event, value) => {
     this.setState({ value });
   };
-
+  handleNavigateToGame=()=>{
+    this.props.history.push('/admin/game')
+ }
   componentDidMount() {
     getLeaderBoard().then(response => {
-      this.setState({ tableData: this.getTableData(response) })
+      var sortedData=this.sortData(response)
+      console.log(response);
+      this.setState({ tableData: this.getTableData(sortedData.slice(0,2)) })
     })
+    
   }
   
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
 
-  getTableData = (response) => {
+  sortData=(data)=>
+  {
+    return data.sort((a, b) => (a.balance > b.balance) ? 1 : -1)
+
+  }
+
+  
+
+  getTableData = (response) => {      
     var rowArray = []
     response.forEach(function (element) {
-      rowArray.push([element.id, element.name, element.price])
+      rowArray.push([element.accountId, element.name, element.balance])
     });
     return rowArray;
   }
+
 
   render() {
     const { classes } = this.props;
@@ -66,7 +81,7 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Finance</p>
                 <h3 className={classes.cardTitle}>
-                  Total Sold Stock : <small> 20</small>
+                  Total Sold Stock : <small> 10</small>
                 </h3>
               </CardHeader>
            
@@ -80,7 +95,7 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Technology</p>
                 <h3 className={classes.cardTitle}>
-                Total Sold Stock : <small> 20</small>
+                Total Sold Stock : <small> 50</small>
                 </h3>
               </CardHeader>
            
@@ -94,7 +109,7 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Consumer Service</p>
                 <h3 className={classes.cardTitle}>
-                Total Sold Stock : <small> 20</small>
+                Total Sold Stock : <small> 05</small>
                 </h3>
               </CardHeader>
              
@@ -108,7 +123,7 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Manufacturing</p>
                 <h3 className={classes.cardTitle}>
-                Total Sold Stock : <small> 20</small>
+                Total Sold Stock : <small> 40</small>
                 </h3>
               </CardHeader>
              
@@ -124,7 +139,7 @@ class Dashboard extends React.Component {
                   <span className={classes.successText}>
                   
                   </span>{" "}
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
+                  Stock Market simulation Game is a multi-player stock market trading game that allows players to play the game with some of the market simulation features (e.g. stock level price changes).
                 </p>
               </CardBody>
               <CardFooter>
@@ -137,31 +152,14 @@ class Dashboard extends React.Component {
               <CardBody>
                 <h4 className={classes.cardTitle}>How To Play?</h4>
                 <p className={classes.cardCategory}>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Looking Forward to play? Then Let's start. You have already faced to the registration process. Looking Great! While the registartion process you will get a 1000 amount. So now we can start the game. You should go to the Game Board to start the game. You can go to the Game Board by tapping on below 'Let's Start' button or tapping on 'Game Board' in side navigation bar. After redirect to the gameboard you should enter stock quantity to the share amount to buy.Then you can tap on the protfolio to sell the item which you have bought. In that case you should enter quantity and sell. You can do this process rapidly and finaly you can view transaction history and the leaderboard. The player who has the maximum bank balance will be the winner! 
                 </p>
               </CardBody>
 
               
               <CardFooter>
-                
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Looking Forward to Play? Then Let's Start</h4>
-                <p className={classes.cardCategory}>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
-                </p>
-              </CardBody>
-
-             
-              <CardFooter>
-               
-
-                <Button color="primary">Let's Start</Button>
-                
+              <Button color="primary" onClick={this.handleNavigateToGame}>
+              Let's Start</Button>
               </CardFooter>
             </Card>
           </GridItem>
@@ -172,9 +170,13 @@ class Dashboard extends React.Component {
             <CardBody>
               <h4 className={classes.cardTitle}>Testimonial</h4>
               <p className={classes.cardCategory}>
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining"
+                "You’re really doing the research. Even if you’re not actually buying the stock, you’re doing the work"
+                - Bhubinder
                 </p>
-                
+                <p className={classes.cardCategory}>
+                "Playing the Stock Market Game is different than learning in a class because you’re not learning in class anymore, you’re in the computer room, and suddenly it’s not the computer room anymore, it’s the Stock Market Game room."
+                - Parina, 5th grade
+                </p>
             </CardBody>
             </Card>
           </GridItem>
@@ -202,8 +204,8 @@ class Dashboard extends React.Component {
       </div>
     );
   }
-}
 
+}
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
