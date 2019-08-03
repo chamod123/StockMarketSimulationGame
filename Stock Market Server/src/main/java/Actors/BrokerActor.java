@@ -85,8 +85,7 @@ public class BrokerActor extends AbstractActor {
     private FI.UnitApply<BrokerMessages.SellStockMessage> handleSellStock() {
         return sellStockMessage -> {
             BigDecimal totalvalue = MarketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice().multiply(BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
-            System.out.println("totalvalue" + totalvalue + ": stock :" + MarketService.getStock(sellStockMessage.getMarket().getStock()).getStockPrice() + ": stock :" + BigDecimal.valueOf(sellStockMessage.getMarket().getQuantity()));
-            //passe username,stock, quantity to sell the stock for that user
+           //passe username,stock, quantity to sell the stock for that user
             boolean done = BrokerService.selltock(sellStockMessage.getMarket().getUsername(), sellStockMessage.getMarket().getStock(), sellStockMessage.getMarket().getQuantity(), totalvalue);
             if (done) {
                 //deposit
@@ -145,8 +144,8 @@ public class BrokerActor extends AbstractActor {
     //next Turn
     private FI.UnitApply<BrokerMessages.NextTurnMessage> nextTurn() {
         return nextTurnMessage -> {
-            BrokerService.ComputerPlay();
-//            System.out.println("Computer Player need to complete");
+//            BrokerService.ComputerPlay();
+
             sender().tell(new BrokerMessages.ActionPerformed(String.format("Computer Player created")), getSelf());
         };
     }

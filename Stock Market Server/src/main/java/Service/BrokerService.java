@@ -52,7 +52,6 @@ public class BrokerService {
     //buy stock
     public static Boolean buyStock(String name, String stock, int quantity, BigDecimal totalvalue) throws Exception {
         //user value need to grater than total value. then can buy stock
-//        System.out.println("buyStock totalvalue :" + totalvalue);
         if (BankService.Balance(name).compareTo(totalvalue) >= 0) {
             Integer count = null;
             if (GetPlayer(name).getStocks() != null) {
@@ -209,8 +208,6 @@ public class BrokerService {
         ArrayList<String> prediction = new ArrayList<>();
         prediction.add(max);
         prediction.add(min);
-//        System.out.println("max " + max);
-//        System.out.println("min " + min);
         return prediction;
 
     }

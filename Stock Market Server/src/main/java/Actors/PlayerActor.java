@@ -61,10 +61,9 @@ public class PlayerActor extends AbstractActor {
     //login player
     private FI.UnitApply<PlayerMessages.LoginPlayerMessage> loginPlayer() {
         return loginPlayerMessage -> {
-            sender().tell(PlayerService.loginPlayer(loginPlayerMessage.getUserName(),loginPlayerMessage.getPassword()), getSelf());
+            sender().tell(PlayerService.loginPlayer(loginPlayerMessage.getUserName(), loginPlayerMessage.getPassword()), getSelf());
         };
     }
-
 
 
     //get player
@@ -87,10 +86,9 @@ public class PlayerActor extends AbstractActor {
         };
     }
 
-//update account
+    //update account
     private FI.UnitApply<PlayerMessages.UpdateAccountMessage> updateAccount() {
         return updateAccountMessage -> {
-            System.out.println("Update account "+updateAccountMessage.getAccount().getName());
             BankService.updateAccount(updateAccountMessage.getAccount());
 
             sender().tell(new PlayerMessages.ActionPerformed(String.format("Account %s updated.", updateAccountMessage.getAccount()
