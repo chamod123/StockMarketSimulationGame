@@ -1,14 +1,26 @@
 package Model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Account {
 
     private String name;
-    private Long accountId = 0l;
+    private int accountId;
     private BigDecimal balance;
     private Long playerId;
+    private String cvs;
+    private String cardNo;
+    private String expierDate;
 
+
+    public Account(String name, String cvs, String cardNo ,String expierDate) {
+        this.name = name;
+        this.cvs=cvs;
+        this.cardNo=cardNo;
+        this.expierDate=expierDate;
+
+    }
     //initialize account
     public Account(String name) {
         this.name = name;
@@ -41,11 +53,35 @@ public class Account {
         this.playerId = playerId;
     }
 
-    public Long getAccountId() {
+    public int getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Long accountId) {
+    public void setAccountId(int accountId) {
         this.accountId = accountId;
+    }
+
+    public String getCvs() {
+        return cvs;
+    }
+
+    public void setCvs(String cvs) {
+        this.cvs = cvs;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
+    }
+
+    public String getExpierDate() {
+        return expierDate;
+    }
+
+    public void setExpierDate(String expierDate) {
+        this.expierDate = expierDate;
     }
 }

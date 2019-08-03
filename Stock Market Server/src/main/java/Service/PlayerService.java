@@ -43,7 +43,6 @@ public class PlayerService {
                 player1.setEmail(player.getEmail());
                 player1.setUserName(player.getUserName());
                 player1.setPassword(player.getPassword());
-                player1.setTpNumber(player.getTpNumber());
             }
         }
     }

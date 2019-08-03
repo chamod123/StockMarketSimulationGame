@@ -10,16 +10,14 @@ public class Player {
     private String email;
     private String userName;
     private String password;
-    private String tpNumber;
     HashMap<String, Integer> stocks = new HashMap<>();
 
-    public Player(String name, String secondName, String email, String userName, String password, String tpNumber) {
+    public Player(String name, String secondName, String email, String userName, String password) {
         this.name = name;
         this.secondName = secondName;
         this.email = email;
         this.userName = userName;
         this.password = password;
-        this.tpNumber = tpNumber;
     }
 
     public Player(String userName,String password) {
@@ -41,14 +39,13 @@ public class Player {
 //        this.id = null;
     }
 
-    public Player(int id, String name, String secondName, String email, String userName, String password, String tpNumber) {
+    public Player(int id, String name, String secondName, String email, String userName, String password) {
         this.name = name;
         this.id = id;
         this.secondName = secondName;
         this.email = email;
         this.userName = userName;
         this.password = password;
-        this.tpNumber = tpNumber;
     }
 
     public HashMap GetPortofolio() {
@@ -111,12 +108,5 @@ public class Player {
         this.password = password;
     }
 
-    public String getTpNumber() {
-        return tpNumber;
-    }
-
-    public void setTpNumber(String tpNumber) {
-        this.tpNumber = tpNumber;
-    }
 }
 

@@ -251,6 +251,21 @@ public class StockController {
 
 
     //checked
+    //#POST - update account
+    @PostMapping("/accountupdate")
+    public String updateAccount(@RequestBody Account account) {
+        System.out.println("AWAAAAAAAAAAA" + account.getName());
+        CompletionStage<PlayerMessages.ActionPerformed> accountUpdate = Patterns
+                .ask(actorSystemCreate.getPlayerActor(), new PlayerMessages.UpdateAccountMessage(account,actorSystemCreate.getBankActor()), timeout)
+                .thenApply(PlayerMessages.ActionPerformed.class::cast);
+        if (accountUpdate != null) {
+            return "sucess";
+        }
+        return "not sucess";
+    }
+
+
+    //checked
     //#GET - get all transactions
     @GetMapping("/transactions")
     public CompletionStage<ArrayList<Transaction>> getAllTransactions() {
