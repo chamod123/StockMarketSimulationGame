@@ -416,7 +416,6 @@ export {
     UpdateProfile,
     getPaymentInfo,
     getBankBalance,
-    UpdatePaymentInfo,
     UpdateBankBalance,
     signIn,
     addPlayer,
