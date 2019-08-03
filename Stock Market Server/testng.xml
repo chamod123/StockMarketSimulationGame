@@ -7,19 +7,40 @@
 			<class name="Model.AccountTest" />
 		</classes>
 	</test>
-	<test thread-count="5" name="PlayerTest" parallel="classes">
-		<classes>
-			<class name="Model.PlayerTest" />
-		</classes>
-	</test>
+
 	<test thread-count="5" name="BrokerTest" parallel="classes">
 		<classes>
 			<class name="Model.BrokerTest" />
 		</classes>
 	</test>
+
+	<test thread-count="5" name="EventTest" parallel="classes">
+		<classes>
+			<class name="Model.EventTest" />
+		</classes>
+	</test>
+
+	<test thread-count="5" name="MarketTest" parallel="classes">
+		<classes>
+			<class name="Model.MarketTest" />
+		</classes>
+	</test>
+
+	<test thread-count="5" name="PlayerTest" parallel="classes">
+		<classes>
+			<class name="Model.PlayerTest" />
+		</classes>
+	</test>
+
 	<test thread-count="5" name="StockTest" parallel="classes">
 		<classes>
 			<class name="Model.StockTest" />
+		</classes>
+	</test>
+
+	<test thread-count="5" name="TransactionTest" parallel="classes">
+		<classes>
+			<class name="Model.TransactionTest" />
 		</classes>
 	</test>
 </suite> 
