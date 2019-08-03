@@ -21,9 +21,23 @@ public class BrokerService {
 //    }
 
     public static Player CreateAccount(Player player) {
+        boolean have=true;
         if (player != null) {
-            stockAccounts.add(player);
+
+
+            for (Player player1 : stockAccounts) {
+                if (player.getId()==player1.getId()) {
+                    have=false;
+                    break;
+                }
+            }
+            if(have){
+                stockAccounts.add(player);
+            }
+
         }
+
+
         return player;
 
     }
