@@ -14,7 +14,6 @@ import akka.japi.pf.FI;
 import java.math.BigDecimal;
 
 public class BrokerActor extends AbstractActor {
-
     @Override
     public Receive createReceive() {
         return receiveBuilder()
@@ -32,7 +31,13 @@ public class BrokerActor extends AbstractActor {
                 .match(BrokerMessages.GetPredictionMessage.class, Prediction())//prediction
                 .match(BrokerMessages.GetCurrentTurnMessage.class, currentTurn())//get current turn
                 .match(BrokerMessages.AddPlayerToGameMessage.class, addPlayerToGame())//add player to game
-                .match(BrokerMessages.GetAllStocksMessage.class, getAllStocksMessage())//get all transaction Data
+                .match(BrokerMessages.GetAllStocksMessage.class, getAllStocksMessage())
+                .match(BrokerMessages.GetGraphnameMessage.class, getGraphpername())
+
+               // .match(BrokerMessages.GetAllStocksMessage.class, getGraphpername())
+
+
+                //get all transaction Data
 //                .match(BrokerMessages.GetallPlayerInGameMessage.class, handleGetallPlayer())//get all player in game
                 .build();
     }
@@ -174,4 +179,13 @@ public class BrokerActor extends AbstractActor {
             sender().tell(MarketService.getStocksPerGraph(), getSelf());
         };
     }
+
+    //get Bank Balance for a player
+    private FI.UnitApply<BrokerMessages.GetGraphnameMessage> getGraphpername() {
+        return getBrokerMessage -> {
+            sender().tell(MarketService.getGraphpername(getBrokerMessage.getName()), getSelf());
+        };
+    }
+
+
 }

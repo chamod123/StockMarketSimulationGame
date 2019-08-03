@@ -247,13 +247,66 @@ public class MarketService {
 //get all stocks from csv  for graph
 public static List<String[]> getStocksPerGraph() throws Exception {
 
- //Build reader instance
+    //Build reader instance
+    CSVReader reader = new CSVReader(new FileReader("data.csv"), ',', '"', 0);
+
+    //Read all rows at once
+    List<String[]> allRows = reader.readAll();
+
+    allRows.remove(2);
+    return allRows;
+}
+
+    public static List<String[]> getGraphpername(String companyname) throws Exception {
+
+        //Build reader instance
         CSVReader reader = new CSVReader(new FileReader("data.csv"), ',', '"', 0);
 
         //Read all rows at once
         List<String[]> allRows = reader.readAll();
-        return allRows;
+        allRows.remove(2);
+
+        List<String[]> selectedRows = new ArrayList<>();
+        List<String> turn = new ArrayList<>();
+        List<String> stockValue = new ArrayList<>();
+
+/*        for (Account account : accountList) {
+            if (name.equals(account.getName())) {
+                return account.getBalance();
+            }
+        }*/
+        ArrayList<String> list = null;
+        for (String[] row : allRows) {
+            if (companyname.equals(row[2])) {
+
+                String[] x= {String.valueOf(row[0]),String.valueOf(row[1])};
+           //     String[] y= {String.valueOf(row[1])};
+                selectedRows.add(x);
+             //   selectedRows.add(y);
+            }
+            //String[] results1 = new String[turn.size()];
+            //turn.toArray(results1);
+            //String x = Arrays.toString(results1);
+            //String[] results2 = new String[stockValue.size()];
+            //stockValue.toArray(results2);
+            //String y = Arrays.toString(results2);
+
+
+            //list = new ArrayList<String>();
+            //list.add(x);
+            //list.add(y);
+
+            System.out.println("Latest : " + list);
+
+
+            //selectedRows.add(turns);
+
         }
+
+
+        return selectedRows;
+    }
+
 
 /*
     //get all stocks for charts

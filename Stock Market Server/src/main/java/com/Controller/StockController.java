@@ -329,6 +329,14 @@ public class StockController {
     }
 
     //checked
+    // #GET - get Bank Balance for a player
+    @GetMapping("/graph/{name}")
+    public CompletionStage<ArrayList<String[]>> getGraphpername(@PathVariable("name") String name) {
+        CompletionStage<ArrayList<String[]>> balance = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetGraphnameMessage(name), timeout)
+                .thenApply(obj -> (ArrayList<String[]>) obj);
+        return balance;
+    }
+    //checked
     //#POST - withdraw
     @PostMapping("/withdraw")
     public String withdraw(@RequestBody Transaction transaction) {//name and amount
