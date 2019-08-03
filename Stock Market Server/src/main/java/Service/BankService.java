@@ -67,4 +67,18 @@ public class BankService {
         throw new Exception("account with " + name + " does not  exists");
     }
 
+    public static void updateAccount(Account account) {
+
+
+        for (Account account1 : accountList) {
+//            System.out.println("account.getName()==account1.getName()" +account.getName() + account1.getName());
+            if(account.getName().equals(account1.getName())){
+                System.out.println("account.getCardNo()" + account.getCardNo()+"  " + account.getCvs()+"  " + account.getExpierDate());
+                account1.setCardNo(account.getCardNo());
+                account1.setCvs(account.getCvs());
+                account1.setExpierDate(account.getExpierDate());
+            }
+        }
+    }
+
 }

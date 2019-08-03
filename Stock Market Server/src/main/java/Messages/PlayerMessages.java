@@ -1,6 +1,7 @@
 package Messages;
 
 
+import Model.Account;
 import Model.Player;
 import Model.Transaction;
 import akka.actor.ActorRef;
@@ -138,6 +139,26 @@ public interface PlayerMessages {
 
         public Transaction getTransaction() {
             return transaction;
+        }
+    }
+
+
+    //update Account
+    class UpdateAccountMessage implements Serializable {
+        private final Account account;
+        private static ActorRef bankActor;
+
+        public UpdateAccountMessage(Account account,ActorRef bankActor) {
+            this.account = account;
+            this.bankActor=bankActor;
+        }
+
+        public Account getAccount() {
+            return account;
+        }
+
+        public static ActorRef getBankActor() {
+            return bankActor;
         }
     }
 

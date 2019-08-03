@@ -17,6 +17,7 @@ public class BankActor extends AbstractActor {
                 .match(BankMessages.DepositMessage.class, deposit())//Deposit from player
                 .match(BankMessages.GetBankBalanceMessage.class, getBankBalance())//get Bank Balance for a player
                 .match(BankMessages.GetAllBankBalanceMessage.class, getAllAccount())//get Bank Balance for a player
+                .match(BankMessages.UpdateAccountMessage.class, updateAccount())//update Account
                 .build();
     }
 
@@ -63,5 +64,13 @@ public class BankActor extends AbstractActor {
         };
     }
 
+    //update account
+    private FI.UnitApply<BankMessages.UpdateAccountMessage> updateAccount() {
+        return updateAccountMessage -> {
+//            sender().tell(BankService.updateAccount(updateAccountMessage.getAccount()), getSelf());
+
+            BankService.updateAccount(updateAccountMessage.getAccount());
+        };
+    }
 
 }

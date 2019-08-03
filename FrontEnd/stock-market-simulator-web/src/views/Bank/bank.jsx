@@ -46,36 +46,36 @@ function bank(props) {
   const [cvv, setCvv] = useState("");
   const[bankbalane,setBbalance] =useState("");
 
-  useEffect(() => {
-    getPaymentInfo(1).then(response => {
+  useEffect(() => { 
+    if(hname===''&&cnumber==='')
+      getPaymentInfo(1).then(response => {
       console.log(response)
-       setHname(response.holderName)
-       setCnumber(response.cardNumber)
-       setEdate(response.expiryDate)
+       setHname(response.name)
+       setCnumber(response.cardNo)
+       setEdate(response.expierDate)
        setCvv(response.cvv)
      })
-   });
-   useEffect(() => {
     getBankBalance(1).then(response => {
       console.log(response)
-      setBbalance(response.bankBalance)
+      setBbalance(response.balance)
      })
    });
 
-   const handleUpdatePaymentInfo=()=>{
+   const UpdatePaymentInfo=()=>{
     let request={
-      holderName:{hname},
-      cardNumber:{cnumber},
-      expiryDate:{edate},
+      name:{hname},
+      cardNo:{cnumber},
+      expierDate:{edate},
       cvv:{cvv},
     }
     console.log(request)
    // call post UpdatePaymentInfo(request) API
   }
 
-  const handleUpdateBankBalance=()=>{
+  const UpdateBankBalance=()=>{
     let request={
-      bankBalance:{bankbalane},
+   //   name:{bankbalane},
+        amount:{bankbalane},
     }
     console.log(request)
    // call post UpdatePaymentInfo(request) API
@@ -166,7 +166,7 @@ function bank(props) {
               </GridContainer>
               </CardBody>
               <CardFooter>
-              <Button color="success" onClick={handleUpdatePaymentInfo}>Update Credit Card Info</Button>
+              <Button color="success" onClick={UpdatePaymentInfo}>Update Credit Card Info</Button>
              </CardFooter>
            </Card>      
         </GridItem>
@@ -201,7 +201,7 @@ function bank(props) {
                 </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary"onClick={handleUpdateBankBalance}>Transfer</Button>
+              <Button color="primary"onClick={UpdateBankBalance}>Transfer</Button>
              </CardFooter>
             </Card>  
       </GridItem>
