@@ -13,13 +13,14 @@ import Container from '@material-ui/core/Container';
 import { useState } from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import { signIn } from 'server/server';
 
 function Create() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Built by the Stock Fantasy League'}
       <Link color="inherit" href="https://material-ui.com/">
-        
+
       </Link>
       {' team.'}
     </Typography>
@@ -30,6 +31,7 @@ const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
       backgroundColor: theme.palette.common.white,
+      // backgroundImage:"url("+"https://i.ytimg.com/vi/JMzfgPHLTxY/maxresdefault.jpg"+")"
     },
   },
   paper: {
@@ -46,29 +48,41 @@ const useStyles = makeStyles(theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
- // submit: {
- //   margin: theme.spacing(3, 0, 2),
- // },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles();
   const [userName, setuserName] = useState("");
   const [password, setpassword] = useState("");
-  const handleChangeEmail=(event)=>{
+  const [invalid, setInvalid] = useState(false);
+
+
+  const handleChangeEmail = (event) => {
     setuserName(event.target.value)
-  }
-  const handleChangepassword=(event)=>{
-    setpassword(event.target.value)
+    setInvalid(false)
   }
 
-  const handlePostSignIn=()=>{
-    let request={
-      UserName:{userName},
-      Password:{password}
-    }
-    console.log(request)
-   // call post  handlePostSignIn(request) API
+  const handleChangepassword = (event) => {
+    setpassword(event.target.value)
+    setInvalid(false)
+  }
+
+  const handlePostSignIn = () => {
+    // call post  handlePostSignIn(request) API
+    signIn(userName, password).then(response => {
+      if(response===1){
+        props.history.push({pathname:'/admin', state: { userName: 'userName' }})
+      }else{
+        setInvalid(true)
+      }
+    })
+  }
+
+  const handlePressSignUp=()=>{
+    props.history.push('/signUp')
   }
 
   return (
@@ -81,56 +95,56 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
-        <FormControl error={userName===""}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="userName"
-            label="Uesr Name"
-            type ="username"
-            name="userName"
-            autoComplete="userName"
-            autoFocus
-            onChange={handleChangeEmail}
-          />
-          {userName==="" && <FormHelperText>Please enter your user name</FormHelperText>}
-    </FormControl>
-    <FormControl error={password===""}>
-          <TextField
-            variant="outlined"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            autoFocus
-            onChange={handleChangepassword}
-          />
-           {password==="" && <FormHelperText>Please enter your password</FormHelperText>}
- </FormControl>
+          <FormControl error={userName === ""||invalid}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="userName"
+              label="User Name"
+              type="username"
+              name="userName"
+              autoComplete="userName"
+              autoFocus
+              onChange={handleChangeEmail}
+            />
+            {userName === "" && <FormHelperText>Please enter your user name</FormHelperText>}
+            {invalid && <FormHelperText>Invalid user name</FormHelperText>}
+          </FormControl>
+          <br />
+          <FormControl error={password === ""||invalid}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              autoFocus
+              onChange={handleChangepassword}
+            />
+            {password === "" && <FormHelperText>Please enter your password</FormHelperText>}
+            {invalid && <FormHelperText>Invalid user name</FormHelperText>}
+          </FormControl>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-         //   className={classes.submit}
-         onClick={ handlePostSignIn}
-          >
+            className={classes.submit}
+            onClick={handlePostSignIn}>
             Sign In
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="#" variant="body2" onClick={handlePressSignUp}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
           </Grid>
-        </form>
       </div>
       <Box mt={5}>
         <Create />

@@ -49,7 +49,18 @@ public interface BrokerMessages {
             return brokerId;
         }
     }
+    //get Bank Balance for a player
+    class GetGraphnameMessage implements Serializable {
+        private final String name;
 
+        public GetGraphnameMessage(String name) {
+            this.name=name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
     class BuyStockMessage implements Serializable {
         private Market market;
         private static ActorRef bankActor;

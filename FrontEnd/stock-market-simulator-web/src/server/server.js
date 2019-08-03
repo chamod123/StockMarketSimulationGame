@@ -110,8 +110,7 @@ function getStocksBySector(name) {
 function getLeaderBoard() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-         fetch('http://localhost:8081/players')
-        //fetch('https://api.myjson.com/bins/1cwg6l')
+         fetch('http://localhost:8081/accounts')
             .then(function (response) {
                 return response.json();
             })
@@ -124,7 +123,6 @@ function getLeaderBoard() {
 function getTransactioHistory() {
     console.log("called")
     return  new Promise((resolve, reject) => {
-        //fetch('https://api.myjson.com/bins/1cwg6l')
         fetch('http://localhost:8081/"transactions')
             .then(function (response) {
                 return response.json();
@@ -239,23 +237,22 @@ function getPaymentInfo(id) {
             })
     })
 }
-//post -Sign IN
-function  handlePostSignIn(request) {
-    var url = 'https://api.myjson.com/bins'
-    return new Promise((resolve, reject) => {
-        fetch(url, {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(request),
-        })
+
+function  signIn(username, password) {
+    console.log(username)
+    console.log(password)
+    return  new Promise((resolve, reject) => { 
+        fetch(`http://localhost:8081/login/${username}/${password}`)
             .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
                 resolve(myJson)
             })
+            .catch(error => {
+                reject(error)
+            });
     })
 }
 //post -Update Payment Information
@@ -421,7 +418,7 @@ export {
     getBankBalance,
     handleUpdatePaymentInfo,
     handleUpdateBankBalance,
-    handlePostSignIn,
+    signIn,
     addPlayer,
     getStocksBySector,
     getAllStocks,
