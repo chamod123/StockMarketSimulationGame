@@ -19,13 +19,14 @@ public class StockService {
         stocks.add(new Stock("Apple", Sector.Technology, BigDecimal.valueOf(11.00)));
         stocks.add(new Stock("BMW", Sector.Manufacturing, BigDecimal.valueOf(21.00)));
         stocks.add(new Stock("eBay", Sector.Manufacturing, BigDecimal.valueOf(32.00)));
-        stocks.add(new Stock("AWS", Sector.ConsumerServices, BigDecimal.valueOf(65.00)));
-        stocks.add(new Stock("MicroSoft", Sector.Finance, BigDecimal.valueOf(78.00)));
-        stocks.add(new Stock("Vine", Sector.Finance, BigDecimal.valueOf(10.00)));
+        stocks.add(new Stock("AWS", Sector.ConsumerServices, BigDecimal.valueOf(32.00)));
+        stocks.add(new Stock("MicroSoft", Sector.Finance, BigDecimal.valueOf(12.00)));
+        stocks.add(new Stock("Vine", Sector.Finance, BigDecimal.valueOf(31.00)));
         stocks.add(new Stock("Oppo", Sector.Manufacturing, BigDecimal.valueOf(7.00)));
-        stocks.add(new Stock("Titan", Sector.Technology, BigDecimal.valueOf(10.00)));
+        stocks.add(new Stock("Titan", Sector.Technology, BigDecimal.valueOf(31.00)));
         stocks.add(new Stock("AXE", Sector.ConsumerServices, BigDecimal.valueOf(25.00)));
         stocks.add(new Stock("Tesla", Sector.Technology, BigDecimal.valueOf(13.00)));
+
         for (int i = 0; i < stocks.size(); i++) {
 
             String csv = "data.csv";
@@ -36,8 +37,9 @@ public class StockService {
                 e.printStackTrace();
             }
             String turnString = String.valueOf(marketService.GetCurrentTurn());
-            String record = StockService.stocks.get(i).getStockPrice().toString();
-            String[] record3 = {turnString,record};
+            String record = stocks.get(i).getStockPrice().toString();
+            String name = stocks.get(i).getCompanyName().toString();
+            String[] record3 = {turnString,record,name};
             writer.writeNext(record3);
             try {
                 writer.close();
@@ -76,7 +78,8 @@ public class StockService {
         stocks.add(stock);
         String turnString = String.valueOf(marketService.GetCurrentTurn());
         String record = stock.getStockPrice().toString();
-        String[] record3 = {record};
+        String name = stock.getCompanyName().toString();
+        String[] record3 = {turnString,record,name};
         writer.writeNext(record3);
         writer.close();
 //        for (Stock stock1 : stocks) {

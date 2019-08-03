@@ -322,12 +322,20 @@ public class StockController {
 
     //#GET - get all stock for graph
     @GetMapping("/graph")
-    public CompletionStage<ArrayList<String>> getAllStocksGrapgh() {
-        CompletionStage<ArrayList<String>> stock = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetAllStocksMessage(), timeout)
-                .thenApply(obj -> (ArrayList<String>) obj);
+    public CompletionStage<ArrayList<String[]>> getAllStocksGrapgh() {
+        CompletionStage<ArrayList<String[]>> stock = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetAllStocksMessage(), timeout)
+                .thenApply(obj -> (ArrayList<String[]>) obj);
         return stock;
     }
 
+    //checked
+    // #GET - get Bank Balance for a player
+    @GetMapping("/graph/{name}")
+    public CompletionStage<ArrayList<String[]>> getGraphpername(@PathVariable("name") String name) {
+        CompletionStage<ArrayList<String[]>> balance = Patterns.ask(actorSystemCreate.getBrokerActor(), new BrokerMessages.GetGraphnameMessage(name), timeout)
+                .thenApply(obj -> (ArrayList<String[]>) obj);
+        return balance;
+    }
     //checked
     //#POST - withdraw
     @PostMapping("/withdraw")

@@ -52,6 +52,7 @@ public class BrokerService {
     //buy stock
     public static Boolean buyStock(String name, String stock, int quantity, BigDecimal totalvalue) throws Exception {
         //user value need to grater than total value. then can buy stock
+//        System.out.println("buyStock totalvalue :" + totalvalue);
         if (BankService.Balance(name).compareTo(totalvalue) >= 0) {
             Integer count = null;
             if (GetPlayer(name).getStocks() != null) {
@@ -144,8 +145,6 @@ public class BrokerService {
         if(stockAccounts.size()==0){
             CreateAccount(new Player("Computer"));
             BankService.CreateAccount(new Account("Computer"));
-//            System.out.println("stockAccounts  " + stockAccounts);
-//            System.out.println("stockAccounts size " +stockAccounts.size());
         }
 
         ArrayList<String> predictions = Prediction();
@@ -153,21 +152,30 @@ public class BrokerService {
         int number = ran.nextInt(7 - 1 + 1) + 1;
         if (BankService.Balance("Computer").compareTo(MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(number))) > 0) {
             BigDecimal totalvalue = MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(number));
-            buyStock("Computer", predictions.get(0), number, totalvalue);
+            boolean done = buyStock("Computer", predictions.get(0), number, totalvalue);
+            if (done) {
+                BankService.Withdraw("Computer", totalvalue);
+            }
         }
         Player p = GetPlayer("Computer");
 
         if (p.getStocks().get(predictions.get(1)) != null) {
             BigDecimal totalvalue = MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(p.getStocks().get(predictions.get(1))));
-            selltock("Computer", predictions.get(1), p.getStocks().get(predictions.get(1)), totalvalue);
-        } else if (BankService.Balance("Computer").compareTo(BigDecimal.valueOf(500)) < 0) {
+            boolean done = selltock("Computer", predictions.get(1), p.getStocks().get(predictions.get(1)), totalvalue);
+            if (done) {
+                BankService.Deposit("Computer", totalvalue);
+            }
+        } else if (BankService.Balance("Computer").compareTo(BigDecimal.valueOf(100)) < 0) {
 
             for (Map.Entry<String, Integer> entry : p.getStocks().entrySet()) {
                 String key = entry.getKey();
                 int value = entry.getValue();
                 if (value > 0) {
-                    BigDecimal totalvalue1 = MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(value));
-                    selltock("Computer", key, value, totalvalue1);
+                    BigDecimal totalvalue = MarketService.getStock(predictions.get(0)).getStockPrice().multiply(BigDecimal.valueOf(value));
+                    boolean done = selltock("Computer", key, value, totalvalue);
+                    if (done) {
+                        BankService.Deposit("Computer", totalvalue);
+                    }
                     break;
                 }
             }
@@ -201,8 +209,8 @@ public class BrokerService {
         ArrayList<String> prediction = new ArrayList<>();
         prediction.add(max);
         prediction.add(min);
-        System.out.println("max " + max);
-        System.out.println("min " + min);
+//        System.out.println("max " + max);
+//        System.out.println("min " + min);
         return prediction;
 
     }
