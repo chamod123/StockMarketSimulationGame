@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignIn() {
+export default function PaymentForm() {
   const classes = useStyles();
   const [holdername, setholdername] = useState("");
   const [cardnumber, setcardnumber] = useState("");
