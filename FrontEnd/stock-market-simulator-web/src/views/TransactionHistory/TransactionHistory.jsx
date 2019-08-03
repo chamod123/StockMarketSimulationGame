@@ -34,7 +34,7 @@ class TransactionHistory extends React.Component {
   componentDidMount() 
   {
     getTransactioHistory().then(response => {
-      this.setState({ tableData: this.getTableData(response) })
+      this.setState({ tableData: this.getTableData(response.slice) })
     })
   }
   handleChangeIndex = index => {
@@ -43,7 +43,7 @@ class TransactionHistory extends React.Component {
   getTableData = (response) => {
     var rowArray = []
     response.forEach(function (element) {
-      rowArray.push([element.buyerseller, element.turn, element.type, element.stockname, element.quantity, element.transaction])
+      rowArray.push([element.name, element.turn, element.type, element.stock, element.quantity, element.total])
     });
     return rowArray;
   }
@@ -65,7 +65,7 @@ class TransactionHistory extends React.Component {
                 <Table
                   tableHeaderColor="warning"
                   // tableHead={["ID", "Name", "Won Prize"]}
-                  tableHead={["Buyer/Seller", "Turn", "Type", "Stock Name","Quantity","Transaction"]}
+                  tableHead={["Buyer/Seller", "Turn", "Type", "Stock Name","Quantity","Transaction Value"]}
                   tableData={tableData}
                 />:null}
               </CardBody>

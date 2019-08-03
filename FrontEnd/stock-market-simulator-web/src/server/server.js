@@ -110,8 +110,7 @@ function getStocksBySector(name) {
 function getLeaderBoard() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
-         fetch('http://localhost:8081/players')
-        //fetch('https://api.myjson.com/bins/1cwg6l')
+         fetch('http://localhost:8081/accounts')
             .then(function (response) {
                 return response.json();
             })
@@ -124,7 +123,6 @@ function getLeaderBoard() {
 function getTransactioHistory() {
     console.log("called")
     return  new Promise((resolve, reject) => {
-        //fetch('https://api.myjson.com/bins/1cwg6l')
         fetch('http://localhost:8081/"transactions')
             .then(function (response) {
                 return response.json();
