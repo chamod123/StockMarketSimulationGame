@@ -14,6 +14,10 @@ import { useState } from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { signIn } from 'server/server';
+import { Card } from '@material-ui/core';
+import CardBody from "components/Card/CardBody.jsx";
+
+// import { View } from 'react-native';
 
 function Create() {
   return (
@@ -31,7 +35,10 @@ const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
       backgroundColor: theme.palette.common.white,
-      // backgroundImage:"url("+"https://i.ytimg.com/vi/JMzfgPHLTxY/maxresdefault.jpg"+")"
+       backgroundImage:"url("+"https://t3.ftcdn.net/jpg/01/83/04/80/500_F_183048068_bbktrsuhkLhGPLoijDQTt24hDQyHVFpx.jpg"+")",
+       backgroundPosition: 'center',
+       backgroundSize: 'cover',
+       backgroundRepeat: 'no-repeat'
     },
   },
   paper: {
@@ -46,7 +53,10 @@ const useStyles = makeStyles(theme => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -87,7 +97,11 @@ export default function SignIn(props) {
 
   return (
     <Container component="main" maxWidth="xs">
+    
       <CssBaseline />
+      <Card>
+        <CardBody>
+      
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -146,6 +160,8 @@ export default function SignIn(props) {
             </Grid>
           </Grid>
       </div>
+      </CardBody>
+      </Card>
       <Box mt={5}>
         <Create />
       </Box>

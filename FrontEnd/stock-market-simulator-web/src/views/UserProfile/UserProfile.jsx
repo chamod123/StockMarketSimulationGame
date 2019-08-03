@@ -48,21 +48,22 @@ function UserProfile(props) {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-   getPlayerByID(1).then(response => {
+    if(userName===''&&password==='')
+   getPlayerByID(7).then(response => {
      console.log(response)
-      setFname(response.firstName)
-      setLname(response.lastName)
+      setFname(response.name)
+      setLname(response.secondName)
       setEmail(response.email)
-      setUserName(response.username)
+      setUserName(response.userName)
       setPassword(response.password)
     })
   });
 
 
-  const handleUpdateProfile=()=>{
+  const UpdateProfile=()=>{
     let request={
-      firstName:{fname},
-      lastName:{lname},
+      name:{fname},
+      secondName:{lname},
       email:{email},
       userName:{userName},
       password:{password}
@@ -182,7 +183,7 @@ function UserProfile(props) {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="danger" onClick={handleUpdateProfile}>Update Profile</Button>
+              <Button color="danger" onClick={UpdateProfile}>Update Profile</Button>
             </CardFooter>
           </Card>
         </GridItem>

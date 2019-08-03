@@ -12,6 +12,8 @@ import Container from '@material-ui/core/Container';
 import { useState } from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import { Card } from '@material-ui/core';
+import CardBody from 'components/Card/CardBody';
 
 function Create() {
   return (
@@ -29,6 +31,10 @@ const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
       backgroundColor: theme.palette.common.white,
+       backgroundImage:"url("+"https://t3.ftcdn.net/jpg/01/83/04/80/500_F_183048068_bbktrsuhkLhGPLoijDQTt24hDQyHVFpx.jpg"+")",
+       backgroundPosition: 'center',
+       backgroundSize: 'cover',
+       backgroundRepeat: 'no-repeat'
     },
   },
   paper: {
@@ -54,15 +60,15 @@ export default function PaymentForm() {
   const [expirydate, setexpirydate] = useState("");
   const [cvv, setcvv] = useState("");
 
-  const handlePaymentInfo=()=>{
+  const PaymentInfo=()=>{
     let request={
-      HolderName:{holdername},
-      CardNumber:{cardnumber},
-      ExpiryDate:{expirydate},
-      CVV:{cvv}
+      name:{holdername},
+      cardNo:{cardnumber},
+      expierDate:{expirydate},
+      cvv:{cvv}
     }
     console.log(request)
-   // call post handlePaymentInfo(request) API
+   // call post PaymentInfo(request) API
   }
   
   const handleChangeholdername = (event) => {
@@ -84,6 +90,8 @@ export default function PaymentForm() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Card>
+        <CardBody>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
        {//   <LockOutlinedIcon />
@@ -92,7 +100,7 @@ export default function PaymentForm() {
         <Typography component="h1" variant="h5">
           Payment Details
         </Typography>
-        <form className={classes.form} noValidate>
+
         <FormControl error={holdername===""}>
           <TextField
             variant="outlined"
@@ -132,10 +140,9 @@ export default function PaymentForm() {
             required
             fullWidth
             name="expirydate"
-            label="Expiry Date"
+            // label="Expiry Date"
             type="date"
             id="expirydate"
-            autoComplete="expirydate"
             autoFocus
             onChange={handleChangeexpirydate}
           />
@@ -163,7 +170,7 @@ export default function PaymentForm() {
             variant="contained"
             color="primary"
            // className={classes.submit}
-           onClick={handlePaymentInfo}
+           onClick={PaymentInfo}
           >
             Sign In
           </Button>
@@ -174,10 +181,12 @@ export default function PaymentForm() {
               </Link>
             </Grid>
           </Grid>
-        </form>
       </div>
+      </CardBody>
+      </Card>
       <Box mt={5}>
         <Create />
+        
       </Box>
     </Container>
   );
