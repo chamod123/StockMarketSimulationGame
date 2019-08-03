@@ -12,8 +12,8 @@ export default function Chart(props) {
     const interval = setInterval(() => {
       //use the props passed as url parrams for API
       // fetch('https://api.myjson.com/bins/1b82ht'
-      fetch('https://api.myjson.com/bins/156gmd'
-        // fetch('http://localhost:8081/graph'
+      fetch(`http://localhost:8081/graph/${props.stockname}`
+        // fetch('
         , {
           method: 'get'
         }).then(function (response) {
@@ -28,10 +28,10 @@ export default function Chart(props) {
   const SortChartData=(data)=>{
     var sortedArray ={"lablels":[], "series":[[]]}
     data.forEach(element => {
-      if(props.stockname===element[2]){
+      //if(props.stockname===element[2]){
         sortedArray.lablels.push(element[0])
         sortedArray.series[0].push(element[1])
-      }
+    //  }
     })
     console.log(sortedArray)
     return sortedArray
