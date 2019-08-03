@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import { SignUP } from 'server/server';
 
 function Create() {
   return (
@@ -61,17 +62,25 @@ export default function SignUp() {
   const [password, setpassword] = useState(false);
   const [username, setusername] = useState(false);
 
-  const SignUP=()=>{
-    let request={
-      name:{firstName},
-      secondName:{lastName},
-      email:{Email},
-      userName:{username},
-      password:{password}
+  const handlePostSignUp = (props) => {
+    let request = {
+    name: { firstName },
+    secondName: { lastName },
+    email: { Email },
+    userName: { username },
+    password: { password }
     }
-    console.log(request)
-   // call SignUP(request) API
+   // console.log(request)
+    SignUP(request).then(response => {
+    //   props.history.push({ pathname: '/paymentinfo' })
+     })
+  // props.history.push({pathname:'/paymentinfo'})
   }
+
+  const handlePressSignIn=(props)=>{
+   // props.history.push({pathname:'/signIn'})
+  }
+
   const handleChangeFistName = (event) => {
     setFirstName(event.target.value)
   }
@@ -191,13 +200,13 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={SignUP}
+            onClick={handlePostSignUp}
           >
             Add Bank Info
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="#" variant="body2" onClick={handlePressSignIn}>
                 Already have an account? Sign in
               </Link>
             </Grid>

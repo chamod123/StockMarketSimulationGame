@@ -17,6 +17,8 @@ import bankStyle from "assets/jss/material-dashboard-react/views/bankStyle.jsx";
 import Danger from "components/Typography/Danger";
 import { getPaymentInfo } from 'server/server';
 import { getBankBalance } from 'server/server';
+import { UpdatePaymentInfo } from 'server/server';
+import { UpdateBankBalance } from 'server/server';
 
 
 const styles = {
@@ -61,24 +63,22 @@ function bank(props) {
      })
    });
 
-   const UpdatePaymentInfo=()=>{
+   const handleUpdatePaymentInfo=()=>{
     let request={
       name:{hname},
       cardNo:{cnumber},
       expierDate:{edate},
       cvv:{cvv},
     }
-    console.log(request)
-   // call post UpdatePaymentInfo(request) API
+    UpdatePaymentInfo(request)
   }
 
-  const UpdateBankBalance=()=>{
+  const handleUpdateBankBalance=()=>{
     let request={
-   //   name:{bankbalane},
+        name:{},
         amount:{bankbalane},
     }
-    console.log(request)
-   // call post UpdatePaymentInfo(request) API
+   UpdateBankBalance(request)
   }
 
    const handleChangeHname=(event)=>{
@@ -166,7 +166,7 @@ function bank(props) {
               </GridContainer>
               </CardBody>
               <CardFooter>
-              <Button color="success" onClick={UpdatePaymentInfo}>Update Credit Card Info</Button>
+              <Button color="success" onClick={handleUpdatePaymentInfo}>Update Credit Card Info</Button>
              </CardFooter>
            </Card>      
         </GridItem>
@@ -201,7 +201,7 @@ function bank(props) {
                 </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary"onClick={UpdateBankBalance}>Transfer</Button>
+              <Button color="primary"onClick={handleUpdateBankBalance}>Transfer</Button>
              </CardFooter>
             </Card>  
       </GridItem>
