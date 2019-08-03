@@ -25,6 +25,7 @@ import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardS
 import { Button } from "@material-ui/core";
 import { getLeaderBoard } from "server/server";
 
+
 class Dashboard extends React.Component {
   state = {
     value: 0,
