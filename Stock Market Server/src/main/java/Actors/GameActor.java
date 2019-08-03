@@ -27,10 +27,8 @@ public class GameActor extends AbstractActor {
     //add player to game
     private FI.UnitApply<GameMessage.AddPlayerToGameMessage> addPlayerToGame() {
         return  playerToGameMessage -> {
-            System.out.println("Game actor 1");
 //            brokerService.CreateAccount(createPlayerMessage.getPlayer());
             playerToGameMessage.getPlayerActor().tell( new PlayerMessages.AddPlayerToGameMessage(playerToGameMessage.getId(),playerToGameMessage.getBrokerActor()), getSelf());
-//            System.out.println("Game actor 2");
             sender().tell(new GameMessage.ActionPerformed("Player added"), getSelf());
         };
     }
