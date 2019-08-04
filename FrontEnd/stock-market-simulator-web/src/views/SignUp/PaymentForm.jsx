@@ -14,6 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Card } from '@material-ui/core';
 import CardBody from 'components/Card/CardBody';
+import {  PaymentInfo } from 'server/server';
 
 function Create() {
   return (
@@ -53,24 +54,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function PaymentForm() {
+export default function PaymentForm(props) {
   const classes = useStyles();
   const [holdername, setholdername] = useState("");
   const [cardnumber, setcardnumber] = useState("");
   const [expirydate, setexpirydate] = useState("");
   const [cvv, setcvv] = useState("");
 
-  const PaymentInfo=()=>{
-    let request={
-      name:{holdername},
-      cardNo:{cardnumber},
-      expierDate:{expirydate},
-      cvv:{cvv}
+  const handlePaymentInfo = () => {
+    let request = {
+      name: { holdername },
+      cardNo: { cardnumber },
+      expierDate: { expirydate },
+      cvv: { cvv }
     }
-    console.log(request)
-   // call post PaymentInfo(request) API
+
+    PaymentInfo(request).then(response => {
+      props.history.push({ pathname: '/signIn' })
+    })
   }
   
+  const handlePressSignUp=(props)=>{
+   props.history.push({pathname:'/signUp'})
+  }
+
   const handleChangeholdername = (event) => {
     setholdername(event.target.value)
   }
@@ -170,13 +177,13 @@ export default function PaymentForm() {
             variant="contained"
             color="primary"
            // className={classes.submit}
-           onClick={PaymentInfo}
+           onClick={handlePaymentInfo}
           >
             Sign In
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="#" variant="body2" onClick={handlePressSignUp}>
                 Want go back to Sign Up?
               </Link>
             </Grid>

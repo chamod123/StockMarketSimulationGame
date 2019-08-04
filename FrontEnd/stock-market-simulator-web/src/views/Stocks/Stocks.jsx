@@ -82,7 +82,6 @@ class Stocks extends React.Component {
   componentDidMount() {
   getAllStocks()
   .then((response) => {
-    console.log(response)
       this.setState({stockArray:this.createUISectorArray(response)});
     })
  
@@ -90,19 +89,19 @@ class Stocks extends React.Component {
   createUISectorArray = (response) => {
     return [{
       "sector":"Finance",
-      "stocks": response.filter(stock => stock.sector=="Finance"),
+      "stocks": response.filter(stock => stock.sector==="Finance"),
     },
     {
       "sector":"Technology",
-      "stocks":response.filter(stock => stock.sector=="Technology"),
+      "stocks":response.filter(stock => stock.sector==="Technology"),
     },
     {
       "sector":"Manufacturing",
-      "stocks":response.filter(stock => stock.sector=="Manufacturing")
+      "stocks":response.filter(stock => stock.sector==="Manufacturing")
     },
     {
       "sector":"ConsumerServices",
-      "stocks":response.filter(stock => stock.sector=="ConsumerServices"),
+      "stocks":response.filter(stock => stock.sector==="ConsumerServices"),
     }]   
   }
   
@@ -113,18 +112,6 @@ class Stocks extends React.Component {
       window.clearTimeout(id);
     }
   }
-  // showNotification(place) {
-  //   var x = [];
-  //   x[place] = true;
-  //   this.setState(x);
-  //   this.alertTimeout = setTimeout(
-  //     function() {
-  //       x[place] = false;
-  //       this.setState(x);
-  //     }.bind(this),
-  //     6000
-  //   );
-  // }
   handleStockSelect = (selectedstockIndex, selectedSectorIndex ) => {
     this.setState({
       selectedStock:selectedstockIndex,
@@ -150,16 +137,16 @@ class Stocks extends React.Component {
   getHeaderColor = () => {
     const { selectedSectorIndex } = this.state;
     
-    if (selectedSectorIndex == 0) {
+    if (selectedSectorIndex === 0) {
       return "warning"
     }
-    if (selectedSectorIndex == 1) {
+    if (selectedSectorIndex === 1) {
       return "success"
     }
-    if (selectedSectorIndex == 2) {
+    if (selectedSectorIndex === 2) {
       return "info"
     }
-    if (selectedSectorIndex == 3) {
+    if (selectedSectorIndex === 3) {
       return "danger"
     }
   }

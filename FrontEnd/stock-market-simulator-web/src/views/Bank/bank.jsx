@@ -17,6 +17,8 @@ import bankStyle from "assets/jss/material-dashboard-react/views/bankStyle.jsx";
 import Danger from "components/Typography/Danger";
 import { getPaymentInfo } from 'server/server';
 import { getBankBalance } from 'server/server';
+import { UpdatePaymentInfo } from 'server/server';
+import { UpdateBankBalance } from 'server/server';
 
 
 const styles = {
@@ -46,39 +48,42 @@ function bank(props) {
   const [cvv, setCvv] = useState("");
   const[bankbalane,setBbalance] =useState("");
 
-  useEffect(() => { 
-    if(hname===''&&cnumber==='')
-      getPaymentInfo(1).then(response => {
-      console.log(response)
-       setHname(response.name)
-       setCnumber(response.cardNo)
-       setEdate(response.expierDate)
-       setCvv(response.cvv)
-     })
-    getBankBalance(1).then(response => {
-      console.log(response)
-      setBbalance(response.balance)
-     })
-   });
+  useEffect(() => {
+    if (hname === '' && cnumber === '') {
+      var playerID = localStorage.getItem('playerID');
+      var userName = localStorage.getItem('userName');
+      console.log(playerID)
+      getPaymentInfo(userName).then(response => {
+        console.log(response)
+        setHname(response.name)
+        setCnumber(response.cardNo)
+        setEdate(response.expierDate)
+        setCvv(response.cvv)
+      })
+      getBankBalance(userName).then(response => {
+        setBbalance(response)
+      }).catch(error=>{
+        console.log(error)
+      })
+    }
+  });
 
-   const UpdatePaymentInfo=()=>{
+   const handleUpdatePaymentInfo=()=>{
     let request={
       name:{hname},
       cardNo:{cnumber},
       expierDate:{edate},
       cvv:{cvv},
     }
-    console.log(request)
-   // call post UpdatePaymentInfo(request) API
+    UpdatePaymentInfo(request)
   }
 
-  const UpdateBankBalance=()=>{
+  const handleUpdateBankBalance=()=>{
     let request={
-   //   name:{bankbalane},
+        name:{},
         amount:{bankbalane},
     }
-    console.log(request)
-   // call post UpdatePaymentInfo(request) API
+   UpdateBankBalance(request)
   }
 
    const handleChangeHname=(event)=>{
@@ -166,7 +171,7 @@ function bank(props) {
               </GridContainer>
               </CardBody>
               <CardFooter>
-              <Button color="success" onClick={UpdatePaymentInfo}>Update Credit Card Info</Button>
+              <Button color="success" onClick={handleUpdatePaymentInfo}>Update Credit Card Info</Button>
              </CardFooter>
            </Card>      
         </GridItem>
@@ -201,7 +206,7 @@ function bank(props) {
                 </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary"onClick={UpdateBankBalance}>Transfer</Button>
+              <Button color="primary"onClick={handleUpdateBankBalance}>Transfer</Button>
              </CardFooter>
             </Card>  
       </GridItem>

@@ -17,6 +17,8 @@ import Primary from "components/Typography/Primary";
 import Danger from "components/Typography/Danger.jsx";
 import avatar from "assets/img/faces/SMG_Web.png";
 import { getPlayerByID } from 'server/server';
+import { UpdateProfile } from 'server/server';
+
 
  
   
@@ -48,19 +50,20 @@ function UserProfile(props) {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if(userName===''&&password==='')
-   getPlayerByID(7).then(response => {
-     console.log(response)
-      setFname(response.name)
-      setLname(response.secondName)
-      setEmail(response.email)
-      setUserName(response.userName)
-      setPassword(response.password)
-    })
+    if(userName===''&&password===''){
+      var playerID = localStorage.getItem('playerID');
+      getPlayerByID(playerID).then(response => {
+         setFname(response.name)
+         setLname(response.secondName)
+         setEmail(response.email)
+         setUserName(response.userName)
+         setPassword(response.password)
+       })
+    }
   });
 
-
-  const UpdateProfile=()=>{
+   // call post UpdateProfile(request) API
+   const handleUpdateProfile = () => {
     let request={
       name:{fname},
       secondName:{lname},
@@ -68,8 +71,7 @@ function UserProfile(props) {
       userName:{userName},
       password:{password}
     }
-    console.log(request)
-   // call post UpdateProfile(request) API
+    UpdateProfile(request)
   }
 
   const handleNavigateToBank=()=>{
@@ -183,7 +185,7 @@ function UserProfile(props) {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="danger" onClick={UpdateProfile}>Update Profile</Button>
+              <Button color="danger" onClick={handleUpdateProfile}>Update Profile</Button>
             </CardFooter>
           </Card>
         </GridItem>

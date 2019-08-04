@@ -17,15 +17,28 @@ public class StockService {
 
     static {
         stocks.add(new Stock("Apple", Sector.Technology, BigDecimal.valueOf(11.00)));
-        stocks.add(new Stock("BMW", Sector.Manufacturing, BigDecimal.valueOf(21.00)));
-        stocks.add(new Stock("eBay", Sector.Manufacturing, BigDecimal.valueOf(32.00)));
-        stocks.add(new Stock("AWS", Sector.ConsumerServices, BigDecimal.valueOf(32.00)));
-        stocks.add(new Stock("MicroSoft", Sector.Finance, BigDecimal.valueOf(12.00)));
-        stocks.add(new Stock("Vine", Sector.Finance, BigDecimal.valueOf(31.00)));
+        stocks.add(new Stock("BMW", Sector.Manufacturing, BigDecimal.valueOf(11.00)));
+        stocks.add(new Stock("eBay", Sector.Manufacturing, BigDecimal.valueOf(12.00)));
+        stocks.add(new Stock("AWS", Sector.ConsumerServices, BigDecimal.valueOf(2.00)));
+        stocks.add(new Stock("MicroSoft", Sector.Finance, BigDecimal.valueOf(22.00)));
+        stocks.add(new Stock("Vine", Sector.Finance, BigDecimal.valueOf(23.00)));
         stocks.add(new Stock("Oppo", Sector.Manufacturing, BigDecimal.valueOf(7.00)));
-        stocks.add(new Stock("Titan", Sector.Technology, BigDecimal.valueOf(31.00)));
-        stocks.add(new Stock("AXE", Sector.ConsumerServices, BigDecimal.valueOf(25.00)));
-        stocks.add(new Stock("Tesla", Sector.Technology, BigDecimal.valueOf(13.00)));
+        stocks.add(new Stock("Titan", Sector.Technology, BigDecimal.valueOf(9.00)));
+        stocks.add(new Stock("AXE", Sector.ConsumerServices, BigDecimal.valueOf(7.00)));
+        stocks.add(new Stock("Tesla", Sector.Technology, BigDecimal.valueOf(15.00)));
+        stocks.add(new Stock("NSBM", Sector.Finance, BigDecimal.valueOf(3.00)));
+        stocks.add(new Stock("CocaCola", Sector.Manufacturing, BigDecimal.valueOf(8.00)));
+        stocks.add(new Stock("Dell", Sector.Technology, BigDecimal.valueOf(18.00)));
+        stocks.add(new Stock("KFC", Sector.Technology, BigDecimal.valueOf(13.00)));
+        stocks.add(new Stock("SoftLogic", Sector.Technology, BigDecimal.valueOf(10.00)));
+        stocks.add(new Stock("UCD", Sector.ConsumerServices, BigDecimal.valueOf(8.00)));
+        stocks.add(new Stock("BurgerKing", Sector.Manufacturing, BigDecimal.valueOf(13.00)));
+        stocks.add(new Stock("Yamaha", Sector.Technology, BigDecimal.valueOf(3.00)));
+        stocks.add(new Stock("WSO2", Sector.Technology, BigDecimal.valueOf(14.00)));
+        stocks.add(new Stock("BOC", Sector.ConsumerServices, BigDecimal.valueOf(21.00)));
+        stocks.add(new Stock("Google", Sector.Finance, BigDecimal.valueOf(17.00)));
+        stocks.add(new Stock("Azure", Sector.ConsumerServices, BigDecimal.valueOf(6.00)));
+
 
         for (int i = 0; i < stocks.size(); i++) {
 

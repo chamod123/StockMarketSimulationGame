@@ -23,9 +23,6 @@ function Create() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Built by the Stock Fantasy League'}
-      <Link color="inherit" href="https://material-ui.com/">
-
-      </Link>
       {' team.'}
     </Typography>
   );
@@ -84,6 +81,8 @@ export default function SignIn(props) {
     signIn(userName, password).then(response => {
       if(response!==0){
         props.history.push({pathname:'/admin/game', state: { userName: userName, playerID:response }})
+        localStorage.setItem('userName', userName);
+        localStorage.setItem('playerID', response);
       }else{
         setInvalid(true)
       }

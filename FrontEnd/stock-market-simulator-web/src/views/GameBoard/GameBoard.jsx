@@ -38,6 +38,7 @@ import { addPlayer } from "server/server.js";
 import { buyStock } from "server/server.js";
 import { sellStock } from "server/server.js";
 import { getPrediction } from "server/server.js";
+import { getBankBalance } from "server/server.js";
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -51,29 +52,33 @@ class GameBoard extends React.Component {
       currentPlayers:[],
       inProgress: true,
       open:false,
-      prediction:[]
+      prediction:[],
+      accountBalance:0
     };
   }
 
   componentDidMount() {
-    const { userName } = this.props.location.state;
+    var userName = localStorage.getItem('userName');
+
     getAllStocks().then(response => {
       this.setState({ 
         stockArray: this.createUISectorArray(response),
         inProgress:false })
     })
+    getBankBalance(userName).then(response => {
+      this.setState({
+        accountBalance:response
+      })
+    }).catch(error=>{
+      console.log(error)
+    })
   }
 
   loadStockDataFromAPI = () => {
     const {isOnMyStocks} = this.state
-    const { userName } = this.props.location.state;
+    var userName = localStorage.getItem('userName');
     if(!isOnMyStocks){
       getPortofolio(userName).then(response => {
-        // var response = {
-        //   "Google": 10,
-        //   "Apple": 20,
-        //   "BMW": 5
-        // }
         this.setState({
           stockArray: this.createUIPortfolioArray(response),
           isOnMyStocks: true,
@@ -113,19 +118,19 @@ class GameBoard extends React.Component {
   createUISectorArray = (response) => {
     return [{
       "sector":"Finance",
-      "stocks": response.filter(stock => stock.sector=="Finance"),
+      "stocks": response.filter(stock => stock.sector==="Finance"),
     },
     {
       "sector":"Technology",
-      "stocks": response.filter(stock => stock.sector=="Technology"),
+      "stocks": response.filter(stock => stock.sector==="Technology"),
     },
     {
       "sector":"Manufacturing",
-      "stocks":response.filter(stock => stock.sector=="Manufacturing")
+      "stocks":response.filter(stock => stock.sector==="Manufacturing")
     },
     {
       "sector":"ConsumerServices",
-      "stocks":response.filter(stock => stock.sector=="Consumer Services"),
+      "stocks":response.filter(stock => stock.sector==="Consumer Services"),
     }]   
   }
 
@@ -144,18 +149,33 @@ class GameBoard extends React.Component {
     const { selectedSectorIndex, selectedStock, stockArray } = this.state;
     var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
     const { quantity } = this.state;
-    const { userName } = this.props.location.state;
+    var userName = localStorage.getItem('userName');
 
     buyStock(userName, stock, quantity).then(response => console.log(response))
+    getBankBalance(userName).then(response => {
+      this.setState({
+        accountBalance:response
+      })
+    }).catch(error=>{
+      console.log(error)
+    })
   }
 
   handleSellStock = () => {
-    const { selectedSectorIndex, selectedStock, stockArray } = this.state;
-    var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
+    const { selectedStock, stockArray } = this.state;
+    console.log(stockArray)
+    var stock = stockArray[0].stocks[selectedStock].companyName
     const { quantity } = this.state;
-    const { userName } = this.props.location.state;
+    var userName = localStorage.getItem('userName');
 
     sellStock(userName, stock, quantity).then(response => console.log(response))
+    getBankBalance(userName).then(response => {
+      this.setState({
+        accountBalance:response
+      })
+    }).catch(error=>{
+      console.log(error)
+    })
   }
 
   handleStockSelect = (selectedstockIndex, selectedSectorIndex) => {
@@ -177,10 +197,9 @@ class GameBoard extends React.Component {
   }
 
   handlePressStartGame = () => {
-    const { playerID } = this.props.location.state;
+    var playerID = localStorage.getItem('playerID');
     addPlayer(playerID).then(
       getPlayers().then(response => {
-        console.log(response)
         this.setState({
           currentPlayers: response
         })
@@ -229,7 +248,6 @@ class GameBoard extends React.Component {
     const { selectedSectorIndex, selectedStock, stockArray } = this.state;
     var sector = stockArray[selectedSectorIndex].sector
     var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
-    console.log(stockArray)
     return sector + " : " + stock
   }
 
@@ -241,7 +259,7 @@ class GameBoard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { stockArray, chartData, isOnMyStocks, quantity, currentPlayers, inProgress, selectedSectorIndex, selectedStock  } = this.state;
+    const { stockArray, chartData, isOnMyStocks, quantity, currentPlayers, inProgress, selectedSectorIndex, selectedStock, accountBalance  } = this.state;
     return (
       <div>
         <GridContainer>
@@ -253,7 +271,7 @@ class GameBoard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Account Balance</p>
                 <h3 className={classes.cardTitle}>
-                  <small>$</small> 899
+                  <small>$</small> {accountBalance}
                 </h3>
               </CardHeader>
             </Card>
@@ -385,7 +403,7 @@ class GameBoard extends React.Component {
                 <GridItem xs={12} sm={12} md={8}>
                   <Card>
                     <CardBody>
-                      {currentPlayers.length == 0 ? <Button color="success" onClick={this.handlePressStartGame}>Start Game</Button>
+                      {currentPlayers.length === 0 ? <Button color="success" onClick={this.handlePressStartGame}>Start Game</Button>
                         :
                         <GridContainer spacing={3}>{currentPlayers.map(player => { return <GridItem xs>{player.name}</GridItem> })}</GridContainer>}
                     </CardBody>

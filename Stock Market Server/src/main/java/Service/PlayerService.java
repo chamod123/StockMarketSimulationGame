@@ -12,6 +12,7 @@ public class PlayerService {
 
     public static Player getPlayer(Long id) {
         for (Player player : players) {
+//            System.out.println("Player : " + player.getName());
             if(Long.valueOf(player.getId()).equals(id)){
                 return player;
             }

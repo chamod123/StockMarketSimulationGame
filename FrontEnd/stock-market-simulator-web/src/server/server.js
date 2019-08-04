@@ -240,8 +240,7 @@ function UpdateProfile(request) {
 // Get -payment infromation of a player
 function getPaymentInfo(id) {
     return new Promise((resolve, reject) => {
-     //   fetch('https://api.myjson.com/bins/zg0it') //test myjson
-         fetch('http://localhost:8081/accounts/${id}')
+         fetch(`http://localhost:8081/accounts/${id}`)
             .then(function (response) {
                 console.log(response)
                 return response.json();
@@ -252,8 +251,6 @@ function getPaymentInfo(id) {
     })
 }
 function  signIn(username, password) {
-    console.log(username)
-    console.log(password)
     return  new Promise((resolve, reject) => { 
         fetch(`http://localhost:8081/login/${username}/${password}`)
             .then(function (response) {
@@ -307,22 +304,32 @@ function UpdateBankBalance(request) {
     })
 }
 //post -SignUP
-function  SignUP(request) {
-    var url = 'http://localhost:8081/players'
+function SignUP(firstname, lastName, Email, username, password) {
+    let request = {
+        "name": firstname,
+        "secondName": lastName,
+        "email": Email,
+        "userName": username,
+        "password": password
+    }
     return new Promise((resolve, reject) => {
-        fetch(url, {
-            method: 'POST', 
+        fetch(`http://localhost:8081/players`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(request),
+            body:JSON.stringify(request)
         })
             .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
                 resolve(myJson)
             })
+            .catch(error => {
+                reject(error)
+            });
     })
 }
 //post -PaymentInfo
@@ -377,16 +384,18 @@ function getStockById(id) {
 
 // GET - get Bank Balance for a player
 function getBankBalance(id) {
-    console.log("called")
+    console.log("called getBankBalance  "+id)
     return  new Promise((resolve, reject) => { 
-        fetch(`http://localhost:8081/bankBalance${id}`)
-   //   fetch('https://api.myjson.com/bins/kx92t')
+        fetch(`http://localhost:8081/bankBalance/${id}`)
             .then(function (response) {
+                console.log(response)
                 return response.json();
             })
             .then(function (myJson) {
+                console.log(myJson)
                 resolve(myJson)
-            });
+            })
+            .catch(error=>reject(error))
     })
 }
 
