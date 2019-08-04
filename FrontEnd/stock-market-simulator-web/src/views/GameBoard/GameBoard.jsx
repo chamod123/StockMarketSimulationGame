@@ -152,7 +152,7 @@ class GameBoard extends React.Component {
     var userName = localStorage.getItem('userName');
 
     buyStock(userName, stock, quantity).then(response => console.log(response))
-    getBankBalance(userName).then(response => {
+     getBankBalance(userName).then(response => {
       this.setState({
         accountBalance:response
       })

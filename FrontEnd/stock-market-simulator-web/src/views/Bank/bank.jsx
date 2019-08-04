@@ -46,7 +46,7 @@ function bank(props) {
   const [cnumber, setCnumber] = useState("");
   const [edate, setEdate] = useState("");
   const [cvv, setCvv] = useState("");
-  const[bankbalane,setBbalance] =useState("");
+  const [bankbalane, setBbalance] = useState("");
 
   useEffect(() => {
     if (hname === '' && cnumber === '') {
@@ -62,54 +62,70 @@ function bank(props) {
       })
       getBankBalance(userName).then(response => {
         setBbalance(response)
-      }).catch(error=>{
+      }).catch(error => {
         console.log(error)
       })
     }
   });
 
-   const handleUpdatePaymentInfo=()=>{
-    let request={
-      name:{hname},
-      cardNo:{cnumber},
-      expierDate:{edate},
-      cvv:{cvv},
+  const handleUpdatePaymentInfo = () => {
+    var userName = localStorage.getItem('userName');
+
+    let request = {
+      name: userName,
+      cardNo: cnumber,
+      expierDate: edate,
+      cvv: cvv,
     }
-    UpdatePaymentInfo(request)
+    UpdatePaymentInfo(request).then(
+      getBankBalance(userName).then(response => {
+        setBbalance(response)
+      }).catch(error => {
+        console.log(error)
+      })
+    )
   }
 
-  const handleUpdateBankBalance=()=>{
-    let request={
-        name:{},
-        amount:{bankbalane},
+  const handleUpdateBankBalance = () => {
+    var userName = localStorage.getItem('userName');
+
+    let request = {
+      name: userName,
+      amount: bankbalane,
     }
-   UpdateBankBalance(request)
+    UpdateBankBalance(request).then(
+      getBankBalance(userName).then(response => {
+        setBbalance(response)
+      }).catch(error => {
+        console.log(error)
+      })
+    )
   }
 
-   const handleChangeHname=(event)=>{
+  const handleChangeHname = (event) => {
     setHname(event.target.value)
   }
-  const handleChangeCnumber=(event)=>{
+  const handleChangeCnumber = (event) => {
     setCnumber(event.target.value)
   }
-  const handleChangeEdate=(event)=>{
+  const handleChangeEdate = (event) => {
     setEdate(event.target.value)
   }
-  const handleChangeCvv=(event)=>{
+  const handleChangeCvv = (event) => {
     setCvv(event.target.value)
   }
-  
+
   return (
     <div>
-      
+
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
-              <Card>
-              <CardBody>
+          <Card>
+            <CardBody>
               <CardHeader color="success">
-              <h5 className={classes.cardTitleWhite}>Edit Credit Card Info</h5>
-            </CardHeader>
-            <GridContainer>
+                <h5 className={classes.cardTitleWhite}>Edit Credit Card Info</h5>
+              </CardHeader>
+              <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText="Holder's Name"
@@ -119,9 +135,9 @@ function bank(props) {
                       fullWidth: true
                     }}
                     inputProps={{
-                      value:hname,
+                      value: hname,
                       onChange: handleChangeHname
-                  }}      
+                    }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
@@ -133,13 +149,13 @@ function bank(props) {
                       fullWidth: true
                     }}
                     inputProps={{
-                      value:cnumber,
+                      value: cnumber,
                       onChange: handleChangeCnumber
-                  }}   
+                    }}
                   />
                 </GridItem>
               </GridContainer>
-                <GridContainer>
+              <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText="Expiry Date"
@@ -149,9 +165,9 @@ function bank(props) {
                       fullWidth: true
                     }}
                     inputProps={{
-                      value:edate,
+                      value: edate,
                       onChange: handleChangeEdate
-                  }}   
+                    }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
@@ -163,36 +179,36 @@ function bank(props) {
                       fullWidth: true
                     }}
                     inputProps={{
-                      value:cvv,
+                      value: cvv,
                       onChange: handleChangeCvv
-                  }}   
+                    }}
                   />
                 </GridItem>
               </GridContainer>
-              </CardBody>
-              <CardFooter>
-              <Button color="success" onClick={handleUpdatePaymentInfo}>Update Credit Card Info</Button>
-             </CardFooter>
-           </Card>      
-        </GridItem>
-      
-      <GridItem xs={12} sm={12} md={5}>
-      <Card>
-              <CardBody>
-              <CardHeader color="danger">
-              <h5 className={classes.cardTitleWhite}>Current Account Balance</h5>
-            </CardHeader>
-            <GridContainer>
-            <h4 className={classes.cardCategory}><Danger>{bankbalane}</Danger></h4>
-         </GridContainer>
             </CardBody>
-        </Card>   
-        <Card>
-        <CardBody>
+            <CardFooter>
+              <Button color="success" onClick={handleUpdatePaymentInfo}>Update Credit Card Info</Button>
+            </CardFooter>
+          </Card>
+        </GridItem>
+
+        <GridItem xs={12} sm={12} md={5}>
+          <Card>
+            <CardBody>
+              <CardHeader color="danger">
+                <h5 className={classes.cardTitleWhite}>Current Account Balance</h5>
+              </CardHeader>
+              <GridContainer>
+                <h4 className={classes.cardCategory}><Danger>{bankbalane}</Danger></h4>
+              </GridContainer>
+            </CardBody>
+          </Card>
+          <Card>
+            <CardBody>
               <CardHeader color="primary">
-              <h5 className={classes.cardTitleWhite}>Transfer Money</h5>
-            </CardHeader>
-            <GridContainer> 
+                <h5 className={classes.cardTitleWhite}>Transfer Money</h5>
+              </CardHeader>
+              <GridContainer>
                 <GridItem xs={12} sm={12} md={5}>
                   <CustomInput
                     labelText="Amount"
@@ -203,16 +219,16 @@ function bank(props) {
                     }}
                   />
                 </GridItem>
-                </GridContainer>
+              </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary"onClick={handleUpdateBankBalance}>Transfer</Button>
-             </CardFooter>
-            </Card>  
-      </GridItem>
-      
-   </GridContainer>
-    
+              <Button color="primary" onClick={handleUpdateBankBalance}>Transfer</Button>
+            </CardFooter>
+          </Card>
+        </GridItem>
+
+      </GridContainer>
+
     </div>
   );
 }

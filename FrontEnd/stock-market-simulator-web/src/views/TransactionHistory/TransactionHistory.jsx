@@ -34,7 +34,7 @@ class TransactionHistory extends React.Component {
   componentDidMount() 
   {
     getTransactioHistory().then(response => {
-      this.setState({ tableData: this.getTableData(response.slice) })
+      this.setState({ tableData: this.getTableData(response) })
     })
   }
   handleChangeIndex = index => {

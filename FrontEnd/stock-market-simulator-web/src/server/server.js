@@ -136,7 +136,7 @@ function getPrediction() {
 function getTransactioHistory() {
     console.log("called")
     return  new Promise((resolve, reject) => {
-        fetch('http://localhost:8081/"transactions')
+        fetch('http://localhost:8081/transactions')
             .then(function (response) {
                 return response.json();
             })
@@ -296,6 +296,7 @@ function UpdateBankBalance(request) {
             body: JSON.stringify(request),
         })
             .then(function (response) {
+                console.log(request)
                 return response.json();
             })
             .then(function (myJson) {
