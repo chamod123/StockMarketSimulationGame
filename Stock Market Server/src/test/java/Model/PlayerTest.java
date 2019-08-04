@@ -30,9 +30,8 @@ public class PlayerTest {
 	public void createPlayer() {
 		try {
 			log.debug("Creating New Player");
-			player = new Player( 25, "Test User");
-			log.debug("Player Created Successfully with the Name: " + player.getName() + " and ID: "
-					+ player.getId());
+			player = new Player(25, "Test User");
+			log.debug("Player Created Successfully with the Name: " + player.getName() + " and ID: " + player.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.debug("Player Creation Unsuccessful" + e);
@@ -63,14 +62,13 @@ public class PlayerTest {
 	@Test
 	public void verifyUpdatedPlayerId() {
 		log.debug("Verifying PLayer ID");
-		assertEquals(player.getId(), "20");
+		assertEquals(player.getId(), 20);
 		log.debug("Player ID Successfully Verified");
 	}
 
 	@AfterClass
 	public void afterClass() {
-		log.debug("Player: \"" + player.getName() + "\" Created & Verified Successfully with an ID: "
-				+ player.getId());
+		log.debug("Player: \"" + player.getName() + "\" Created & Verified Successfully with an ID: " + player.getId());
 		log.debug("End of Player Test");
 	}
 }

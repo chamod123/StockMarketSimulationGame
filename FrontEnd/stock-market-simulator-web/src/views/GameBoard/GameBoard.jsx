@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Icon from "@material-ui/core/Icon";
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 
 // @material-ui/icons
 import People from "@material-ui/icons/People";
@@ -34,6 +37,7 @@ import { getPlayers } from "server/server.js";
 import { addPlayer } from "server/server.js";
 import { buyStock } from "server/server.js";
 import { sellStock } from "server/server.js";
+import { getPrediction } from "server/server.js";
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -45,11 +49,14 @@ class GameBoard extends React.Component {
       isOnMyStocks: false,
       quantity: 0,
       currentPlayers:[],
-      inProgress: true
+      inProgress: true,
+      open:false,
+      prediction:[]
     };
   }
 
   componentDidMount() {
+    const { userName } = this.props.location.state;
     getAllStocks().then(response => {
       this.setState({ 
         stockArray: this.createUISectorArray(response),
@@ -59,7 +66,7 @@ class GameBoard extends React.Component {
 
   loadStockDataFromAPI = () => {
     const {isOnMyStocks} = this.state
-    var userName ="Chamod2"
+    const { userName } = this.props.location.state;
     if(!isOnMyStocks){
       getPortofolio(userName).then(response => {
         // var response = {
@@ -71,9 +78,10 @@ class GameBoard extends React.Component {
           stockArray: this.createUIPortfolioArray(response),
           isOnMyStocks: true,
           inProgress: false
-        }).catch(error=>{
-          console.log(error)
         })
+      })
+      .catch(error=>{
+        console.log(error)
       })
     }else{
       this.setState({
@@ -88,6 +96,19 @@ class GameBoard extends React.Component {
       })
     }
   }
+
+  handleClickOpen = () => {
+    getPrediction().then(response=>{
+      this.setState({
+        open: true,
+        prediction:response
+      });
+    })
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
 
   createUISectorArray = (response) => {
     return [{
@@ -123,7 +144,7 @@ class GameBoard extends React.Component {
     const { selectedSectorIndex, selectedStock, stockArray } = this.state;
     var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
     const { quantity } = this.state;
-    let userName = "Chamod2"
+    const { userName } = this.props.location.state;
 
     buyStock(userName, stock, quantity).then(response => console.log(response))
   }
@@ -132,7 +153,7 @@ class GameBoard extends React.Component {
     const { selectedSectorIndex, selectedStock, stockArray } = this.state;
     var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
     const { quantity } = this.state;
-    let userName = "Chamod2"
+    const { userName } = this.props.location.state;
 
     sellStock(userName, stock, quantity).then(response => console.log(response))
   }
@@ -156,7 +177,8 @@ class GameBoard extends React.Component {
   }
 
   handlePressStartGame = () => {
-    addPlayer("7").then(
+    const { playerID } = this.props.location.state;
+    addPlayer(playerID).then(
       getPlayers().then(response => {
         console.log(response)
         this.setState({
@@ -399,7 +421,14 @@ class GameBoard extends React.Component {
                     <CardFooter chart>
                     </CardFooter>
                   </Card>
-                  <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks?"Buy New shares":"View your portfolio"}</Button>
+                  <GridContainer>
+                  <GridItem>
+                    <Button color="info" onClick={this.handleToggleOnMyStock}>{isOnMyStocks ? "Buy New shares" : "View your portfolio"}</Button>
+                  </GridItem>
+                  <GridItem>
+                    <Button  color="primary"onClick={this.handleClickOpen} >Get Prediction</Button>
+                  </GridItem>
+                  </GridContainer>
                 </GridItem>
               </GridContainer> 
               : <LinearProgressBar></LinearProgressBar>}
@@ -409,7 +438,32 @@ class GameBoard extends React.Component {
             </CardBody>
           </Card>
         </GridContainer>
-      </div>
+        <Dialog
+          onClose={this.handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.open}
+        >
+          <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
+            Recomondation
+          </DialogTitle>
+          <DialogContent dividers>
+            <Typography gutterBottom>
+              Best stock to buy 
+            </Typography>
+            <Typography gutterBottom>
+              {this.state.prediction[0]}
+            </Typography>
+            <Typography gutterBottom>
+              Best stock to sell
+            </Typography>
+            <Typography gutterBottom>
+              {this.state.prediction[1]}
+            </Typography>
+            <Typography gutterBottom>
+            </Typography>
+          </DialogContent>
+        </Dialog>
+        </div> 
     );
   }
 }

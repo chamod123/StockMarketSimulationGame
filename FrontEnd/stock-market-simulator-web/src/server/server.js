@@ -1,5 +1,4 @@
 function getAllStocks() {
-    console.log("called  get allStocks")// Remove when API is integrated
     return  new Promise((resolve, reject) => { 
         fetch("http://localhost:8081/allStock")
             .then(function (response) {
@@ -17,10 +16,11 @@ function getAllStocks() {
 
 function getPortofolio(user) {
     console.log("called portofolio")
+    console.log(user)
     return  new Promise((resolve, reject) => { 
         fetch(`http://localhost:8081/portofolio/${user}`)
             .then(function (response) {
-                if (!response.ok) throw new Error(response.status);
+                if (!response.ok) throw new Error(response.json());
                 return response.json();
             })
             .then(function (myJson) {
@@ -33,11 +33,13 @@ function getPortofolio(user) {
 }
 
 function buyStock(user, stock, quantity) {
+    console.log("buyStock")
     var request={
         "username":user,
         "stock": stock,
         "quantity": quantity
     }
+    console.log(request)
     var url = `http://localhost:8081/buyStock`
     return new Promise((resolve, reject) => {
         fetch(url, {
@@ -81,11 +83,9 @@ function sellStock(user, stock, quantity) {
                 return response.json();
             })
             .then(function (myJson) {
-                console.log(myJson)
                 resolve(myJson)
             })
             .catch(error => {
-                console.log('error', error);
                 reject(error)
             });
     })
@@ -111,6 +111,19 @@ function getLeaderBoard() {
     console.log("called")
     return  new Promise((resolve, reject) => { 
          fetch('http://localhost:8081/accounts')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                resolve(myJson)
+            });
+    })
+}
+
+function getPrediction() {
+    console.log("called getPrediction")
+    return  new Promise((resolve, reject) => { 
+         fetch('http://localhost:8081/prediction')
             .then(function (response) {
                 return response.json();
             })
@@ -425,6 +438,7 @@ export {
     sellStock,
     PaymentInfo,
     UpdatePaymentInfo,
-    SignUP
+    SignUP,
+    getPrediction
  //   UpdateProfile
 }
