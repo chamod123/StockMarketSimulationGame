@@ -13,7 +13,7 @@ public class Player {
     HashMap<String, Integer> stocks = new HashMap<>();
 
     public Player(String name, String secondName, String email, String userName, String password) {
-        this.name = name;
+        this.name = userName;
         this.secondName = secondName;
         this.email = email;
         this.userName = userName;
@@ -40,7 +40,7 @@ public class Player {
     }
 
     public Player(int id, String name, String secondName, String email, String userName, String password) {
-        this.name = name;
+        this.name = userName;
         this.id = id;
         this.secondName = secondName;
         this.email = email;

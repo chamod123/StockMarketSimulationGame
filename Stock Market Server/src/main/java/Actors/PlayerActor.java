@@ -5,6 +5,7 @@ import Messages.BrokerMessages;
 import Messages.GameMessage;
 import Messages.PlayerMessages;
 import Model.Account;
+import Model.Player;
 import Model.Transaction;
 import Service.BankService;
 import Service.BrokerService;
@@ -32,21 +33,26 @@ public class PlayerActor extends AbstractActor {
 
     private FI.UnitApply<PlayerMessages.CreatePlayerMessage> handleCreatePlayer() {
         return createPlayerMessage -> {
-            PlayerService.createPlayer(createPlayerMessage.getPlayer());
-            //Create Bank Account for Player
-            createPlayerMessage.getBankActor().tell(new BankMessages.CreateAccountMessage(new Account(createPlayerMessage.getPlayer().getName())), getSelf());
+            Player player = createPlayerMessage.getPlayer();
+            player.setName(player.getUserName());
 
-            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", createPlayerMessage.getPlayer()
-                    .getName())), getSelf());
+            PlayerService.createPlayer(player);
+            //Create Bank Account for Player
+            createPlayerMessage.getBankActor().tell(new BankMessages.CreateAccountMessage(new Account(player.getName())), getSelf());
+
+            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s created.", player.getName())), getSelf());
         };
     }
 
     private FI.UnitApply<PlayerMessages.UpdatePlayerMessage> updatePlayer() {
         return updatePlayerMessage -> {
-            PlayerService.updatePlayer(updatePlayerMessage.getPlayer());
 
-            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s updated.", updatePlayerMessage.getPlayer()
-                    .getName())), getSelf());
+            Player player = updatePlayerMessage.getPlayer();
+            player.setName(player.getUserName());
+
+            PlayerService.updatePlayer(player);
+
+            sender().tell(new PlayerMessages.ActionPerformed(String.format("Player %s updated.", player.getName())), getSelf());
         };
     }
 
