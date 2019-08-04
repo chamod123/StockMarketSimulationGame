@@ -4,7 +4,7 @@ Multiplayer online game which is playing with stocks.
 
 ## Getting Started
 
-### instructions to project up and running on your local machine.
+### Instructions to project up and running on your local machine.
 
 * **Start Server back end**
     * Open *Stock Market Server* Folder as intelliJ project.
