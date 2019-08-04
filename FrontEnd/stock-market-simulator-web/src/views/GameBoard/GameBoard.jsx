@@ -152,15 +152,30 @@ class GameBoard extends React.Component {
     var userName = localStorage.getItem('userName');
 
     buyStock(userName, stock, quantity).then(response => console.log(response))
+    getBankBalance(userName).then(response => {
+      this.setState({
+        accountBalance:response
+      })
+    }).catch(error=>{
+      console.log(error)
+    })
   }
 
   handleSellStock = () => {
-    const { selectedSectorIndex, selectedStock, stockArray } = this.state;
-    var stock = stockArray[selectedSectorIndex].stocks[selectedStock].companyName
+    const { selectedStock, stockArray } = this.state;
+    console.log(stockArray)
+    var stock = stockArray[0].stocks[selectedStock].companyName
     const { quantity } = this.state;
     var userName = localStorage.getItem('userName');
 
     sellStock(userName, stock, quantity).then(response => console.log(response))
+    getBankBalance(userName).then(response => {
+      this.setState({
+        accountBalance:response
+      })
+    }).catch(error=>{
+      console.log(error)
+    })
   }
 
   handleStockSelect = (selectedstockIndex, selectedSectorIndex) => {
