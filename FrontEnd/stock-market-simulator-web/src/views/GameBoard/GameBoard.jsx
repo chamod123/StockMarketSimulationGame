@@ -168,14 +168,22 @@ class GameBoard extends React.Component {
     const { quantity } = this.state;
     var userName = localStorage.getItem('userName');
 
-    sellStock(userName, stock, quantity).then(response => console.log(response))
-    getBankBalance(userName).then(response => {
+    sellStock(userName, stock, quantity).then(response => {
+      getBankBalance(userName).then(response => {
+        this.setState({
+          accountBalance: response
+        })
+      }).catch(error => {
+        console.log(error)
+      }))
+    getPortofolio(userName).then(response => {
       this.setState({
-        accountBalance:response
+        stockArray: this.createUIPortfolioArray(response),
+        isOnMyStocks: true,
+        inProgress: false
       })
-    }).catch(error=>{
-      console.log(error)
     })
+  }
   }
 
   handleStockSelect = (selectedstockIndex, selectedSectorIndex) => {
@@ -219,7 +227,7 @@ class GameBoard extends React.Component {
 
   getPortFolioTableData = (array) => {
     var rowArray = []
-    if(array.length>0){ 
+    if (array.length > 0) {
       array.forEach(function (element) {
         rowArray.push([element.companyName, element.stockPrice.toString()])
       });
