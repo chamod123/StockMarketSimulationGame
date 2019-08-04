@@ -54,27 +54,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function PaymentForm() {
+export default function PaymentForm(props) {
   const classes = useStyles();
   const [holdername, setholdername] = useState("");
   const [cardnumber, setcardnumber] = useState("");
   const [expirydate, setexpirydate] = useState("");
   const [cvv, setcvv] = useState("");
 
-  const handlePaymentInfo=(props)=>{
-   let request={
-      name:{holdername},
-      cardNo:{cardnumber},
-      expierDate:{expirydate},
-      cvv:{cvv}
+  const handlePaymentInfo = () => {
+    let request = {
+      name: { holdername },
+      cardNo: { cardnumber },
+      expierDate: { expirydate },
+      cvv: { cvv }
     }
-   // console.log(request)
-    PaymentInfo(request).then(response=>{
-   // props.history.push({pathname:'/admin/game'})
+
+    PaymentInfo(request).then(response => {
+      console.log(response)
+      props.history.push({ pathname: '/signIn' })
     })
   }
+  
   const handlePressSignUp=(props)=>{
-   // props.history.push({pathname:'/signUp'})
+   props.history.push({pathname:'/signUp'})
   }
 
   const handleChangeholdername = (event) => {

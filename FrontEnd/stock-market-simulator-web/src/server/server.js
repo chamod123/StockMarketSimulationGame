@@ -252,8 +252,6 @@ function getPaymentInfo(id) {
     })
 }
 function  signIn(username, password) {
-    console.log(username)
-    console.log(password)
     return  new Promise((resolve, reject) => { 
         fetch(`http://localhost:8081/login/${username}/${password}`)
             .then(function (response) {
@@ -307,22 +305,32 @@ function UpdateBankBalance(request) {
     })
 }
 //post -SignUP
-function  SignUP(request) {
-    var url = 'http://localhost:8081/players'
+function SignUP(firstname, lastName, Email, username, password) {
+    let request = {
+        "name": firstname,
+        "secondName": lastName,
+        "email": Email,
+        "userName": username,
+        "password": password
+    }
     return new Promise((resolve, reject) => {
-        fetch(url, {
-            method: 'POST', 
+        fetch(`http://localhost:8081/players`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(request),
+            body:JSON.stringify(request)
         })
             .then(function (response) {
+                if (!response.ok) throw new Error(response.status);
                 return response.json();
             })
             .then(function (myJson) {
                 resolve(myJson)
             })
+            .catch(error => {
+                reject(error)
+            });
     })
 }
 //post -PaymentInfo

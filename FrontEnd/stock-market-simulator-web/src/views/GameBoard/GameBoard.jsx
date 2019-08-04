@@ -56,7 +56,6 @@ class GameBoard extends React.Component {
   }
 
   componentDidMount() {
-    const { userName } = this.props.location.state;
     getAllStocks().then(response => {
       this.setState({ 
         stockArray: this.createUISectorArray(response),
@@ -113,19 +112,19 @@ class GameBoard extends React.Component {
   createUISectorArray = (response) => {
     return [{
       "sector":"Finance",
-      "stocks": response.filter(stock => stock.sector=="Finance"),
+      "stocks": response.filter(stock => stock.sector==="Finance"),
     },
     {
       "sector":"Technology",
-      "stocks": response.filter(stock => stock.sector=="Technology"),
+      "stocks": response.filter(stock => stock.sector==="Technology"),
     },
     {
       "sector":"Manufacturing",
-      "stocks":response.filter(stock => stock.sector=="Manufacturing")
+      "stocks":response.filter(stock => stock.sector==="Manufacturing")
     },
     {
       "sector":"ConsumerServices",
-      "stocks":response.filter(stock => stock.sector=="Consumer Services"),
+      "stocks":response.filter(stock => stock.sector==="Consumer Services"),
     }]   
   }
 
@@ -385,7 +384,7 @@ class GameBoard extends React.Component {
                 <GridItem xs={12} sm={12} md={8}>
                   <Card>
                     <CardBody>
-                      {currentPlayers.length == 0 ? <Button color="success" onClick={this.handlePressStartGame}>Start Game</Button>
+                      {currentPlayers.length === 0 ? <Button color="success" onClick={this.handlePressStartGame}>Start Game</Button>
                         :
                         <GridContainer spacing={3}>{currentPlayers.map(player => { return <GridItem xs>{player.name}</GridItem> })}</GridContainer>}
                     </CardBody>
