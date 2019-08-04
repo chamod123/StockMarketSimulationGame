@@ -48,20 +48,25 @@ function bank(props) {
   const [cvv, setCvv] = useState("");
   const[bankbalane,setBbalance] =useState("");
 
-  useEffect(() => { 
-    if(hname===''&&cnumber==='')
-      getPaymentInfo(1).then(response => {
-      console.log(response)
-       setHname(response.name)
-       setCnumber(response.cardNo)
-       setEdate(response.expierDate)
-       setCvv(response.cvv)
-     })
-    getBankBalance(1).then(response => {
-      console.log(response)
-      setBbalance(response.balance)
-     })
-   });
+  useEffect(() => {
+    if (hname === '' && cnumber === '') {
+      var playerID = localStorage.getItem('playerID');
+      var userName = localStorage.getItem('userName');
+      console.log(playerID)
+      getPaymentInfo(userName).then(response => {
+        console.log(response)
+        setHname(response.name)
+        setCnumber(response.cardNo)
+        setEdate(response.expierDate)
+        setCvv(response.cvv)
+      })
+      getBankBalance(userName).then(response => {
+        setBbalance(response)
+      }).catch(error=>{
+        console.log(error)
+      })
+    }
+  });
 
    const handleUpdatePaymentInfo=()=>{
     let request={

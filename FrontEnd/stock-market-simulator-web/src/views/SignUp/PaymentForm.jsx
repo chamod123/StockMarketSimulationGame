@@ -70,7 +70,6 @@ export default function PaymentForm(props) {
     }
 
     PaymentInfo(request).then(response => {
-      console.log(response)
       props.history.push({ pathname: '/signIn' })
     })
   }

@@ -240,8 +240,7 @@ function UpdateProfile(request) {
 // Get -payment infromation of a player
 function getPaymentInfo(id) {
     return new Promise((resolve, reject) => {
-     //   fetch('https://api.myjson.com/bins/zg0it') //test myjson
-         fetch('http://localhost:8081/accounts/${id}')
+         fetch(`http://localhost:8081/accounts/${id}`)
             .then(function (response) {
                 console.log(response)
                 return response.json();
@@ -385,16 +384,18 @@ function getStockById(id) {
 
 // GET - get Bank Balance for a player
 function getBankBalance(id) {
-    console.log("called")
+    console.log("called getBankBalance  "+id)
     return  new Promise((resolve, reject) => { 
-        fetch(`http://localhost:8081/bankBalance${id}`)
-   //   fetch('https://api.myjson.com/bins/kx92t')
+        fetch(`http://localhost:8081/bankBalance/${id}`)
             .then(function (response) {
+                console.log(response)
                 return response.json();
             })
             .then(function (myJson) {
+                console.log(myJson)
                 resolve(myJson)
-            });
+            })
+            .catch(error=>reject(error))
     })
 }
 

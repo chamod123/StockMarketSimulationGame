@@ -82,7 +82,6 @@ class Stocks extends React.Component {
   componentDidMount() {
   getAllStocks()
   .then((response) => {
-    console.log(response)
       this.setState({stockArray:this.createUISectorArray(response)});
     })
  

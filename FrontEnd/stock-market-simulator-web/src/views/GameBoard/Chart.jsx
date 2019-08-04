@@ -28,12 +28,9 @@ export default function Chart(props) {
   const SortChartData=(data)=>{
     var sortedArray ={"lablels":[], "series":[[]]}
     data.forEach(element => {
-      //if(props.stockname===element[2]){
         sortedArray.lablels.push(element[0])
         sortedArray.series[0].push(element[1])
-    //  }
     })
-    console.log(sortedArray)
     return sortedArray
   }
   

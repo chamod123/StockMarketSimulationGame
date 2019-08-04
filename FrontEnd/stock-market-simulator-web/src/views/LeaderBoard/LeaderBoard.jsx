@@ -34,7 +34,6 @@ class LeaderBoard extends React.Component {
   componentDidMount() {
     getLeaderBoard().then(response => {
       var sortedData=this.sortData(response)
-      console.log(response);
       this.setState({ tableData: this.getTableData(sortedData) })
     })
     

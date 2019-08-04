@@ -50,15 +50,16 @@ function UserProfile(props) {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if(userName===''&&password==='')
-   getPlayerByID(7).then(response => {
-     console.log(response)
-      setFname(response.name)
-      setLname(response.secondName)
-      setEmail(response.email)
-      setUserName(response.userName)
-      setPassword(response.password)
-    })
+    if(userName===''&&password===''){
+      var playerID = localStorage.getItem('playerID');
+      getPlayerByID(playerID).then(response => {
+         setFname(response.name)
+         setLname(response.secondName)
+         setEmail(response.email)
+         setUserName(response.userName)
+         setPassword(response.password)
+       })
+    }
   });
 
    // call post UpdateProfile(request) API
